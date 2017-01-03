@@ -1,0 +1,7 @@
+name: OpenSlava
+logo: openslava.jpeg
+vars:
+  CONSOLE_ADDRESS: "console.openslava.pixy.io:8443"
+  ROUTER_ADDRESS: "apps.openslava.pixy.io"
+  USER_NAME: "userXY (The username provided to you)"
+  USER_PASSWORD: "passwordXY (The password provided to you)"
