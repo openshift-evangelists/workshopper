@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" import="eu.mjelen.workshopper.modules.Modules" import="eu.mjelen.workshopper.modules.Module" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" import="org.openshift.evg.workshopper.modules.Modules" import="org.openshift.evg.workshopper.modules.Module" %>
 <% Modules modules = ((Modules) application.getAttribute("modules")); %>
 <% Module module = modules.getModules().get((String) application.getAttribute("module")); %>
 <html>

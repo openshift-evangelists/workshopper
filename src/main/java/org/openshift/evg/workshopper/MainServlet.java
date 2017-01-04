@@ -1,6 +1,6 @@
-package eu.mjelen.workshopper;
+package org.openshift.evg.workshopper;
 
-import eu.mjelen.workshopper.workshops.Workshops;
+import org.openshift.evg.workshopper.workshops.Workshops;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

@@ -1,4 +1,4 @@
-package eu.mjelen.workshopper.workshops;
+package org.openshift.evg.workshopper.workshops;
 
 import java.util.List;
 import java.util.Map;

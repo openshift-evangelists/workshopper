@@ -1,6 +1,6 @@
-package eu.mjelen.workshopper;
+package org.openshift.evg.workshopper;
 
-import eu.mjelen.workshopper.modules.Modules;
+import org.openshift.evg.workshopper.modules.Modules;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

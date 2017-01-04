@@ -1,4 +1,4 @@
-package eu.mjelen.workshopper.workshops;
+package org.openshift.evg.workshopper.workshops;
 
 import org.yaml.snakeyaml.Yaml;
 

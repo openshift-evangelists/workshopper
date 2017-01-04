@@ -1,4 +1,4 @@
-package eu.mjelen.workshopper.modules;
+package org.openshift.evg.workshopper.modules;
 
 import java.util.Map;
 
