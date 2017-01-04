@@ -1,11 +1,13 @@
 package org.openshift.evg.workshopper.workshops;
 
+import org.springframework.web.context.ServletContextAware;
 import org.yaml.snakeyaml.Yaml;
 
 import javax.servlet.ServletContext;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
 
 public class Workshops {
 
