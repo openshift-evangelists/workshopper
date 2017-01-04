@@ -4,7 +4,7 @@
 <body>
 <h2>Hello World!</h2>
 
-<% for(String id : workshops.getWorkshops().keySet()){ %>
+<% for(String id : workshops.get().keySet()){ %>
 <a href="workshop/<%= id %>/"><%= workshops.get(id).getName() %></a>
 <br />
 <% } %>

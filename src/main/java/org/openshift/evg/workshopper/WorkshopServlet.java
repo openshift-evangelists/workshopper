@@ -2,6 +2,7 @@ package org.openshift.evg.workshopper;
 
 import org.openshift.evg.workshopper.modules.Modules;
 
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,6 +19,9 @@ public class WorkshopServlet extends HttpServlet {
     private Pattern workshopPattern = Pattern.compile("^/([^/]+)/?$");
     private Pattern modulePattern = Pattern.compile("^/([^/]+)/module/([^/]+)/?$");
 
+    @Inject
+    private Modules modules;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getPathInfo();
@@ -26,15 +30,9 @@ public class WorkshopServlet extends HttpServlet {
         if(moduleMatcher.find()) {
             String workshop = moduleMatcher.group(1);
             String module = moduleMatcher.group(2);
-            getServletContext().setAttribute("modules", Modules.get(getServletContext()));
+            getServletContext().setAttribute("modules", this.modules);
             getServletContext().setAttribute("workshop", workshop);
             getServletContext().setAttribute("module", module);
-
-//            Asciidoctor asciidoctor = Asciidoctor.Factory.create();
-//            HashMap<String, Object> context = new HashMap<>();
-//
-//            String content = asciidoctor.convert(readModule(module), context);
-//            getServletContext().setAttribute("content", content);
             doModule(workshop, module, req, resp);
             return;
         }
@@ -43,7 +41,7 @@ public class WorkshopServlet extends HttpServlet {
         if(workshopMatcher.find()) {
             String workshop = workshopMatcher.group(1);
             getServletContext().setAttribute("workshop", workshop);
-            getServletContext().setAttribute("modules", Modules.get(getServletContext()));
+            getServletContext().setAttribute("modules", this.modules);
             doWorkshop(workshop, req, resp);
             return;
         }
