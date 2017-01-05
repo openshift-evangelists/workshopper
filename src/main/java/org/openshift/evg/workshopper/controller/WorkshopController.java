@@ -30,13 +30,19 @@ public class WorkshopController {
     }
 
     @GET
-    @Path("env/{workshop}/{module}")
+    @Path("{workshop}")
+    public Workshop getWorkshops(@PathParam("workshop") String w) {
+        return workshops.get(w);
+    }
+
+    @GET
+    @Path("{workshop}/env/{module}")
     public HashMap<String, Object> workshopEnv(@PathParam("workshop") String w, @PathParam("module") String m) {
         return generateEnv(w, m, null);
     }
 
     @GET
-    @Path("env/{workshop}/{module}/{revision}")
+    @Path("{workshop}/env/{module}/{revision}")
     public HashMap<String, Object> workshopEnv(@PathParam("workshop") String w, @PathParam("module") String m, @PathParam("revision") String r) {
         return generateEnv(w, m, r);
     }

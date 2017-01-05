@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/3.2.1/css/font-awesome.min.css" />
     <script type="application/javascript">
         $(function(){
-            $.get("../../../api/workshops/env/<%= application.getAttribute("workshop") %>/<%= application.getAttribute("module") %>", function(env){
+            $.get("../../../api/workshops/<%= application.getAttribute("workshop") %>/env/<%= application.getAttribute("module") %>", function(env){
                 $.get("../../../modules/<%= application.getAttribute("module") %>.adoc", function(data) {
                     var asciidoctor = Asciidoctor();
                     var tmpl = Liquid.parse(data);
