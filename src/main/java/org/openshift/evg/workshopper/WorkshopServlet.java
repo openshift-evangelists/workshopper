@@ -1,6 +1,7 @@
 package org.openshift.evg.workshopper;
 
 import org.openshift.evg.workshopper.modules.Modules;
+import org.openshift.evg.workshopper.workshops.Workshops;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -22,6 +23,9 @@ public class WorkshopServlet extends HttpServlet {
     @Inject
     private Modules modules;
 
+    @Inject
+    private Workshops workshops;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getPathInfo();
@@ -40,7 +44,8 @@ public class WorkshopServlet extends HttpServlet {
         Matcher workshopMatcher = workshopPattern.matcher(path);
         if(workshopMatcher.find()) {
             String workshop = workshopMatcher.group(1);
-            getServletContext().setAttribute("workshop", workshop);
+            getServletContext().setAttribute("workshop_id", workshop);
+            getServletContext().setAttribute("workshop", this.workshops.get(workshop));
             getServletContext().setAttribute("modules", this.modules);
             doWorkshop(workshop, req, resp);
             return;

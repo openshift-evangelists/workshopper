@@ -1,19 +1,24 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" import="org.openshift.evg.workshopper.modules.Modules" import="org.openshift.evg.workshopper.modules.Module" %>
 <% Modules modules = ((Modules) application.getAttribute("modules")); %>
-<% Module module = modules.getModules().get((String) application.getAttribute("module")); %>
+<% Module module = modules.get().get((String) application.getAttribute("module")); %>
 <html>
 <head>
     <title>Workshop</title>
-    <script type="application/javascript" src="../../../asciidoctor.js"></script>
-    <script type="application/javascript" src="../../../jquery.js"></script>
-    <script type="application/javascript" src="../../../liquid.js"></script>
+    <script type="application/javascript" src="../../../js/asciidoctor.js"></script>
+    <script type="application/javascript" src="../../../js/jquery.js"></script>
+    <script type="application/javascript" src="../../../js/liquid.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../../css/paper.css">
+    <link rel="stylesheet" type="text/css" href="../../../css/docs.css">
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/3.2.1/css/font-awesome.min.css" />
     <script type="application/javascript">
         $(function(){
-            $.get("../../../modules/<%= application.getAttribute("module") %>.adoc", function(data) {
-                var asciidoctor = Asciidoctor();
-                var html = asciidoctor.convert(data);
-                var tmpl = Liquid.parse(html);
-                $('#content').html(tmpl.render({}));
+            $.get("../../../api/workshops/env/<%= application.getAttribute("workshop") %>/<%= application.getAttribute("module") %>", function(env){
+                $.get("../../../modules/<%= application.getAttribute("module") %>.adoc", function(data) {
+                    var asciidoctor = Asciidoctor();
+                    var tmpl = Liquid.parse(data);
+                    var html = asciidoctor.convert(tmpl.render(env.env), {attributes: ['icons=font']});
+                    $('#content').html(html);
+                });
             });
         });
     </script>

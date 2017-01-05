@@ -1,14 +1,16 @@
 package org.openshift.evg.workshopper.modules;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 public class Module {
 
     private String name;
-    private Map<String, String> vars;
-    private Map<String, ModuleRevision> revisions;
-    private List<String> requires;
+    private Map<String, String> vars = new HashMap<>();
+    private Map<String, ModuleRevision> revisions = new HashMap<>();
+    private List<String> requires = new LinkedList<>();
 
     public String getName() {
         return name;
@@ -40,5 +42,15 @@ public class Module {
 
     public void setRequires(List<String> requires) {
         this.requires = requires;
+    }
+
+    @Override
+    public String toString() {
+        return "Module{" +
+                "name='" + name + '\'' +
+                ", vars=" + vars +
+                ", revisions=" + revisions +
+                ", requires=" + requires +
+                '}';
     }
 }

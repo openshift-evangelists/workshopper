@@ -1,15 +1,19 @@
 package org.openshift.evg.workshopper.workshops;
 
-import java.util.Map;
+import org.openshift.evg.workshopper.modules.Module;
+import org.openshift.evg.workshopper.modules.Modules;
+
+import java.util.*;
 
 public class Workshop {
 
     private String name;
     private String logo;
-    private Boolean priv;
+    private Boolean priv = false;
     private Map<String, String> vars;
     private String revision;
     private WorkshopModules modules;
+    private List<String> sortedModules;
 
     public String getName() {
         return name;
@@ -59,4 +63,58 @@ public class Workshop {
         this.modules = modules;
     }
 
+    public List<String> getSortedModules() {
+        return sortedModules;
+    }
+
+    public void resolve(Modules modules) {
+        // In case the workshop does not specify modules, add all modules
+        if(getModules() == null || getModules().getActivate() == null || getModules().getActivate().size() == 0) {
+            if(this.modules == null) this.modules = new WorkshopModules();
+            this.modules.getActivate().addAll(modules.get().keySet());
+        }
+        // In case the workshop does not explicitly name a module that is requirement for activated modules, add it
+        List<String> activate = new LinkedList<>(this.modules.getActivate());
+        getModules().getActivate().forEach(id -> {
+            Module module = modules.get(id);
+            if(module.getRequires() == null) return;
+            module.getRequires().forEach(req -> {
+               if(!activate.contains(req)) {
+                   activate.add(req);
+               }
+            });
+        });
+        this.modules.setActivate(activate);
+        // Sort the modules based on their requirements
+        boolean repeat = true;
+        List<String> target = new LinkedList<>(this.modules.getActivate());
+        while(repeat) {
+            repeat = false;
+            for(String id : target) {
+                Module module = modules.get(id);
+                if(module.getRequires() != null) for(String req : module.getRequires()) {
+                    int reqpos = target.indexOf(req);
+                    int modpos = target.indexOf(id);
+                    if(reqpos > modpos) {
+                        target.set(reqpos, id);
+                        target.set(modpos, req);
+                        repeat = true;
+                    }
+                }
+            }
+        }
+        this.sortedModules = target;
+    }
+
+    @Override
+    public String toString() {
+        return "Workshop{" +
+                "name='" + name + '\'' +
+                ", logo='" + logo + '\'' +
+                ", priv=" + priv +
+                ", vars=" + vars +
+                ", revision='" + revision + '\'' +
+                ", modules=" + modules +
+                '}';
+    }
 }

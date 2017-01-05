@@ -1,12 +1,11 @@
 package org.openshift.evg.workshopper.workshops;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class WorkshopModules {
 
-    private List<String> activate;
-    private Map<String, String> revisions;
+    private List<String> activate = new LinkedList<>();
+    private Map<String, String> revisions = new HashMap<>();
 
     public List<String> getActivate() {
         return activate;
@@ -24,4 +23,11 @@ public class WorkshopModules {
         this.revisions = revisions;
     }
 
+    @Override
+    public String toString() {
+        return "WorkshopModules{" +
+                "activate=" + activate +
+                ", revisions=" + revisions +
+                '}';
+    }
 }

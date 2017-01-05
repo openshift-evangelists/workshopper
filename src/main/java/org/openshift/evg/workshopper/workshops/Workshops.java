@@ -21,4 +21,10 @@ public class Workshops {
         return workshops;
     }
 
+    @Override
+    public String toString() {
+        return "Workshops{" +
+                "workshops=" + workshops +
+                '}';
+    }
 }
