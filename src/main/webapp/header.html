@@ -41,10 +41,10 @@
                     for(var id in data) {
                         var panel = $('<div/>').addClass("panel").addClass("panel-default");
                         root.append(panel);
-                        var body = $('<a/>').addClass("panel-body").attr("href", "#/workshop/" + id);
+                        var body = $('<div/>').addClass("panel-body");
                         panel.append(body);
-                        var html = "<strong>" + data[id]['name'] + "</strong>";
-                        body.html(html);
+                        var link = $('<a/>').attr("href", "#/workshop/" + id).html("<strong>" + data[id]['name'] + "</strong>");
+                        body.append(link);
                     }
                     console.log(root);
                     content.html(root);
@@ -58,10 +58,11 @@
                         var name = modules[id]['name'];
                         var panel = $('<div/>').addClass("panel").addClass("panel-default");
                         root.append(panel);
-                        var body = $('<a/>').addClass("panel-body").attr("href", "#/workshop/" + workshop + "/module/" + id);
+                        var body = $('<div/>').addClass("panel-body");
                         panel.append(body);
-                        var html = "<strong>" + name + "</strong>";
-                        body.html(html);
+                        var link = $('<a/>').attr("href", "#/workshop/" + workshop + "/module/" + id)
+                            .html("<strong>" + name + "</strong>");
+                        body.append(link);
                     });
                     content.html(root);
                 });
