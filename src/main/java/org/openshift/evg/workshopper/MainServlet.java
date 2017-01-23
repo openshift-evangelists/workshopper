@@ -20,9 +20,8 @@ public class MainServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String defaultLab = System.getenv("DEFAULT_LAB");
         if(defaultLab != null) {
-            getServletContext().getRequestDispatcher("/workshop/" + defaultLab + "/").forward(req, resp);
+            getServletContext().getRequestDispatcher("#/workshop/" + defaultLab + "/").forward(req, resp);
         } else {
-            getServletContext().setAttribute("workshops", this.workshops);
             getServletContext().getRequestDispatcher("/index.jsp").forward(req, resp);
         }
     }

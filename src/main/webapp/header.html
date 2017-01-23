@@ -1,11 +1,103 @@
 <html>
 <head>
     <title>Title</title>
-    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/paper/bootstrap.min.css">
-    <script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <!-- https://bootswatch.com/paper/ -->
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/3.2.1/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/css/paper.css">
+    <link rel="stylesheet" type="text/css" href="/css/docs.css">
+    <script type="application/javascript" src="/js/jquery.js"></script>
+    <script type="application/javascript" src="/js/asciidoctor.js"></script>
+    <script type="application/javascript" src="/js/liquid.js"></script>
+    <script type="application/javascript">
+        var rootPattern = new RegExp(/^#[\/]?$/);
+        var workshopPattern = new RegExp(/^#\/workshop\/([^\/]+)[\/]?$/);
+        var modulePattern = new RegExp(/^#\/workshop\/([^\/]+)\/module\/([^\/]+)[\/]?$/);
+
+        var asciidoctor = Asciidoctor();
+
+        var content;
+        var modules;
+
+        var flush = function() {
+            content.html('<div style="text-align: center;">Loading ...</div>');
+        };
+
+        var doRouting = function() {
+            var route = location.hash;
+            console.log("Current route: " + route);
+
+            if(route == "") {
+                route = location.hash = '/';
+                return;
+            }
+
+            flush();
+
+            var match;
+            if(match = rootPattern.exec(route)) {
+                $.get("/api/workshops", function (data) {
+                    var root = $("<div/>");
+                    for(var id in data) {
+                        var panel = $('<div/>').addClass("panel").addClass("panel-default");
+                        root.append(panel);
+                        var body = $('<a/>').addClass("panel-body").attr("href", "#/workshop/" + id);
+                        panel.append(body);
+                        var html = "<strong>" + data[id]['name'] + "</strong>";
+                        body.html(html);
+                    }
+                    console.log(root);
+                    content.html(root);
+                });
+            }
+            if(match = workshopPattern.exec(route)) {
+                var workshop = match[1];
+                $.get("/api/workshops/" + workshop, function (data) {
+                    var root = $("<div/>");
+                    $.each(data['sortedModules'], function(i, id){
+                        var name = modules[id]['name'];
+                        var panel = $('<div/>').addClass("panel").addClass("panel-default");
+                        root.append(panel);
+                        var body = $('<a/>').addClass("panel-body").attr("href", "#/workshop/" + workshop + "/module/" + id);
+                        panel.append(body);
+                        var html = "<strong>" + name + "</strong>";
+                        body.html(html);
+                    });
+                    content.html(root);
+                });
+            }
+            if(match = modulePattern.exec(route)) {
+                var workshop = match[1];
+                var module = match[2];
+                $.get("/api/workshops/" + workshop + "/env/" + module, function(env){
+                    var path = module.replace("_", "/");
+                    $.get("/modules/" + path + ".adoc", function(data) {
+                        var tmpl = Liquid.parse(data);
+                        var html = asciidoctor.convert(tmpl.render(env.env), {attributes: ['icons=font']});
+                        content.html(html);
+                        content.append('<hr/><a href="#/workshop/' + workshop + '">Back</a>');
+                    });
+                });
+            }
+
+        };
+        var setup = function() {
+            content =  $("#content");
+            $.get('/api/modules', function(data){
+                modules = data;
+                doRouting();
+            });
+        };
+        $(function(){
+            setup();
+
+        });
+        $(window).on('hashchange', function() {
+            doRouting();
+        });
+    </script>
 </head>
 
-<!-- https://bootswatch.com/paper/ -->
 <body>
 
 <br/><br/>
@@ -37,5 +129,3 @@
         </div>
     </div>
 </div>
-
-<div class="container">
