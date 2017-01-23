@@ -53,17 +53,6 @@ public class WorkshopServlet extends HttpServlet {
 
     }
 
-    private String readModule(String module) throws IOException {
-        InputStream stream = getServletContext().getResourceAsStream("/WEB-INF/modules/" + module + ".adoc");
-        StringBuilder buffer = new StringBuilder();
-        int i;
-        byte[] tmp = new byte[1024];
-        while((i = stream.read(tmp)) > -1) {
-            buffer.append(new String(tmp, 0, i));
-        }
-        return buffer.toString();
-    }
-
     private void doWorkshop(String workshop, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         getServletContext().getRequestDispatcher("/workshop.jsp").forward(req, resp);
     }

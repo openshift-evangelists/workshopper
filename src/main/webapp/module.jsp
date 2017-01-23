@@ -13,7 +13,9 @@
 <script type="application/javascript">
     $(function(){
         $.get("../../../api/workshops/<%= application.getAttribute("workshop") %>/env/<%= application.getAttribute("module") %>", function(env){
-            $.get("../../../modules/<%= application.getAttribute("module") %>.adoc", function(data) {
+            var module = '<%= application.getAttribute("module") %>';
+            module = module.replace("_", "/");
+            $.get("../../../modules/" + module + ".adoc", function(data) {
                 var asciidoctor = Asciidoctor();
                 var tmpl = Liquid.parse(data);
                 var html = asciidoctor.convert(tmpl.render(env.env), {attributes: ['icons=font']});
