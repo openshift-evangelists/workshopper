@@ -1,6 +1,11 @@
 # Workshopper
 
 Builds your workshops and enjoys it.
+
+## Other repositories
+
+* [Centent for OpenShift workshops](https://github.com/osevg/workshopper-content)
+* [Collection of workshop definitions](https://github.com/osevg/workshopper-workshops)
  
 ## Deployment
 
