@@ -76,7 +76,11 @@
                     var url = config['contentUrl'] + "/" + path + ".adoc";
                     $.get(url, function(data) {
                         var tmpl = Liquid.parse(data);
-                        var html = asciidoctor.convert(tmpl.render(env.env), {attributes: ['icons=font']});
+                        var options = [
+                            'icons=font',
+                            'imagesdir=' + config['contentUrl'] + "/images"
+                        ];
+                        var html = asciidoctor.convert(tmpl.render(env.env), {attributes: options});
                         content.html(html);
                         content.append('<hr/><a href="#/workshop/' + workshop + '">Back</a>');
                     });
