@@ -1,5 +1,6 @@
 package org.openshift.evg.workshopper.controller;
 
+import org.openshift.evg.workshopper.config.Configuration;
 import org.openshift.evg.workshopper.modules.Module;
 import org.openshift.evg.workshopper.modules.Modules;
 import org.openshift.evg.workshopper.workshops.Workshop;
@@ -23,6 +24,9 @@ public class WorkshopController {
 
     @Inject
     private Modules modules;
+
+    @Inject
+    private Configuration config;
 
     @GET
     public Map<String, Workshop> getAllWorkshops() {
@@ -62,9 +66,11 @@ public class WorkshopController {
         result.put("revision", revision);
         result.put("workshop", workshop);
         result.put("module", module);
-        HashMap<String, String> env = new HashMap<>();
+        HashMap<String, Object> env = new HashMap<>();
         result.put("env", env);
-        // Module defaults has lowest priority
+        // system defaults has lowest priority
+        env.putAll(this.config.getConfig().getVars());
+        // Module defaults
         env.putAll(module.getVars());
         // Revision overrides module defaults
         if(revision != null && module.getRevisions() != null && module.getRevisions().get(revision) != null) {

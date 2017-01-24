@@ -16,6 +16,7 @@
 
         var asciidoctor = Asciidoctor();
 
+        var config;
         var content;
         var modules;
 
@@ -72,7 +73,14 @@
                 var module = match[2];
                 $.get("/api/workshops/" + workshop + "/env/" + module, function(env){
                     var path = module.replace("_", "/");
-                    $.get("/modules/" + path + ".adoc", function(data) {
+                    var url = "https://raw.githubusercontent.com/" +
+                        config['repository'] +
+                        "/" +
+                        config['ref'] +
+                        "/" +
+                        path +
+                        ".adoc";
+                    $.get(url, function(data) {
                         var tmpl = Liquid.parse(data);
                         var html = asciidoctor.convert(tmpl.render(env.env), {attributes: ['icons=font']});
                         content.html(html);
@@ -84,9 +92,12 @@
         };
         var setup = function() {
             content =  $("#content");
-            $.get('/api/modules', function(data){
-                modules = data;
-                doRouting();
+            $.get('/api/config', function(data){
+                config = data;
+                $.get('/api/modules', function(data){
+                    modules = data;
+                    doRouting();
+                });
             });
         };
         $(function(){

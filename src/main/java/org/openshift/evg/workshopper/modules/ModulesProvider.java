@@ -1,16 +1,27 @@
 package org.openshift.evg.workshopper.modules;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import org.openshift.evg.workshopper.config.Configuration;
 import org.yaml.snakeyaml.TypeDescription;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
-import javax.servlet.ServletContext;
+import java.io.IOException;
 
 @ApplicationScoped
 public class ModulesProvider {
+
+    @Inject
+    private OkHttpClient client;
+
+    @Inject
+    private Configuration config;
 
     private final Yaml yaml;
 
@@ -29,11 +40,22 @@ public class ModulesProvider {
         yaml = new Yaml(constructor);
     }
 
-    private final Modules modules;
+    private Modules modules;
 
-    @Inject
-    public ModulesProvider(ServletContext context) {
-        this.modules = this.yaml.loadAs(context.getResourceAsStream("/WEB-INF/modules.yml"), Modules.class);
+    @PostConstruct
+    public void initialize() throws IOException {
+        reload();
+    }
+
+    public void reload() throws IOException {
+        String url = "https://raw.githubusercontent.com/"
+                + this.config.getRepository() + "/"
+                + this.config.getRef()
+                + "/_modules.yml";
+
+        Request request = new Request.Builder().url(url).build();
+        Response response = this.client.newCall(request).execute();
+        this.modules = this.yaml.loadAs(response.body().byteStream(), Modules.class);
     }
 
     @Produces
