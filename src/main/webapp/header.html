@@ -40,12 +40,14 @@
                 $.get("/api/workshops", function (data) {
                     var root = $("<div/>");
                     for(var id in data) {
-                        var link = $('<a/>').attr("href", "#/workshop/" + id);
+                        var link = $('<a/>').addClass("workshop").attr("href", "#/workshop/" + id);
                         root.append(link);
                         var panel = $('<div/>').addClass("panel").addClass("panel-default");
                         link.append(panel);
-                        var body = $('<div/>').addClass("panel-body").html('<h4/>').html(data[id]['name'] + "</h4>");
+                        var body = $('<div/>').addClass("panel-body");
                         panel.append(body);
+                        var text = $('<h5/>').html(data[id]['name']);
+                        body.append(text);
                     }
                     console.log(root);
                     content.html(root);
@@ -56,14 +58,14 @@
                 $.get("/api/workshops/" + workshop, function (data) {
                     var root = $("<div/>");
                     $.each(data['sortedModules'], function(i, id){
-                        var name = modules[id]['name'];
+                        var link = $('<a/>').addClass("workshop-module").attr("href", "#/workshop/" + workshop + "/module/" + id);
+                        root.append(link);
                         var panel = $('<div/>').addClass("panel").addClass("panel-default");
-                        root.append(panel);
+                        link.append(panel);
                         var body = $('<div/>').addClass("panel-body");
                         panel.append(body);
-                        var link = $('<a/>').attr("href", "#/workshop/" + workshop + "/module/" + id)
-                            .html("<strong>" + name + "</strong>");
-                        body.append(link);
+                        var text = $('<span/>').html((i + 1) + ". " + modules[id]['name']);
+                        body.append(text);
                     });
                     content.html(root);
                 });
