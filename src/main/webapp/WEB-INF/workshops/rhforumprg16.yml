@@ -1,6 +1,0 @@
-name: Red Hat Forum Prague 2016
-vars:
-  CONSOLE_ADDRESS: "console.rhforum.pixy.io:8443"
-  ROUTER_ADDRESS: "apps.rhforum.pixy.io"
-  USER_NAME: "(The username provided to you)"
-  USER_PASSWORD: "(The password provided to you)"

@@ -3,6 +3,7 @@ package org.openshift.evg.workshopper.config;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
 import javax.annotation.PostConstruct;
@@ -19,37 +20,63 @@ public class Configuration {
     private OkHttpClient client;
 
     private final Yaml yaml = new Yaml();
-    private final String repository;
-    private final String ref;
+    private final String workshopUrl;
+    private final String workshopsUrl;
+
+    private final String contentUrl;
     private ModuleConfiguration config;
+    private String defaultWorkshop;
 
     public Configuration() {
-        this.repository = System.getenv().getOrDefault("CONTENT_REPOSITORY", "osevg/workshopper-content");
-        this.ref = System.getenv().getOrDefault("CONTENT_REF", "master");
+        if(System.getenv().containsKey("CONTENT_URL")) {
+            this.contentUrl = System.getenv().get("CONTENT_URL");
+        } else {
+            this.contentUrl = "https://raw.githubusercontent.com/"
+                    + System.getenv().getOrDefault("GITHUB_REPOSITORY", "osevg/workshopper-content") + "/"
+                    + System.getenv().getOrDefault("GITHUB_REF", "master");
+        }
+
+        this.workshopUrl = System.getenv().get("WORKSHOP_URL");
+//        this.workshopsUrl = System.getenv().get("WORKSHOPS_URL");
+        this.workshopsUrl = "https://gist.githubusercontent.com/marekjelen/5efe49992e8dcc2fadf7a87fe99e7981/raw/047cbe69e825c8154a2895d490a3a36fc0d29ee4/workshops.yml";
+        this.defaultWorkshop = System.getenv().get("DEFAULT_LAB");
     }
 
     @PostConstruct
-    public void initialize() throws IOException {
-        reload();
+    public void initialize() {
+        try {
+            reload();
+        } catch (IOException e) {
+            LoggerFactory.getLogger(getClass()).error("Problem loading configuration", e);
+        }
     }
 
     public void reload() throws IOException {
-        String url = "https://raw.githubusercontent.com/"
-                + this.getRepository() + "/"
-                + this.getRef()
-                + "/_config.yml";
+        String url = this.getContentUrl() + "/_config.yml";
 
         Request request = new Request.Builder().url(url).build();
         Response response = this.client.newCall(request).execute();
         this.config = this.yaml.loadAs(response.body().byteStream(), ModuleConfiguration.class);
     }
 
-    public String getRepository() {
-        return repository;
+    public String getContentUrl() {
+        return contentUrl;
     }
 
-    public String getRef() {
-        return ref;
+    public String getWorkshopUrl() {
+        return workshopUrl;
+    }
+
+    public String getWorkshopsUrl() {
+        return workshopsUrl;
+    }
+
+    public String getDefaultWorkshop() {
+        return defaultWorkshop;
+    }
+
+    public void setDefaultWorkshop(String defaultWorkshop) {
+        this.defaultWorkshop = defaultWorkshop;
     }
 
     public ModuleConfiguration getConfig() {
@@ -58,8 +85,8 @@ public class Configuration {
 
     public Map<String, Object> export() {
         Map<String, Object> export = new HashMap<>();
-        export.put("repository", this.repository);
-        export.put("ref", this.ref);
+        export.put("contentUrl", this.contentUrl);
+        export.put("defaultWorkshop", this.defaultWorkshop);
         return export;
     }
 

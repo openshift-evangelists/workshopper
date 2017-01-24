@@ -73,13 +73,7 @@
                 var module = match[2];
                 $.get("/api/workshops/" + workshop + "/env/" + module, function(env){
                     var path = module.replace("_", "/");
-                    var url = "https://raw.githubusercontent.com/" +
-                        config['repository'] +
-                        "/" +
-                        config['ref'] +
-                        "/" +
-                        path +
-                        ".adoc";
+                    var url = config['contentUrl'] + "/" + path + ".adoc";
                     $.get(url, function(data) {
                         var tmpl = Liquid.parse(data);
                         var html = asciidoctor.convert(tmpl.render(env.env), {attributes: ['icons=font']});

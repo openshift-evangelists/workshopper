@@ -1,32 +1,73 @@
 package org.openshift.evg.workshopper.workshops;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import org.openshift.evg.workshopper.config.Configuration;
 import org.openshift.evg.workshopper.modules.Modules;
+import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
-import javax.servlet.ServletContext;
+import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
 @ApplicationScoped
 public class WorkshopProvider {
 
-    private final Yaml yaml = new Yaml();
-    private final Workshops workshops;
-    private final Modules modules;
+    @Inject
+    private Configuration config;
 
     @Inject
-    public WorkshopProvider(ServletContext context, Modules modules) {
-        this.modules = modules;
+    private Modules modules;
+
+    @Inject
+    private OkHttpClient client;
+
+    private final Yaml yaml = new Yaml();
+    private Workshops workshops;
+
+    @PostConstruct
+    public void initialize() {
+        try {
+            reload();
+        } catch (IOException e) {
+            LoggerFactory.getLogger(getClass()).error("Problem loading workshops", e);
+        }
+    }
+
+    public void reload() throws IOException {
         this.workshops = new Workshops();
-        Set<String> paths = context.getResourcePaths("/WEB-INF/workshops");
-        paths.forEach(path -> {
-            String id = path.replace("/WEB-INF/workshops/", "");
-            id = id.replace(".yml", "");
-            this.workshops.add(id, this.yaml.loadAs(context.getResourceAsStream(path), Workshop.class));
-            this.workshops.get(id).resolve(this.modules);
-        });
+
+        if(this.config.getWorkshopUrl() != null) {
+            loadFrom(this.config.getWorkshopUrl());
+        }else if(this.config.getWorkshopsUrl() != null) {
+            Request request = new Request.Builder().url(this.config.getWorkshopsUrl()).build();
+            Response response = this.client.newCall(request).execute();
+            List workshops = this.yaml.loadAs(response.body().byteStream(), List.class);
+            workshops.forEach(url -> {
+                try {
+                    this.loadFrom((String) url);
+                } catch (IOException e) {
+                    LoggerFactory.getLogger(getClass()).error("Problem loading workshop", e);
+                }
+            });
+        }
+    }
+
+    private Workshop loadFrom(String url) throws IOException {
+        LoggerFactory.getLogger(getClass()).info("Loading default workshop from {}", this.config.getWorkshopUrl());
+        Request request = new Request.Builder().url(url).build();
+        Response response = this.client.newCall(request).execute();
+        Workshop workshop = this.yaml.loadAs(response.body().byteStream(), Workshop.class);
+        workshop.resolve(this.modules);
+        this.workshops.add("default", workshop);
+        this.config.setDefaultWorkshop("default");
+        return workshop;
     }
 
     @Produces

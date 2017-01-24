@@ -69,15 +69,21 @@ public class WorkshopController {
         HashMap<String, Object> env = new HashMap<>();
         result.put("env", env);
         // system defaults has lowest priority
-        env.putAll(this.config.getConfig().getVars());
+        if(this.config.getConfig().getVars() != null) {
+            env.putAll(this.config.getConfig().getVars());
+        }
         // Module defaults
-        env.putAll(module.getVars());
+        if(module.getVars() != null) {
+            env.putAll(module.getVars());
+        }
         // Revision overrides module defaults
         if(revision != null && module.getRevisions() != null && module.getRevisions().get(revision) != null) {
             env.putAll(module.getRevisions().get(revision).getVars());
         }
         // Workshop defaults override revisions
-        env.putAll(workshop.getVars());
+        if(workshop.getVars() != null) {
+            env.putAll(workshop.getVars());
+        }
         // Environment variables may override all
         env.keySet().forEach(key -> {
             if(System.getenv().containsKey(key)) {

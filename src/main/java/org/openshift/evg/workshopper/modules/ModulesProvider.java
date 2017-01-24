@@ -4,6 +4,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.openshift.evg.workshopper.config.Configuration;
+import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.TypeDescription;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
@@ -43,15 +44,16 @@ public class ModulesProvider {
     private Modules modules;
 
     @PostConstruct
-    public void initialize() throws IOException {
-        reload();
+    public void initialize() {
+        try {
+            reload();
+        } catch (IOException e) {
+            LoggerFactory.getLogger(getClass()).error("Problem loading modules", e);
+        }
     }
 
     public void reload() throws IOException {
-        String url = "https://raw.githubusercontent.com/"
-                + this.config.getRepository() + "/"
-                + this.config.getRef()
-                + "/_modules.yml";
+        String url = this.config.getContentUrl() + "/_modules.yml";
 
         Request request = new Request.Builder().url(url).build();
         Response response = this.client.newCall(request).execute();

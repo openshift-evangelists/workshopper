@@ -1,7 +1,0 @@
-name: Modular workshop
-modules:
-  activate:
-    - install
-    - codechanges
-  revisions:
-    install: ocp

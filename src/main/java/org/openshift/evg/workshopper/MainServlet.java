@@ -1,5 +1,6 @@
 package org.openshift.evg.workshopper;
 
+import org.openshift.evg.workshopper.config.Configuration;
 import org.openshift.evg.workshopper.workshops.Workshops;
 
 import javax.inject.Inject;
@@ -16,13 +17,11 @@ public class MainServlet extends HttpServlet {
     @Inject
     private Workshops workshops;
 
+    @Inject
+    private Configuration config;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String defaultLab = System.getenv("DEFAULT_LAB");
-        if(defaultLab != null) {
-            getServletContext().getRequestDispatcher("#/workshop/" + defaultLab + "/").forward(req, resp);
-        } else {
-            getServletContext().getRequestDispatcher("/index.jsp").forward(req, resp);
-        }
+        getServletContext().getRequestDispatcher("/index.jsp").forward(req, resp);
     }
 }
