@@ -41,27 +41,28 @@ latest content provided by the authors.
 
 ### WORKSHOP_URL, WORKSHOPS_URL, WORKSHOPS_URLS (required)
 
-The system needs definition what the workshop should look like. The system can work with single or multiple.
+The system needs definition what the workshop should look like. It can work with single or multiple workshops in single
+one deployment.
 
-For single workshop specify 
+You need to choose from 
 
-* $WORKSHOP_URL for single workshop URL
+* $WORKSHOP_URL for single workshop
 
 or
   
-* $WORKSHOPS_URL for multiple workshops using single URL list file
+* $WORKSHOPS_URL for multiple workshops (defines single URL for list file)
 
 or
 
-* $WORKSHOPS_URLS for direct specification of workshop URLS using comma separated list
+* $WORKSHOPS_URLS for multiple workshops (direct specification of workshop URLS using comma separated list)
 
 In case niether of these variables is specified, the $WORKSHOP_URL defaults to
 
 ```
-https://raw.githubusercontent.com/osevg/workshopper-content/master/_default_workshop.yml
+https://raw.githubusercontent.com/osevg/workshopper-workshops/master/default_workshop.yml
 ```
 
-rendering sample workshop with all modules.
+to render sample workshop with all modules.
 
 ### DEFAULT_LAB (optional)
 
