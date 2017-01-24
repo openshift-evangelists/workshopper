@@ -90,7 +90,7 @@ public class WorkshopProvider {
     }
 
     private Workshop loadFrom(String url, String id) throws IOException {
-        LoggerFactory.getLogger(getClass()).info("Loading default workshop from {}", this.config.getWorkshopUrl());
+        LoggerFactory.getLogger(getClass()).info("Loading workshop from {}", url);
         Request request = new Request.Builder().url(url).build();
         Response response = this.client.newCall(request).execute();
         Workshop workshop = this.yaml.loadAs(response.body().byteStream(), Workshop.class);

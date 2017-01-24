@@ -34,9 +34,19 @@ div.gsc-option-menu-container > div.gsc-selected-option-container {
   width: auto !important
 }
 
-a > div.panel:hover {
-  background-color: #e0f5e1;
+a.workshop > div.panel:hover,
+a.workshop > div.panel:active,
+a.workshop-module > div.panel:hover,
+a.workshop-module > div.panel:active {
+  background-color: #d9f0fc;
+}
+
+a.workshop:hover,
+a.workshop:active,
+a.workshop-module:hover,
+a.workshop-module:active {
   text-decoration: none;
+  color: #000;
 }
 
 /* ------------------------------------------------------------
