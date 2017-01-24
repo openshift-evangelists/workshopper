@@ -40,12 +40,12 @@
                 $.get("/api/workshops", function (data) {
                     var root = $("<div/>");
                     for(var id in data) {
+                        var link = $('<a/>').attr("href", "#/workshop/" + id);
+                        root.append(link);
                         var panel = $('<div/>').addClass("panel").addClass("panel-default");
-                        root.append(panel);
-                        var body = $('<div/>').addClass("panel-body");
+                        link.append(panel);
+                        var body = $('<div/>').addClass("panel-body").html('<h4/>').html(data[id]['name'] + "</h4>");
                         panel.append(body);
-                        var link = $('<a/>').attr("href", "#/workshop/" + id).html("<strong>" + data[id]['name'] + "</strong>");
-                        body.append(link);
                     }
                     console.log(root);
                     content.html(root);

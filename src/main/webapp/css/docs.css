@@ -34,6 +34,11 @@ div.gsc-option-menu-container > div.gsc-selected-option-container {
   width: auto !important
 }
 
+a > div.panel:hover {
+  background-color: #e0f5e1;
+  text-decoration: none;
+}
+
 /* ------------------------------------------------------------
 Image: "Spin" https://www.flickr.com/photos/eflon/3655695161/
 Author: eflon https://www.flickr.com/photos/eflon/
@@ -684,4 +689,3 @@ b.conum * { color: inherit !important; }
   .print-only { display: block !important; }
   .hide-for-print { display: none !important; }
   .show-for-print { display: inherit !important; } }
-
