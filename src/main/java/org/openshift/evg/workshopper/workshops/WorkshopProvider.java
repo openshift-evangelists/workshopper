@@ -13,6 +13,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -47,16 +48,23 @@ public class WorkshopProvider {
             Request request = new Request.Builder().url(this.config.getWorkshopsUrl()).build();
             Response response = this.client.newCall(request).execute();
             List workshops = this.yaml.loadAs(response.body().byteStream(), List.class);
-            workshops.forEach(url -> {
-                try {
-                    this.loadFrom((String) url);
-                } catch (IOException e) {
-                    LoggerFactory.getLogger(getClass()).error("Problem loading workshop", e);
-                }
-            });
+            load(workshops);
+        } else if(this.config.getWorkshopsUrls() != null) {
+            List workshops = Arrays.asList(this.config.getWorkshopsUrls().split(","));
+            load(workshops);
         } else {
             loadFrom(this.config.getWorkshopUrl());
         }
+    }
+
+    private void load(List workshops) {
+        workshops.forEach(url -> {
+            try {
+                this.loadFrom((String) url);
+            } catch (IOException e) {
+                LoggerFactory.getLogger(getClass()).error("Problem loading workshop", e);
+            }
+        });
     }
 
     private Workshop loadFrom(String url) throws IOException {

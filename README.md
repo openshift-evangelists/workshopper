@@ -34,17 +34,21 @@ CONTENT_URL_PREFIX = https://raw.githubusercontent.com/$GITHUB_REPOSITORY/$GITHU
 If the two variables are not defined then are defaulted to `osevg/workshopper-content` and `master` pointing to the 
 latest content provided by the authors.
 
-### WORKSHOP_URL & WORKSHOPS_URL (required)
+### WORKSHOP_URL, WORKSHOPS_URL, WORKSHOPS_URLS (required)
 
 The system needs definition what the workshop should look like. The system can work with single or multiple.
 
 For single workshop specify 
 
-* $WORKSHOP_URL for single workshop 
+* $WORKSHOP_URL for single workshop URL
 
 or
   
-* $WORKSHOPS_URL for multiple workshops
+* $WORKSHOPS_URL for multiple workshops using single URL list file
+
+or
+
+* $WORKSHOPS_URLS for direct specification of workshop URLS
 
 In case niether of these variables is specified, the $WORKSHOP_URL defaults to
 

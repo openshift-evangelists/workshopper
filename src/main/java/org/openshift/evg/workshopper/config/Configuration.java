@@ -22,7 +22,7 @@ public class Configuration {
     private final Yaml yaml = new Yaml();
     private final String workshopUrl;
     private final String workshopsUrl;
-
+    private final String workshopsUrls;
     private final String contentUrl;
     private ModuleConfiguration config;
     private String defaultWorkshop;
@@ -39,6 +39,7 @@ public class Configuration {
         this.workshopUrl = System.getenv().getOrDefault("WORKSHOP_URL",
                 "https://raw.githubusercontent.com/osevg/workshopper-content/master/_default_workshop.yml");
         this.workshopsUrl = System.getenv().get("WORKSHOPS_URL");
+        this.workshopsUrls = System.getenv().get("WORKSHOPS_URLS");
         this.defaultWorkshop = System.getenv().get("DEFAULT_LAB");
     }
 
@@ -69,6 +70,10 @@ public class Configuration {
 
     public String getWorkshopsUrl() {
         return workshopsUrl;
+    }
+
+    public String getWorkshopsUrls() {
+        return workshopsUrls;
     }
 
     public String getDefaultWorkshop() {
