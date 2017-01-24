@@ -2,11 +2,13 @@ package org.openshift.evg.workshopper.workshops;
 
 import org.openshift.evg.workshopper.modules.Module;
 import org.openshift.evg.workshopper.modules.Modules;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
 public class Workshop {
 
+    private String id;
     private String name;
     private String logo;
     private Boolean priv = false;
@@ -14,6 +16,14 @@ public class Workshop {
     private String revision;
     private WorkshopModules modules;
     private List<String> sortedModules;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -77,6 +87,7 @@ public class Workshop {
         List<String> activate = new LinkedList<>(this.modules.getActivate());
         getModules().getActivate().forEach(id -> {
             Module module = modules.get(id);
+            LoggerFactory.getLogger(getClass()).info("Module '{}' depends on '{}'", getName(), id);
             if(module.getRequires() == null) return;
             module.getRequires().forEach(req -> {
                if(!activate.contains(req)) {
