@@ -43,9 +43,7 @@ public class WorkshopProvider {
     public void reload() throws IOException {
         this.workshops = new Workshops();
 
-        if(this.config.getWorkshopUrl() != null) {
-            loadFrom(this.config.getWorkshopUrl());
-        }else if(this.config.getWorkshopsUrl() != null) {
+        if(this.config.getWorkshopsUrl() != null) {
             Request request = new Request.Builder().url(this.config.getWorkshopsUrl()).build();
             Response response = this.client.newCall(request).execute();
             List workshops = this.yaml.loadAs(response.body().byteStream(), List.class);
@@ -56,6 +54,8 @@ public class WorkshopProvider {
                     LoggerFactory.getLogger(getClass()).error("Problem loading workshop", e);
                 }
             });
+        } else {
+            loadFrom(this.config.getWorkshopUrl());
         }
     }
 

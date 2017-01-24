@@ -28,17 +28,17 @@ public class Configuration {
     private String defaultWorkshop;
 
     public Configuration() {
-        if(System.getenv().containsKey("CONTENT_URL")) {
-            this.contentUrl = System.getenv().get("CONTENT_URL");
+        if(System.getenv().containsKey("CONTENT_URL_PREFIX")) {
+            this.contentUrl = System.getenv().get("CONTENT_URL_PREFIX");
         } else {
             this.contentUrl = "https://raw.githubusercontent.com/"
-                    + System.getenv().getOrDefault("GITHUB_REPOSITORY", "osevg/workshopper-content") + "/"
-                    + System.getenv().getOrDefault("GITHUB_REF", "master");
+                    + System.getenv().getOrDefault("GITHUB_REPOSITORY", "osevg/workshopper-content")
+                    + "/" + System.getenv().getOrDefault("GITHUB_REF", "master");
         }
 
-        this.workshopUrl = System.getenv().get("WORKSHOP_URL");
-//        this.workshopsUrl = System.getenv().get("WORKSHOPS_URL");
-        this.workshopsUrl = "https://gist.githubusercontent.com/marekjelen/5efe49992e8dcc2fadf7a87fe99e7981/raw/047cbe69e825c8154a2895d490a3a36fc0d29ee4/workshops.yml";
+        this.workshopUrl = System.getenv().getOrDefault("WORKSHOP_URL",
+                "https://raw.githubusercontent.com/osevg/workshopper-content/master/_default_workshop.yml");
+        this.workshopsUrl = System.getenv().get("WORKSHOPS_URL");
         this.defaultWorkshop = System.getenv().get("DEFAULT_LAB");
     }
 
