@@ -85,6 +85,7 @@ to build a "learning experience" for the end user.
 
 The main sections are
 
+* `id` - id to use to identify workshop in multi-workshop deployments (SHA-256 of it's URL unless specified)
 * `name` - display name of the workshop
 * `logo` - logo to display on the workshop page
 * `vars` - defines variable values to use in modules 
@@ -94,6 +95,7 @@ The main sections are
 for example
 
 ```yaml
+id: testing
 name: Testing workshop
 logo: test.png
 vars:

@@ -13,9 +13,9 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.*;
 
 @ApplicationScoped
 public class WorkshopProvider {
@@ -31,9 +31,16 @@ public class WorkshopProvider {
 
     private final Yaml yaml = new Yaml();
     private Workshops workshops;
+    private MessageDigest digest;
 
     @PostConstruct
     public void initialize() {
+        try {
+            this.digest = MessageDigest.getInstance("SHA-256");
+        }
+        catch(NoSuchAlgorithmException e) {
+            LoggerFactory.getLogger(getClass()).error("Problem finding digest", e);
+        }
         try {
             reload();
         } catch (IOException e) {
@@ -53,28 +60,45 @@ public class WorkshopProvider {
             List workshops = Arrays.asList(this.config.getWorkshopsUrls().split(","));
             load(workshops);
         } else {
-            loadFrom(this.config.getWorkshopUrl());
+            loadFrom(this.config.getWorkshopUrl(), "default");
+            this.config.setDefaultWorkshop("default");
         }
     }
 
     private void load(List workshops) {
-        workshops.forEach(url -> {
+        workshops.forEach(u -> {
             try {
-                this.loadFrom((String) url);
+                String url = (String) u;
+                this.loadFrom(url, byteToHex(this.digest.digest(url.getBytes())));
             } catch (IOException e) {
                 LoggerFactory.getLogger(getClass()).error("Problem loading workshop", e);
             }
         });
     }
 
-    private Workshop loadFrom(String url) throws IOException {
+    // http://stackoverflow.com/a/9071224/366271
+    private String byteToHex(final byte[] hash)
+    {
+        Formatter formatter = new Formatter();
+        for (byte b : hash)
+        {
+            formatter.format("%02x", b);
+        }
+        String result = formatter.toString();
+        formatter.close();
+        return result;
+    }
+
+    private Workshop loadFrom(String url, String id) throws IOException {
         LoggerFactory.getLogger(getClass()).info("Loading default workshop from {}", this.config.getWorkshopUrl());
         Request request = new Request.Builder().url(url).build();
         Response response = this.client.newCall(request).execute();
         Workshop workshop = this.yaml.loadAs(response.body().byteStream(), Workshop.class);
         workshop.resolve(this.modules);
-        this.workshops.add("default", workshop);
-        this.config.setDefaultWorkshop("default");
+        if(workshop.getId() == null) {
+            workshop.setId(id);
+        }
+        this.workshops.add(workshop.getId(), workshop);
         return workshop;
     }
 
