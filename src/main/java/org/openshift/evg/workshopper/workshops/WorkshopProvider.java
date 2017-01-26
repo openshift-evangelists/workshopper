@@ -51,17 +51,14 @@ public class WorkshopProvider {
     public void reload() throws IOException {
         this.workshops = new Workshops();
 
-        if(this.config.getWorkshopsUrl() != null) {
-            Request request = new Request.Builder().url(this.config.getWorkshopsUrl()).build();
+        if(this.config.getWorkshopsListUrl() != null) {
+            Request request = new Request.Builder().url(this.config.getWorkshopsListUrl()).build();
             Response response = this.client.newCall(request).execute();
             List workshops = this.yaml.loadAs(response.body().byteStream(), List.class);
             load(workshops);
-        } else if(this.config.getWorkshopsUrls() != null) {
-            List workshops = Arrays.asList(this.config.getWorkshopsUrls().split(","));
+        } else if(this.config.getWorkshopsUrl() != null) {
+            List workshops = Arrays.asList(this.config.getWorkshopsUrl().split(","));
             load(workshops);
-        } else {
-            loadFrom(this.config.getWorkshopUrl(), "default");
-            this.config.setDefaultWorkshop("default");
         }
     }
 

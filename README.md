@@ -39,24 +39,20 @@ CONTENT_URL_PREFIX = https://raw.githubusercontent.com/$GITHUB_REPOSITORY/$GITHU
 If the two variables are not defined then are defaulted to `osevg/workshopper-content` and `master` pointing to the 
 latest content provided by the authors.
 
-### WORKSHOP_URL, WORKSHOPS_LIST_URL, WORKSHOPS_URLS (required)
+### WORKSHOPS_LIST_URL, WORKSHOPS_URLS (required)
 
 The system needs definition what the workshop should look like. It can work with single or multiple workshops in single
 one deployment.
 
 You need to choose from 
-
-* $WORKSHOP_URL for single workshop
-
-or
   
-* $WORKSHOPS_LIST_URL for multiple workshops (defines single URL for list file)
+* $WORKSHOPS_LIST_URL for workshops (defines single URL for list file)
 
 or
 
-* $WORKSHOPS_URLS for multiple workshops (direct specification of workshop URLS using comma separated list)
+* $WORKSHOPS_URLS for workshops (direct specification of workshop URLs using comma separated list)
 
-In case niether of these variables is specified, the $WORKSHOP_URL defaults to
+In case niether of these variables is specified, the $WORKSHOPS_URLS defaults to
 
 ```
 https://raw.githubusercontent.com/osevg/workshopper-workshops/master/default_workshop.yml
@@ -71,6 +67,11 @@ redirect to specific workshop specified using this variable.
 
 ## Files and file formats
 
+### $WORKSHOPS_LIST_URL
+
+$WORKSHOPS_LIST_URL points to yaml file that contains list of URLs contain workshop definition as described in 
+$WORKSHOPS_URLS section.
+
 ### $WORKSHOPS_URLS
 
 Comma separated list of urls
@@ -79,14 +80,7 @@ Comma separated list of urls
  WORKSHOPS_URLS = "<URL1>,<URL2>,<URL3>" 
  ```
 
-### $WORKSHOPS_LIST_URL
-
-$WORKSHOPS_LIST_URL points to yaml file that contains list of URLs contain workshop definition as described in $WORKSHOP_URL 
-section.
-
-### $WORKSHOP_URL
-
-$WORKSHOP_URL points to yaml file describing specific workshop. Workshop pull together several (or all) content modules
+The urls point to yaml files describing specific workshop. Workshop pull together several (or all) content modules
 to build a "learning experience" for the end user.
 
 The main sections are
@@ -226,13 +220,13 @@ Variable for substitution in modules can be defined in these places
  
 * _config.yml
 * _modules.yml
-* $WORKSHOP_URL / $WORKSHOPS_LIST_URL / $WORKSHOPS_URLS
+* $WORKSHOPS_LIST_URL / $WORKSHOPS_URLS
 * Environment variables
 
 where the priority is
 
 ```
-_config.yml < _modules.yml < $WORKSHOP_URL / $WORKSHOPS_LIST_URL / $WORKSHOPS_URLS < Environment variables
+_config.yml < _modules.yml < $WORKSHOPS_LIST_URL / $WORKSHOPS_URLS < Environment variables
 ```
 
 i.e. environment variables override all the other definitions.

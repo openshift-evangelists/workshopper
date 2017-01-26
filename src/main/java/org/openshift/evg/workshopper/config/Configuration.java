@@ -20,9 +20,8 @@ public class Configuration {
     private OkHttpClient client;
 
     private final Yaml yaml = new Yaml();
-    private final String workshopUrl;
     private final String workshopsUrl;
-    private final String workshopsUrls;
+    private final String workshopsListUrl;
     private final String contentUrl;
     private ModuleConfiguration config;
     private String defaultWorkshop;
@@ -36,10 +35,9 @@ public class Configuration {
                     + "/" + System.getenv().getOrDefault("GITHUB_REF", "master");
         }
 
-        this.workshopUrl = System.getenv().getOrDefault("WORKSHOP_URL",
+        this.workshopsUrl = System.getenv().getOrDefault("WORKSHOPS_URLS",
                 "https://raw.githubusercontent.com/osevg/workshopper-workshops/master/default_workshop.yml");
-        this.workshopsUrl = System.getenv().get("WORKSHOPS_LIST_URL");
-        this.workshopsUrls = System.getenv().get("WORKSHOPS_URLS");
+        this.workshopsListUrl = System.getenv().get("WORKSHOPS_LIST_URL");
         this.defaultWorkshop = System.getenv().get("DEFAULT_LAB");
     }
 
@@ -64,16 +62,12 @@ public class Configuration {
         return contentUrl;
     }
 
-    public String getWorkshopUrl() {
-        return workshopUrl;
-    }
-
     public String getWorkshopsUrl() {
         return workshopsUrl;
     }
 
-    public String getWorkshopsUrls() {
-        return workshopsUrls;
+    public String getWorkshopsListUrl() {
+        return workshopsListUrl;
     }
 
     public String getDefaultWorkshop() {
