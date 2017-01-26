@@ -38,7 +38,7 @@ public class Configuration {
 
         this.workshopUrl = System.getenv().getOrDefault("WORKSHOP_URL",
                 "https://raw.githubusercontent.com/osevg/workshopper-workshops/master/default_workshop.yml");
-        this.workshopsUrl = System.getenv().get("WORKSHOPS_URL");
+        this.workshopsUrl = System.getenv().get("WORKSHOPS_LIST_URL");
         this.workshopsUrls = System.getenv().get("WORKSHOPS_URLS");
         this.defaultWorkshop = System.getenv().get("DEFAULT_LAB");
     }

@@ -39,7 +39,7 @@ CONTENT_URL_PREFIX = https://raw.githubusercontent.com/$GITHUB_REPOSITORY/$GITHU
 If the two variables are not defined then are defaulted to `osevg/workshopper-content` and `master` pointing to the 
 latest content provided by the authors.
 
-### WORKSHOP_URL, WORKSHOPS_URL, WORKSHOPS_URLS (required)
+### WORKSHOP_URL, WORKSHOPS_LIST_URL, WORKSHOPS_URLS (required)
 
 The system needs definition what the workshop should look like. It can work with single or multiple workshops in single
 one deployment.
@@ -50,7 +50,7 @@ You need to choose from
 
 or
   
-* $WORKSHOPS_URL for multiple workshops (defines single URL for list file)
+* $WORKSHOPS_LIST_URL for multiple workshops (defines single URL for list file)
 
 or
 
@@ -66,8 +66,8 @@ to render sample workshop with all modules.
 
 ### DEFAULT_LAB (optional)
 
-If the system has multiple workshops using the WORKSHOPS_URL the system can automacally redirect to specific workshop
-specified using this variable.
+If the system has multiple workshops using the WORKSHOPS_LIST_URL or WORKSHOPS_URLS the system can automatically 
+redirect to specific workshop specified using this variable.
 
 ## Files and file formats
 
@@ -79,9 +79,9 @@ Comma separated list of urls
  WORKSHOPS_URLS = "<URL1>,<URL2>,<URL3>" 
  ```
 
-### $WORKSHOPS_URL
+### $WORKSHOPS_LIST_URL
 
-$WORKSHOPS_URL points to yaml file that contains list of URLs contain workshop definition as described in $WORKSHOP_URL 
+$WORKSHOPS_LIST_URL points to yaml file that contains list of URLs contain workshop definition as described in $WORKSHOP_URL 
 section.
 
 ### $WORKSHOP_URL
@@ -226,13 +226,13 @@ Variable for substitution in modules can be defined in these places
  
 * _config.yml
 * _modules.yml
-* $WORKSHOP_URL / $WORKSHOPS_URL / $WORKSHOPS_URLS
+* $WORKSHOP_URL / $WORKSHOPS_LIST_URL / $WORKSHOPS_URLS
 * Environment variables
 
 where the priority is
 
 ```
-_config.yml < _modules.yml < $WORKSHOP_URL / $WORKSHOPS_URL / $WORKSHOPS_URLS < Environment variables
+_config.yml < _modules.yml < $WORKSHOP_URL / $WORKSHOPS_LIST_URL / $WORKSHOPS_URLS < Environment variables
 ```
 
 i.e. environment variables override all the other definitions.
