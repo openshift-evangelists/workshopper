@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Title</title>
+    <title>Workshopper</title>
     <!-- https://bootswatch.com/paper/ -->
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/3.2.1/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
@@ -56,9 +56,11 @@
             if(match = workshopPattern.exec(route)) {
                 var workshop = match[1];
                 $.get("/api/workshops/" + workshop, function (data) {
-                    var root = $("<div/>");
+                    var root = $("<div/>").addClass("workshop-block");
+                    var header = $('<h3>').html(data["name"]);
+                    root.append(header);
                     $.each(data['sortedModules'], function(i, id){
-                        var link = $('<a/>').addClass("workshop-module").attr("href", "#/workshop/" + workshop + "/module/" + id);
+                        var link = $('<a/>').attr("href", "#/workshop/" + workshop + "/module/" + id);
                         root.append(link);
                         var panel = $('<div/>').addClass("panel").addClass("panel-default");
                         link.append(panel);
@@ -132,7 +134,7 @@
 
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="https://github.com/openshift-evangelists/openshift-workshops" target="_blank">
+                    <a href="https://github.com/osevg/workshopper" target="_blank">
                         Source code @ Github
                     </a>
                 </li>

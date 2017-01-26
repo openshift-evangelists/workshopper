@@ -36,17 +36,21 @@ div.gsc-option-menu-container > div.gsc-selected-option-container {
 
 a.workshop > div.panel:hover,
 a.workshop > div.panel:active,
-a.workshop-module > div.panel:hover,
-a.workshop-module > div.panel:active {
+.workshop-block > a > div.panel:hover,
+.workshop-block > a > div.panel:active {
   background-color: #d9f0fc;
 }
 
 a.workshop:hover,
 a.workshop:active,
-a.workshop-module:hover,
-a.workshop-module:active {
+.workshop-block > a:hover,
+.workshop-block > a:active {
   text-decoration: none;
   color: #000;
+}
+
+.workshop-block > h3 {
+  margin-bottom: 30px;
 }
 
 /* ------------------------------------------------------------
