@@ -3,6 +3,8 @@ package org.openshift.evg.workshopper.config;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
@@ -15,6 +17,7 @@ import java.util.Map;
 
 @ApplicationScoped
 public class Configuration {
+	private static final Logger LOG = LoggerFactory.getLogger(Configuration.class);
 
     @Inject
     private OkHttpClient client;
@@ -39,6 +42,11 @@ public class Configuration {
                 "https://raw.githubusercontent.com/osevg/workshopper-workshops/master/default_workshop.yml");
         this.workshopsListUrl = System.getenv().get("WORKSHOPS_LIST_URL");
         this.defaultWorkshop = System.getenv().get("DEFAULT_LAB");
+        
+        LOG.info("Loading module contents from: {}", this.contentUrl);
+        LOG.info("Loading workshps from: {}", this.workshopsUrl);
+        LOG.info("Loading workshps list from: {}", this.workshopsListUrl);
+        LOG.info("Default workshop is: {}", this.defaultWorkshop);
     }
 
     @PostConstruct
