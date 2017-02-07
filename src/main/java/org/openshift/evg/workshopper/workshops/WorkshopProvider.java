@@ -5,6 +5,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.openshift.evg.workshopper.config.Configuration;
 import org.openshift.evg.workshopper.modules.Modules;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
@@ -19,6 +20,7 @@ import java.util.*;
 
 @ApplicationScoped
 public class WorkshopProvider {
+	private static final Logger LOG = LoggerFactory.getLogger(WorkshopProvider.class);
 
     @Inject
     private Configuration config;
@@ -52,6 +54,8 @@ public class WorkshopProvider {
         this.workshops = new Workshops();
 
         if(this.config.getWorkshopsListUrl() != null) {
+        	LOG.info("Reloading workshops from: {}", this.config.getWorkshopsListUrl());
+        	
             Request request = new Request.Builder().url(this.config.getWorkshopsListUrl()).build();
             Response response = this.client.newCall(request).execute();
             List workshops = this.yaml.loadAs(response.body().byteStream(), List.class);
