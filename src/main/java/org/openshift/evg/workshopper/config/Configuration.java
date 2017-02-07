@@ -61,6 +61,7 @@ public class Configuration {
     public void reload() throws IOException {
         String url = this.getContentUrl() + "/_config.yml";
 
+        LOG.info("Loading configuration from {}", url);
         Request request = new Request.Builder().url(url).build();
         Response response = this.client.newCall(request).execute();
         this.config = this.yaml.loadAs(response.body().byteStream(), ModuleConfiguration.class);

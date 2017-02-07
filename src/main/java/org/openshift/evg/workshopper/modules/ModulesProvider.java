@@ -4,6 +4,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.openshift.evg.workshopper.config.Configuration;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.TypeDescription;
 import org.yaml.snakeyaml.Yaml;
@@ -17,6 +18,7 @@ import java.io.IOException;
 
 @ApplicationScoped
 public class ModulesProvider {
+	private static final Logger LOG = LoggerFactory.getLogger(ModulesProvider.class);
 
     @Inject
     private OkHttpClient client;
@@ -55,6 +57,7 @@ public class ModulesProvider {
     public void reload() throws IOException {
         String url = this.config.getContentUrl() + "/_modules.yml";
 
+        LOG.info("Loading modules list from {}", url);
         Request request = new Request.Builder().url(url).build();
         Response response = this.client.newCall(request).execute();
         this.modules = this.yaml.loadAs(response.body().byteStream(), Modules.class);

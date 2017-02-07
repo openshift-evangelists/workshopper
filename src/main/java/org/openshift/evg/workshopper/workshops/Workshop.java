@@ -2,11 +2,13 @@ package org.openshift.evg.workshopper.workshops;
 
 import org.openshift.evg.workshopper.modules.Module;
 import org.openshift.evg.workshopper.modules.Modules;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
 public class Workshop {
+	private static final Logger LOG = LoggerFactory.getLogger(Workshop.class);
 
     private String id;
     private String name;
@@ -86,11 +88,16 @@ public class Workshop {
         // In case the workshop does not explicitly name a module that is requirement for activated modules, add it
         List<String> activate = new LinkedList<>(this.modules.getActivate());
         getModules().getActivate().forEach(id -> {
+            LOG.info("Module '{}' depends on '{}'", getName(), id);
             Module module = modules.get(id);
-            LoggerFactory.getLogger(getClass()).info("Module '{}' depends on '{}'", getName(), id);
+            if (module == null) {
+            	LOG.error("Module {} does not exist", id);
+            	throw new RuntimeException("No module found with name " + id);
+            }
             if(module.getRequires() == null) return;
             module.getRequires().forEach(req -> {
                if(!activate.contains(req)) {
+                   LOG.debug("Adding required module {} to the module list since not included", req);
                    activate.add(req);
                }
             });
