@@ -53,6 +53,12 @@ a.workshop:active,
   margin-bottom: 30px;
 }
 
+div.module-prerequisites {
+  background-color: #fffbdd;
+  padding: 20px 40px 10px;
+  border: 1px solid #ecdb56;
+}
+
 /* ------------------------------------------------------------
 Image: "Spin" https://www.flickr.com/photos/eflon/3655695161/
 Author: eflon https://www.flickr.com/photos/eflon/

@@ -75,6 +75,17 @@
             if(match = modulePattern.exec(route)) {
                 var workshop = match[1];
                 var module = match[2];
+
+                // append required modules info
+                if (modules[module] !== null && modules[module].requires.length > 0) {
+                    var prereqModules = $("<div/>").addClass("module-prerequisites").html("These modules are required before starting with the current module:");
+                    var list = $("<ul/>")
+                    prereqModules.append(list);
+                    $.each(modules[module].requires, function(i, prereqModule) {
+                        list.append("<li><a href='" + "#/workshop/" + workshop + "/module/" + prereqModule + "'>" + modules[prereqModule].name + "</a></li>");
+                  });
+                }
+
                 $.get("/api/workshops/" + workshop + "/env/" + module, function(env){
                     var path = module.replace("_", "/");
                     var url = config['contentUrl'] + "/" + path + ".adoc";
@@ -85,7 +96,8 @@
                             'imagesdir=' + config['contentUrl'] + "/images"
                         ];
                         var html = asciidoctor.convert(tmpl.render(env.env), {attributes: options});
-                        content.html(html);
+                        content.html(prereqModules);
+                        content.append($('<div/>').html(html));
                         content.append('<hr/><a href="#/workshop/' + workshop + '">Back</a>');
                     });
                 });
