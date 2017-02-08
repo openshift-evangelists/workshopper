@@ -75,12 +75,13 @@
             if(match = modulePattern.exec(route)) {
                 var workshop = match[1];
                 var module = match[2];
+                var prereqs = $("<div/>");
 
                 // append required modules info
                 if (modules[module] !== null && modules[module].requires.length > 0) {
-                    var prereqModules = $("<div/>").addClass("module-prerequisites").html("These modules are required before starting with the current module:");
+                    prereqs.addClass("module-prerequisites").html("These modules are required before starting with the current module:");
                     var list = $("<ul/>")
-                    prereqModules.append(list);
+                    prereqs.append(list);
                     $.each(modules[module].requires, function(i, prereqModule) {
                         list.append("<li><a href='" + "#/workshop/" + workshop + "/module/" + prereqModule + "'>" + modules[prereqModule].name + "</a></li>");
                   });
@@ -96,7 +97,7 @@
                             'imagesdir=' + config['contentUrl'] + "/images"
                         ];
                         var html = asciidoctor.convert(tmpl.render(env.env), {attributes: options});
-                        content.html(prereqModules);
+                        content.html(prereqs);
                         content.append($('<div/>').html(html));
                         content.append('<hr/><a href="#/workshop/' + workshop + '">Back</a>');
                     });
