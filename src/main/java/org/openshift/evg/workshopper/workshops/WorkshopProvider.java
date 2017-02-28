@@ -5,6 +5,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.openshift.evg.workshopper.config.Configuration;
 import org.openshift.evg.workshopper.modules.Modules;
+import org.openshift.evg.workshopper.modules.ModulesProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
@@ -27,7 +28,7 @@ public class WorkshopProvider {
     private Configuration config;
 
     @Inject
-    private Modules modules;
+    private ModulesProvider modules;
 
     @Inject
     private OkHttpClient client;
@@ -103,7 +104,7 @@ public class WorkshopProvider {
 		} catch (Exception e) {
 			throw new IOException("Failed to parse workshop yaml " + url);
 		}
-        workshop.resolve(this.modules);
+        workshop.resolve(this.modules.getModules());
 
         if(workshop.getId() == null) {
             workshop.setId(id);
@@ -112,7 +113,6 @@ public class WorkshopProvider {
         return workshop;
     }
 
-    @Produces
     public Workshops getWorkshops() {
         return this.workshops;
     }

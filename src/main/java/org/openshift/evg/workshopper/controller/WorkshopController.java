@@ -3,7 +3,9 @@ package org.openshift.evg.workshopper.controller;
 import org.openshift.evg.workshopper.config.Configuration;
 import org.openshift.evg.workshopper.modules.Module;
 import org.openshift.evg.workshopper.modules.Modules;
+import org.openshift.evg.workshopper.modules.ModulesProvider;
 import org.openshift.evg.workshopper.workshops.Workshop;
+import org.openshift.evg.workshopper.workshops.WorkshopProvider;
 import org.openshift.evg.workshopper.workshops.Workshops;
 
 import javax.inject.Inject;
@@ -20,23 +22,23 @@ import java.util.Map;
 public class WorkshopController {
 
     @Inject
-    private Workshops workshops;
+    private WorkshopProvider workshops;
 
     @Inject
-    private Modules modules;
+    private ModulesProvider modules;
 
     @Inject
     private Configuration config;
 
     @GET
     public Map<String, Workshop> getAllWorkshops() {
-        return this.workshops.get();
+        return this.workshops.getWorkshops().get();
     }
 
     @GET
     @Path("{workshop}")
     public Workshop getWorkshops(@PathParam("workshop") String w) {
-        return workshops.get(w);
+        return workshops.getWorkshops().get(w);
     }
 
     @GET
@@ -52,8 +54,8 @@ public class WorkshopController {
     }
 
     private HashMap<String, Object> generateEnv(String w, String m, String revision) {
-        Workshop workshop = this.workshops.get(w);
-        Module module = this.modules.get(m);
+        Workshop workshop = this.workshops.getWorkshops().get(w);
+        Module module = this.modules.getModules().get(m);
         if (revision == null) {
             if(workshop.getModules() != null && workshop.getModules().getRevisions() != null) {
                 revision = workshop.getModules().getRevisions().get(m);

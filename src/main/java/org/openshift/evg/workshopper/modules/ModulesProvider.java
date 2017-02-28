@@ -63,7 +63,6 @@ public class ModulesProvider {
         this.modules = this.yaml.loadAs(response.body().byteStream(), Modules.class);
     }
 
-    @Produces
     public Modules getModules() {
         return modules;
     }

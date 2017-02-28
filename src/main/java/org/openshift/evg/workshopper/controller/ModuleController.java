@@ -2,6 +2,7 @@ package org.openshift.evg.workshopper.controller;
 
 import org.openshift.evg.workshopper.modules.Module;
 import org.openshift.evg.workshopper.modules.Modules;
+import org.openshift.evg.workshopper.modules.ModulesProvider;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -15,11 +16,11 @@ import java.util.Map;
 public class ModuleController {
 
     @Inject
-    private Modules modules;
+    private ModulesProvider modules;
 
     @GET
     public Map<String, Module> getAllWorkshops() {
-        return this.modules.get();
+        return this.modules.getModules().get();
     }
 
 }

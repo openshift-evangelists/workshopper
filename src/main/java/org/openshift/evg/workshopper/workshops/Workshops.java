@@ -1,10 +1,8 @@
 package org.openshift.evg.workshopper.workshops;
 
-import javax.enterprise.inject.Vetoed;
 import java.util.HashMap;
 import java.util.Map;
 
-@Vetoed
 public class Workshops {
 
     private Map<String, Workshop> workshops = new HashMap<>();
