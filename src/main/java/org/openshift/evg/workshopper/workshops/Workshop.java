@@ -127,12 +127,14 @@ public class Workshop {
     @Override
     public String toString() {
         return "Workshop{" +
-                "name='" + name + '\'' +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
                 ", logo='" + logo + '\'' +
                 ", priv=" + priv +
                 ", vars=" + vars +
                 ", revision='" + revision + '\'' +
                 ", modules=" + modules +
+                ", sortedModules=" + sortedModules +
                 '}';
     }
 }

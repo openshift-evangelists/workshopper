@@ -14,6 +14,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
@@ -96,11 +97,14 @@ public class WorkshopProvider {
         Response response = this.client.newCall(request).execute();
         Workshop workshop = null;
 		try {
-			workshop = this.yaml.loadAs(response.body().byteStream(), Workshop.class);
+            InputStream data = response.body().byteStream();
+			workshop = this.yaml.loadAs(data, Workshop.class);
+			LOG.info("Workshop: {}", workshop);
 		} catch (Exception e) {
 			throw new IOException("Failed to parse workshop yaml " + url);
 		}
         workshop.resolve(this.modules);
+
         if(workshop.getId() == null) {
             workshop.setId(id);
         }

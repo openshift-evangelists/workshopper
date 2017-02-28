@@ -26,7 +26,6 @@
 
         var doRouting = function() {
             var route = location.hash;
-            console.log("Current route: " + route);
 
             if(route == "") {
                 route = location.hash = '/';
@@ -37,6 +36,10 @@
 
             var match;
             if(match = rootPattern.exec(route)) {
+                if(config['defaultWorkshop'] != null) {
+                    location.hash = '/workshop/' + config['defaultWorkshop'];
+                    return;
+                }
                 $.get("/api/workshops", function (data) {
                     var root = $("<div/>");
                     for(var id in data) {
@@ -49,7 +52,6 @@
                         var text = $('<h5/>').html(data[id]['name']);
                         body.append(text);
                     }
-                    console.log(root);
                     content.html(root);
                 });
             }

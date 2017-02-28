@@ -23,13 +23,14 @@ public class Configuration {
     private OkHttpClient client;
 
     private final Yaml yaml = new Yaml();
-    private final String workshopsUrl;
-    private final String workshopsListUrl;
-    private final String contentUrl;
+    private String workshopsUrl;
+    private String workshopsListUrl;
+    private String contentUrl;
     private ModuleConfiguration config;
     private String defaultWorkshop;
 
-    public Configuration() {
+    @PostConstruct
+    public void initialize() {
         if(System.getenv().containsKey("CONTENT_URL_PREFIX")) {
             this.contentUrl = System.getenv().get("CONTENT_URL_PREFIX");
         } else {
@@ -42,15 +43,12 @@ public class Configuration {
                 "https://raw.githubusercontent.com/osevg/workshopper-workshops/master/default_workshop.yml");
         this.workshopsListUrl = System.getenv().get("WORKSHOPS_LIST_URL");
         this.defaultWorkshop = System.getenv().get("DEFAULT_LAB");
-        
+
         LOG.info("Loading module contents from: {}", this.contentUrl);
         LOG.info("Loading workshps from: {}", this.workshopsUrl);
         LOG.info("Loading workshps list from: {}", this.workshopsListUrl);
         LOG.info("Default workshop is: {}", this.defaultWorkshop);
-    }
 
-    @PostConstruct
-    public void initialize() {
         try {
             reload();
         } catch (IOException e) {
