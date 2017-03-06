@@ -60,8 +60,12 @@ public class WorkshopProvider {
         	
             Request request = new Request.Builder().url(this.config.getWorkshopsListUrl()).build();
             Response response = this.client.newCall(request).execute();
-            List workshops = this.yaml.loadAs(response.body().byteStream(), List.class);
-            load(workshops);
+            try {
+                List workshops = this.yaml.loadAs(response.body().byteStream(), List.class);
+                load(workshops);
+            }catch(ClassCastException e){
+                LoggerFactory.getLogger(getClass()).error("The provided URL '{}' did not return a List of Workshops", this.config.getWorkshopsListUrl());
+            }
         } else if(this.config.getWorkshopsUrl() != null) {
             List workshops = Arrays.asList(this.config.getWorkshopsUrl().split(","));
             load(workshops);
