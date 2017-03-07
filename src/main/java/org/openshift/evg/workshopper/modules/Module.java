@@ -8,7 +8,7 @@ import java.util.Map;
 public class Module {
 
     private String name;
-    private Map<String, String> vars = new HashMap<>();
+    private Map<String, Object> vars = new HashMap<>();
     private Map<String, ModuleRevision> revisions = new HashMap<>();
     private List<String> requires = new LinkedList<>();
 
@@ -20,11 +20,11 @@ public class Module {
         this.name = name;
     }
 
-    public Map<String, String> getVars() {
+    public Map<String, Object> getVars() {
         return vars;
     }
 
-    public void setVars(Map<String, String> vars) {
+    public void setVars(Map<String, Object> vars) {
         this.vars = vars;
     }
 

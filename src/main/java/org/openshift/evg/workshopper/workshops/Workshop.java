@@ -14,7 +14,7 @@ public class Workshop {
     private String name;
     private String logo;
     private Boolean priv = false;
-    private Map<String, String> vars;
+    private Map<String, Object> vars;
     private String revision;
     private WorkshopModules modules;
     private List<String> sortedModules;
@@ -51,11 +51,11 @@ public class Workshop {
         this.priv = priv;
     }
 
-    public Map<String, String> getVars() {
+    public Map<String, Object> getVars() {
         return vars;
     }
 
-    public void setVars(Map<String, String> vars) {
+    public void setVars(Map<String, Object> vars) {
         this.vars = vars;
     }
 
