@@ -12,7 +12,7 @@ Builds your workshops and enjoys it.
 You can deploy wherever you want, but we test specifically for OpenShift
  
 ```
-oc new-app wildfly~https://github.com/openshift-evangelists/workshopper.git -e <YOUR CONFIGURATION>
+oc new-app wildfly~https://github.com/osevg/workshopper.git -e <YOUR CONFIGURATION>
 ```
 
 ## Configuration using env variables

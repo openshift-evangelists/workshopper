@@ -80,7 +80,7 @@
                 var prereqs = $("<div/>");
 
                 // append required modules info
-                if (modules[module] !== null && modules[module].requires.length > 0) {
+                if (modules[module] !== null && modules[module].requires != null && modules[module].requires.length > 0) {
                     prereqs.addClass("module-prerequisites").html("These modules are required before starting with the current module:");
                     var list = $("<ul/>")
                     prereqs.append(list);
