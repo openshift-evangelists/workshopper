@@ -92,6 +92,12 @@ public class WorkshopController {
                 env.put(key, System.getenv(key));
             }
         });
+        // Expose list of modules in templates
+        HashMap<String, Boolean> modules = new HashMap<>();
+        workshop.getModules().getActivate().forEach(mod -> {
+            modules.put(mod, true);
+        });
+        env.put("modules", modules);
         return result;
     }
 
