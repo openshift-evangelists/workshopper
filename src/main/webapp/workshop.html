@@ -1,4 +1,4 @@
-<div id="workshop">
+<div id="workshop" xmlns:v-bind="http://www.w3.org/1999/xhtml">
     <div class="row">
         <div class="col-sm-12">
             <nav class="breadcrumb">
@@ -6,13 +6,12 @@
                 <span class="breadcrumb-item active">{{ workshop.name }}</span>
             </nav>
         </div>
-        <div class="col-sm-4" v-for="(module, index) in workshop.sortedModules">
+        <div class="col-sm-6" v-for="(module, index) in workshop.sortedModules">
             <div class="card">
                 <div class="card-block">
-                    <h4 class="card-title" style="font-size: 1.1rem;">
-                        {{ index + 1 }}) {{ modules[module].name }}
-                    </h4>
-                    <p class="card-text">{{ modules[module].description }}</p>
+                    <h4 class="card-title pull-left" style="font-size: 1.1rem;">{{ modules[module].name }}</h4>
+                    <h4 class="pull-right"><span class="badge badge-success">{{ index + 1 }}</span></h4>
+                    <p class="card-text clearfix">{{ modules[module].description }}</p>
                     <a v-bind:href="'#/workshop/' + workshop.id + '/module/' + module" class="btn btn-primary">
                         <i class="fa fa-book fa-fw"></i>
                         Open module
