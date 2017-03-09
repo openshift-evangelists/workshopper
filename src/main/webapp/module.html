@@ -9,9 +9,11 @@
         </div>
         <div class="col-sm-12">
             <div class="card">
-                <div class="card-block">
+                <div class="card-block" style="padding: 3rem;">
                     <p class="card-text" v-html="content"></p>
+                    <a v-bind:href="'#/workshop/' + workshop.id + '/module/' + prevModule" v-if="prevModule != null" class="btn btn-primary">Previous module</a>
                     <a v-bind:href="'#/workshop/' + workshop.id" class="btn btn-primary">Back to module list</a>
+                    <a v-bind:href="'#/workshop/' + workshop.id + '/module/' + nextModule" v-if="nextModule != null" class="btn btn-primary">Next module</a>
                 </div>
             </div>
         </div>

@@ -85,6 +85,15 @@ var doRouting = function() {
                 ];
                 data.content = asciidoctor.convert(tmpl.render(env.env), {attributes: options});
                 data.workshop = env.workshop;
+
+                for(var i = 0; i < env.workshop.sortedModules.length; i++) {
+                    var name = env.workshop.sortedModules[i];
+                    if(name == module) {
+                        data.prevModule = env.workshop.sortedModules[i - 1];
+                        data.nextModule = env.workshop.sortedModules[i + 1];
+                    }
+                }
+
                 $.get('/module.html', function(template) {
                     content.html(template);
                     new Vue({
