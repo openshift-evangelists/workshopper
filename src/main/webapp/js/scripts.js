@@ -81,7 +81,8 @@ var doRouting = function() {
                 var tmpl = Liquid.parse(template);
                 var options = [
                     'icons=font',
-                    'imagesdir=' + config['contentUrl'] + "/images"
+                    'imagesdir=' + config['contentUrl'] + "/images",
+                    'source-highlighter=highlightjs'
                 ];
                 data.content = asciidoctor.convert(tmpl.render(env.env), {attributes: options});
                 data.workshop = env.workshop;
@@ -99,7 +100,10 @@ var doRouting = function() {
                     new Vue({
                         el: '#module',
                         data: data
-                    })
+                    });
+                    // $('pre code').each(function(i, block) {
+                    //     hljs.highlightBlock(block);
+                    // });
                 });
             });
         });

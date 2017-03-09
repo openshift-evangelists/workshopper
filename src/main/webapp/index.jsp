@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="/css/tether.css">
     <link rel="stylesheet" type="text/css" href="/css/coreui.css">
     <link rel="stylesheet" type="text/css" href="/css/font-awesome.css">
+    <%--<link rel="stylesheet" type="text/css" href="/css/darcula.css">--%>
     <link rel="stylesheet" type="text/css" href="/css/custom.css">
     <script type="application/javascript" src="/js/jquery.js"></script>
     <script type="application/javascript" src="/js/tether.js"></script>
@@ -15,6 +16,7 @@
     <script type="application/javascript" src="/js/liquid.js"></script>
     <script type="application/javascript" src="/js/vue.js"></script>
     <script type="application/javascript" src="/js/asciidoctor.js"></script>
+    <%--<script type="application/javascript" src="/js/highlight.js"></script>--%>
     <script type="application/javascript" src="/js/scripts.js"></script>
 </head>
 
