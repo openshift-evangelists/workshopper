@@ -1,4 +1,4 @@
-<div id="module" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<div id="module">
     <div class="row">
         <div class="col-sm-12">
             <nav class="breadcrumb">
@@ -7,14 +7,20 @@
                 <span class="breadcrumb-item active">{{ modules[module].name }}</span>
             </nav>
         </div>
-        <div class="col-sm-12">
+        <div class="col-sm-3">
+            <ul class="list-group">
+                <li class="list-group-item" v-for="(mod, index) in workshop.sortedModules">
+                    <a v-bind:href="'#/workshop/' + workshop.id + '/module/' + mod" v-if="module != mod" class="mark-as-done" v-bind:class="{doneModule: doneModules.indexOf(mod) > -1}">{{ modules[mod].name }}</a>
+                    <span v-if="module == mod">{{ modules[module].name }}</span>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-9">
             <div class="card">
                 <div class="card-block" style="padding: 3rem;">
                     <p class="card-text" v-html="content"></p>
                     <a v-bind:href="'#/workshop/' + workshop.id + '/module/' + prevModule" v-if="prevModule != null" class="btn btn-primary"> Go to previous module</a>
-                    <a v-bind:href="'#/workshop/' + workshop.id" class="btn btn-primary">Back to module list</a>
-                    <a v-bind:href="'#/workshop/' + workshop.id" class="btn btn-primary mark-as-done">Finish and back to module list</a>
-                    <a v-bind:href="'#/workshop/' + workshop.id + '/module/' + nextModule" v-if="nextModule != null" class="btn btn-primary mark-as-done">Finish and go to next module</a>
+                    <a v-bind:href="'#/workshop/' + workshop.id + '/module/' + nextModule" v-if="nextModule != null" class="btn btn-primary mark-as-done">Go to next module</a>
                 </div>
             </div>
         </div>

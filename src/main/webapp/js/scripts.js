@@ -44,17 +44,7 @@ var doRouting = function() {
     if(match = workshopPattern.exec(route)) {
         var workshop = match[1];
         $.get("/api/workshops/" + workshop, function (data) {
-            $.get('/workshop.html', function(template) {
-                content.html(template);
-                new Vue({
-                    el: '#workshop',
-                    data: {
-                        modules: modules,
-                        workshop: data,
-                        doneModules: loadDoneModules()
-                    }
-                })
-            });
+            location.hash = '/workshop/' + workshop + "/module/" + data.sortedModules[0];
         });
     }
 
