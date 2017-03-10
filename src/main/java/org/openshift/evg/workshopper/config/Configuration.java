@@ -4,6 +4,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import org.openshift.evg.workshopper.GenericProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
@@ -16,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ApplicationScoped
-public class Configuration {
+public class Configuration extends GenericProvider {
 	private static final Logger LOG = LoggerFactory.getLogger(Configuration.class);
 
     @Inject
@@ -58,11 +59,8 @@ public class Configuration {
 
     public void reload() throws IOException {
         String url = this.getContentUrl() + "/_config.yml";
-
         LOG.info("Loading configuration from {}", url);
-        Request request = new Request.Builder().url(url).build();
-        Response response = this.client.newCall(request).execute();
-        this.config = this.yaml.loadAs(response.body().byteStream(), ModuleConfiguration.class);
+        this.config = this.yaml.loadAs(getStream(url), ModuleConfiguration.class);
     }
 
     public String getContentUrl() {

@@ -1,8 +1,6 @@
 package org.openshift.evg.workshopper.modules;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import org.openshift.evg.workshopper.GenericProvider;
 import org.openshift.evg.workshopper.config.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,16 +10,12 @@ import org.yaml.snakeyaml.constructor.Constructor;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import java.io.IOException;
 
 @ApplicationScoped
-public class ModulesProvider {
+public class ModulesProvider extends GenericProvider {
 	private static final Logger LOG = LoggerFactory.getLogger(ModulesProvider.class);
-
-    @Inject
-    private OkHttpClient client;
 
     @Inject
     private Configuration config;
@@ -56,11 +50,8 @@ public class ModulesProvider {
 
     public void reload() throws IOException {
         String url = this.config.getContentUrl() + "/_modules.yml";
-
         LOG.info("Loading modules list from {}", url);
-        Request request = new Request.Builder().url(url).build();
-        Response response = this.client.newCall(request).execute();
-        this.modules = this.yaml.loadAs(response.body().byteStream(), Modules.class);
+        this.modules = this.yaml.loadAs(getStream(url), Modules.class);
     }
 
     public Modules getModules() {

@@ -68,13 +68,11 @@ var doRouting = function() {
         }
 
         $.get("/api/workshops/" + workshop + "/env/" + module, function(env){
-            var path = module.replace("_", "/");
-            var url = config['contentUrl'] + "/" + path + ".adoc";
-            $.get(url, function(template) {
+            $.get("/api/modules/content/" + module, function(template) {
                 var tmpl = Liquid.parse(template);
                 var options = [
                     'icons=font',
-                    'imagesdir=' + config['contentUrl'] + "/images",
+                    'imagesdir=/api/modules/content/images',
                     'source-highlighter=highlightjs'
                 ];
                 data.content = asciidoctor.convert(tmpl.render(env.env), {attributes: options});

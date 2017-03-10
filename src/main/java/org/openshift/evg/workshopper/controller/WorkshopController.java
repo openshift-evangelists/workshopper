@@ -2,11 +2,9 @@ package org.openshift.evg.workshopper.controller;
 
 import org.openshift.evg.workshopper.config.Configuration;
 import org.openshift.evg.workshopper.modules.Module;
-import org.openshift.evg.workshopper.modules.Modules;
 import org.openshift.evg.workshopper.modules.ModulesProvider;
 import org.openshift.evg.workshopper.workshops.Workshop;
 import org.openshift.evg.workshopper.workshops.WorkshopProvider;
-import org.openshift.evg.workshopper.workshops.Workshops;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
