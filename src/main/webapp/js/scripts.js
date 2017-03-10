@@ -40,6 +40,7 @@ var doRouting = function() {
             });
         });
     }
+
     if(match = workshopPattern.exec(route)) {
         var workshop = match[1];
         $.get("/api/workshops/" + workshop, function (data) {
@@ -49,12 +50,14 @@ var doRouting = function() {
                     el: '#workshop',
                     data: {
                         modules: modules,
-                        workshop: data
+                        workshop: data,
+                        doneModules: loadDoneModules()
                     }
                 })
             });
         });
     }
+
     if(match = modulePattern.exec(route)) {
         var workshop = match[1];
         var module = match[2];
@@ -87,6 +90,8 @@ var doRouting = function() {
                 data.content = asciidoctor.convert(tmpl.render(env.env), {attributes: options});
                 data.workshop = env.workshop;
 
+                data.doneModules = loadDoneModules();
+
                 for(var i = 0; i < env.workshop.sortedModules.length; i++) {
                     var name = env.workshop.sortedModules[i];
                     if(name == module) {
@@ -104,12 +109,16 @@ var doRouting = function() {
                     // $('pre code').each(function(i, block) {
                     //     hljs.highlightBlock(block);
                     // });
+                    $(".mark-as-done").click(function(){
+                        doneModule(data.doneModules, module);
+                    });
                 });
             });
         });
     }
 
 };
+
 var setup = function() {
     content =  $("#content");
     $.get('/api/config', function(data){
@@ -120,10 +129,31 @@ var setup = function() {
         });
     });
 };
+
 $(function(){
     setup();
 
 });
+
 $(window).on('hashchange', function() {
     doRouting();
 });
+
+var loadDoneModules = function() {
+    var doneModules = Cookies.get("done-modules");
+
+    if(typeof doneModules != 'undefined') {
+        doneModules = doneModules.split(';');
+    } else {
+        doneModules = [];
+    }
+
+    return doneModules;
+};
+
+var doneModule = function(doneModules, module) {
+    if(doneModules.indexOf(module) == -1) {
+        doneModules.push(module);
+    }
+    Cookies.set("done-modules", doneModules.join(';'));
+};

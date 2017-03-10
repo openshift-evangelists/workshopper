@@ -1,4 +1,4 @@
-<div id="module">
+<div id="module" xmlns:v-bind="http://www.w3.org/1999/xhtml">
     <div class="row">
         <div class="col-sm-12">
             <nav class="breadcrumb">
@@ -11,9 +11,10 @@
             <div class="card">
                 <div class="card-block" style="padding: 3rem;">
                     <p class="card-text" v-html="content"></p>
-                    <a v-bind:href="'#/workshop/' + workshop.id + '/module/' + prevModule" v-if="prevModule != null" class="btn btn-primary">Previous module</a>
+                    <a v-bind:href="'#/workshop/' + workshop.id + '/module/' + prevModule" v-if="prevModule != null" class="btn btn-primary"> Go to previous module</a>
                     <a v-bind:href="'#/workshop/' + workshop.id" class="btn btn-primary">Back to module list</a>
-                    <a v-bind:href="'#/workshop/' + workshop.id + '/module/' + nextModule" v-if="nextModule != null" class="btn btn-primary">Next module</a>
+                    <a v-bind:href="'#/workshop/' + workshop.id" class="btn btn-primary mark-as-done">Finish and back to module list</a>
+                    <a v-bind:href="'#/workshop/' + workshop.id + '/module/' + nextModule" v-if="nextModule != null" class="btn btn-primary mark-as-done">Finish and go to next module</a>
                 </div>
             </div>
         </div>

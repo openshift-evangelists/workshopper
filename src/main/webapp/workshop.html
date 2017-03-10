@@ -7,7 +7,7 @@
             </nav>
         </div>
         <div class="col-sm-6" v-for="(module, index) in workshop.sortedModules">
-            <div class="card">
+            <div class="card" v-bind:class="{doneModule: doneModules.indexOf(module) > -1}">
                 <div class="card-block">
                     <h4 class="card-title pull-left" style="font-size: 1.1rem;">{{ modules[module].name }}</h4>
                     <h4 class="pull-right"><span class="badge badge-success">{{ index + 1 }}</span></h4>
