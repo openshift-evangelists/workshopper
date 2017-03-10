@@ -24,7 +24,7 @@ var doRouting = function() {
 
     var match;
     if(match = rootPattern.exec(route)) {
-        if(false && config['defaultWorkshop'] != null) {
+        if(config['defaultWorkshop'] != null) {
             location.hash = '/workshop/' + config['defaultWorkshop'];
             return;
         }
