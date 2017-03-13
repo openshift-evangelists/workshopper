@@ -37,9 +37,9 @@ public class ModuleContentProvider extends GenericProvider {
     public byte[] loadContent(Workshop workshop, String path) throws IOException {
         String url = workshop.getContent().getUrl() + "/" + path;
 
-        if(this.cacheProvider.get().contains(url)) {
+        if(this.cacheProvider.contains(url)) {
             LOG.info("Content is cached for url {} ", url);
-            return (byte[]) this.cacheProvider.get().get(url);
+            return this.cacheProvider.get(url);
         } else {
             LOG.info("Loading from url {}", url);
         }
@@ -53,7 +53,7 @@ public class ModuleContentProvider extends GenericProvider {
         }
         byte[] content = output.toByteArray();
         if(enableCache) {
-            this.cacheProvider.get().add(url, content);
+            this.cacheProvider.add(url, content);
         }
         return content;
     }

@@ -1,6 +1,6 @@
 package org.openshift.evg.workshopper.modules.cache;
 
-public interface Cache {
+public interface Cacheable {
 
     void add(String id, Object data);
 
