@@ -3,6 +3,7 @@ package org.openshift.evg.workshopper.controller;
 import org.openshift.evg.workshopper.config.Configuration;
 import org.openshift.evg.workshopper.modules.Module;
 import org.openshift.evg.workshopper.modules.ModulesProvider;
+import org.openshift.evg.workshopper.modules.content.ModuleContentProvider;
 import org.openshift.evg.workshopper.workshops.Workshop;
 import org.openshift.evg.workshopper.workshops.WorkshopProvider;
 
@@ -12,6 +13,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +26,9 @@ public class WorkshopController {
 
     @Inject
     private ModulesProvider modules;
+
+    @Inject
+    private ModuleContentProvider moduleContent;
 
     @Inject
     private Configuration config;
@@ -40,6 +45,13 @@ public class WorkshopController {
     }
 
     @GET
+    @Path("{workshop}/modules")
+    public Map<String, Module> getWorkshopModules(@PathParam("workshop") String w) {
+        Workshop workshop = workshops.getWorkshops().get(w);
+        return this.modules.getModules().get(workshop.getContent()).get();
+    }
+
+    @GET
     @Path("{workshop}/env/{module}")
     public HashMap<String, Object> workshopEnv(@PathParam("workshop") String w, @PathParam("module") String m) {
         return generateEnv(w, m, null);
@@ -51,9 +63,24 @@ public class WorkshopController {
         return generateEnv(w, m, r);
     }
 
+    @GET
+    @Path("{workshop}/content/module/{module}")
+    @Produces({ "text/asciidoc" })
+    public byte[] content(@PathParam("workshop") String w, @PathParam("module") String module) throws IOException {
+        Workshop workshop = workshops.getWorkshops().get(w);
+        return moduleContent.loadModule(workshop, module);
+    }
+
+    @GET
+    @Path("{workshop}/content/assets/{path : .*}")
+    public byte[] asset(@PathParam("workshop") String w, @PathParam("path") String path) throws IOException {
+        Workshop workshop = workshops.getWorkshops().get(w);
+        return moduleContent.loadAsset(workshop, path);
+    }
+
     private HashMap<String, Object> generateEnv(String w, String m, String revision) {
         Workshop workshop = this.workshops.getWorkshops().get(w);
-        Module module = this.modules.getModules().get(m);
+        Module module = this.modules.getModules().get(workshop.getContent()).get(m);
         if (revision == null) {
             if(workshop.getModules() != null && workshop.getModules().getRevisions() != null) {
                 revision = workshop.getModules().getRevisions().get(m);

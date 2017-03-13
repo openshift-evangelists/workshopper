@@ -1,9 +1,5 @@
 package org.openshift.evg.workshopper.config;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-
 import org.openshift.evg.workshopper.GenericProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +7,6 @@ import org.yaml.snakeyaml.Yaml;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,9 +14,6 @@ import java.util.Map;
 @ApplicationScoped
 public class Configuration extends GenericProvider {
 	private static final Logger LOG = LoggerFactory.getLogger(Configuration.class);
-
-    @Inject
-    private OkHttpClient client;
 
     private final Yaml yaml = new Yaml();
     private String workshopsUrl;

@@ -6,7 +6,6 @@ var asciidoctor = Asciidoctor();
 
 var config;
 var content;
-var modules;
 
 var flush = function() {
     content.html('<div style="text-align: center;font-size: 20px;"><i class="fa fa-spinner fa-pulse fa-fw"></i> &nbsp; Loading</div>');
@@ -53,74 +52,67 @@ var doRouting = function() {
         var module = match[2];
         var prereqs = $("<div/>");
 
-        var data = {
-            module: module,
-            modules: modules
-        };
+        $.get("/api/workshops/" + workshop + "/modules", function(modules){
+            var data = {
+                module: module,
+                modules: modules
+            };
 
-        if (modules[module] !== null && modules[module].requires != null && modules[module].requires.length > 0) {
-            prereqs.addClass("module-prerequisites").html("These modules are required before starting with the current module:");
-            var list = $("<ul/>")
-            prereqs.append(list);
-            $.each(modules[module].requires, function(i, prereqModule) {
-                list.append("<li><a href='" + "#/workshop/" + workshop + "/module/" + prereqModule + "'>" + modules[prereqModule].name + "</a></li>");
-            });
-        }
+            if (modules[module] !== null && modules[module].requires != null && modules[module].requires.length > 0) {
+                prereqs.addClass("module-prerequisites").html("These modules are required before starting with the current module:");
+                var list = $("<ul/>")
+                prereqs.append(list);
+                $.each(modules[module].requires, function(i, prereqModule) {
+                    list.append("<li><a href='" + "#/workshop/" + workshop + "/module/" + prereqModule + "'>" + modules[prereqModule].name + "</a></li>");
+                });
+            }
 
-        $.get("/api/workshops/" + workshop + "/env/" + module, function(env){
-            $.get("/api/modules/content/" + module, function(template) {
-                var tmpl = Liquid.parse(template);
-                var options = [
-                    'icons=font',
-                    'imagesdir=/api/modules/content/images',
-                    'source-highlighter=highlightjs'
-                ];
-                data.content = asciidoctor.convert(tmpl.render(env.env), {attributes: options});
-                data.workshop = env.workshop;
+            $.get("/api/workshops/" + workshop + "/env/" + module, function(env){
+                $.get("/api/workshops/" + workshop + "/content/module/" + module, function(template) {
+                    var tmpl = Liquid.parse(template);
+                    var options = [
+                        'icons=font',
+                        'imagesdir=/api/workshops/' + workshop + '/content/assets/images',
+                        'source-highlighter=highlightjs'
+                    ];
+                    data.content = asciidoctor.convert(tmpl.render(env.env), {attributes: options});
+                    data.workshop = env.workshop;
 
-                data.doneModules = loadDoneModules();
+                    data.doneModules = loadDoneModules();
 
-                for(var i = 0; i < env.workshop.sortedModules.length; i++) {
-                    var name = env.workshop.sortedModules[i];
-                    if(name == module) {
-                        data.prevModule = env.workshop.sortedModules[i - 1];
-                        data.nextModule = env.workshop.sortedModules[i + 1];
+                    for(var i = 0; i < env.workshop.sortedModules.length; i++) {
+                        var name = env.workshop.sortedModules[i];
+                        if(name == module) {
+                            data.prevModule = env.workshop.sortedModules[i - 1];
+                            data.nextModule = env.workshop.sortedModules[i + 1];
+                        }
                     }
-                }
 
-                $.get('/module.html', function(template) {
-                    content.html(template);
-                    new Vue({
-                        el: '#module',
-                        data: data
-                    });
-                    // $('pre code').each(function(i, block) {
-                    //     hljs.highlightBlock(block);
-                    // });
-                    $(".mark-as-done").click(function(){
-                        doneModule(data.doneModules, module);
+                    $.get('/module.html', function(template) {
+                        content.html(template);
+                        new Vue({
+                            el: '#module',
+                            data: data
+                        });
+                        // $('pre code').each(function(i, block) {
+                        //     hljs.highlightBlock(block);
+                        // });
+                        $(".mark-as-done").click(function(){
+                            doneModule(data.doneModules, module);
+                        });
                     });
                 });
             });
         });
     }
-
-};
-
-var setup = function() {
-    content =  $("#content");
-    $.get('/api/config', function(data){
-        config = data;
-        $.get('/api/modules', function(data){
-            modules = data;
-            doRouting();
-        });
-    });
 };
 
 $(function(){
-    setup();
-
+    content =  $("#content");
+    $.get('/api/config', function(data){
+        config = data;
+        doRouting();
+    });
 });
 
 $(window).on('hashchange', function() {

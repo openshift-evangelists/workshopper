@@ -11,6 +11,7 @@ public class Workshop {
 	private static final Logger LOG = LoggerFactory.getLogger(Workshop.class);
 
     private String id;
+    private String content;
     private String name;
     private String logo;
     private Boolean priv = false;
@@ -25,6 +26,14 @@ public class Workshop {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getName() {

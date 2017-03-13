@@ -3,6 +3,7 @@ package org.openshift.evg.workshopper.workshops;
 import org.openshift.evg.workshopper.GenericProvider;
 import org.openshift.evg.workshopper.config.Configuration;
 import org.openshift.evg.workshopper.modules.ModulesProvider;
+import org.openshift.evg.workshopper.modules.content.ModuleContentProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
@@ -20,11 +21,17 @@ import java.util.*;
 public class WorkshopProvider extends GenericProvider {
 	private static final Logger LOG = LoggerFactory.getLogger(WorkshopProvider.class);
 
+	private static final Boolean preloadCache =
+            Boolean.parseBoolean(System.getenv().getOrDefault("CACHE_PRELOAD", "false"));
+
     @Inject
     private Configuration config;
 
     @Inject
     private ModulesProvider modules;
+
+    @Inject
+    private ModuleContentProvider contentProvider;
 
     private final Yaml yaml = new Yaml();
     private Workshops workshops;
@@ -90,9 +97,26 @@ public class WorkshopProvider extends GenericProvider {
 
         try {
             Workshop workshop = this.yaml.loadAs(stream, Workshop.class);
+
+            if(workshop.getContent() == null) {
+                workshop.setContent(this.config.getContentUrl());
+            }
+
             LOG.info("Workshop: {}", workshop);
 
-            workshop.resolve(this.modules.getModules());
+            this.modules.load(workshop.getContent());
+            workshop.resolve(this.modules.getModules().get(workshop.getContent()));
+
+            if(preloadCache) {
+                LOG.info("Pre-loading content cache");
+                workshop.getSortedModules().forEach(module -> {
+                    try {
+                        contentProvider.loadModule(workshop, module);
+                    } catch (IOException e) {
+                        LOG.error("Problem pre-caching module content", e);
+                    }
+                });
+            }
 
             if(workshop.getId() == null) {
                 workshop.setId(id);
@@ -100,6 +124,7 @@ public class WorkshopProvider extends GenericProvider {
             this.workshops.add(workshop.getId(), workshop);
             return workshop;
         } catch (Exception e) {
+            e.printStackTrace();
             throw new IOException("Failed to parse workshop yaml " + url);
         }
     }

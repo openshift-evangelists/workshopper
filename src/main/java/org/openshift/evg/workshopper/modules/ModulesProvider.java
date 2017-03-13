@@ -8,10 +8,11 @@ import org.yaml.snakeyaml.TypeDescription;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @ApplicationScoped
 public class ModulesProvider extends GenericProvider {
@@ -37,24 +38,25 @@ public class ModulesProvider extends GenericProvider {
         yaml = new Yaml(constructor);
     }
 
-    private Modules modules;
-
-    @PostConstruct
-    public void initialize() {
-        try {
-            reload();
-        } catch (IOException e) {
-            LoggerFactory.getLogger(getClass()).error("Problem loading modules", e);
-        }
-    }
+    private Map<String, Modules> modules = new HashMap<>();
 
     public void reload() throws IOException {
-        String url = this.config.getContentUrl() + "/_modules.yml";
-        LOG.info("Loading modules list from {}", url);
-        this.modules = this.yaml.loadAs(getStream(url), Modules.class);
+        this.modules.keySet().forEach(key -> {
+            try {
+                load(key);
+            } catch (IOException e) {
+                LOG.error("Problem loading modules from {}", key);
+            }
+        });
     }
 
-    public Modules getModules() {
+    public void load(String url) throws IOException {
+        url = url + "/_modules.yml";
+        LOG.info("Loading modules list from {}", url);
+        this.modules.put(this.config.getContentUrl(), this.yaml.loadAs(getStream(url), Modules.class));
+    }
+
+    public Map<String, Modules> getModules() {
         return modules;
     }
 
