@@ -48,7 +48,7 @@ public class WorkshopController {
     @Path("{workshop}/modules")
     public Map<String, Module> getWorkshopModules(@PathParam("workshop") String w) {
         Workshop workshop = workshops.getWorkshops().get(w);
-        return this.modules.getModules().get(workshop.getContent()).get();
+        return this.modules.getModules().get(workshop.getContent().getUrl()).get();
     }
 
     @GET
@@ -80,7 +80,7 @@ public class WorkshopController {
 
     private HashMap<String, Object> generateEnv(String w, String m, String revision) {
         Workshop workshop = this.workshops.getWorkshops().get(w);
-        Module module = this.modules.getModules().get(workshop.getContent()).get(m);
+        Module module = this.modules.getModules().get(workshop.getContent().getUrl()).get(m);
         if (revision == null) {
             if(workshop.getModules() != null && workshop.getModules().getRevisions() != null) {
                 revision = workshop.getModules().getRevisions().get(m);

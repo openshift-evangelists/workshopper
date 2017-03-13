@@ -98,14 +98,14 @@ public class WorkshopProvider extends GenericProvider {
         try {
             Workshop workshop = this.yaml.loadAs(stream, Workshop.class);
 
-            if(workshop.getContent() == null) {
-                workshop.setContent(this.config.getContentUrl());
+            if(workshop.getContent().getUrl() == null) {
+                workshop.getContent().setUrl(this.config.getContentUrl());
             }
 
             LOG.info("Workshop: {}", workshop);
 
-            this.modules.load(workshop.getContent());
-            workshop.resolve(this.modules.getModules().get(workshop.getContent()));
+            this.modules.load(workshop.getContent().getUrl());
+            workshop.resolve(this.modules.getModules().get(workshop.getContent().getUrl()));
 
             if(preloadCache) {
                 LOG.info("Pre-loading content cache");

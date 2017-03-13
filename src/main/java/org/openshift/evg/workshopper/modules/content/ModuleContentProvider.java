@@ -35,7 +35,7 @@ public class ModuleContentProvider extends GenericProvider {
     }
 
     public byte[] loadContent(Workshop workshop, String path) throws IOException {
-        String url = workshop.getContent() + "/" + path;
+        String url = workshop.getContent().getUrl() + "/" + path;
 
         if(this.cacheProvider.get().contains(url)) {
             LOG.info("Content is cached for url {} ", url);
