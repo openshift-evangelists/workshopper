@@ -100,6 +100,10 @@ public class WorkshopProvider extends GenericProvider {
 
             if(workshop.getContent().getUrl() == null) {
                 workshop.getContent().setUrl(this.config.getContentUrl());
+            } else {
+                if(this.config.getContentUrl() != null) {
+                    workshop.getContent().setUrl(this.config.getContentUrl());
+                }
             }
 
             LOG.info("Workshop: {}", workshop);

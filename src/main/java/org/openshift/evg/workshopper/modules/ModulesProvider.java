@@ -1,7 +1,6 @@
 package org.openshift.evg.workshopper.modules;
 
 import org.openshift.evg.workshopper.GenericProvider;
-import org.openshift.evg.workshopper.config.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.TypeDescription;
@@ -9,7 +8,6 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,9 +15,6 @@ import java.util.Map;
 @ApplicationScoped
 public class ModulesProvider extends GenericProvider {
 	private static final Logger LOG = LoggerFactory.getLogger(ModulesProvider.class);
-
-    @Inject
-    private Configuration config;
 
     private final Yaml yaml;
 
@@ -50,10 +45,10 @@ public class ModulesProvider extends GenericProvider {
         });
     }
 
-    public void load(String url) throws IOException {
-        url = url + "/_modules.yml";
+    public void load(String host) throws IOException {
+        String url = host + "/_modules.yml";
         LOG.info("Loading modules list from {}", url);
-        this.modules.put(this.config.getContentUrl(), this.yaml.loadAs(getStream(url), Modules.class));
+        this.modules.put(host, this.yaml.loadAs(getStream(url), Modules.class));
     }
 
     public Map<String, Modules> getModules() {

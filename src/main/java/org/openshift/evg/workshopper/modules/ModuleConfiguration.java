@@ -1,4 +1,4 @@
-package org.openshift.evg.workshopper.config;
+package org.openshift.evg.workshopper.modules;
 
 import java.util.Map;
 

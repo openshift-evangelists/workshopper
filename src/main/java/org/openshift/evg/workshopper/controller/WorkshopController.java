@@ -2,6 +2,7 @@ package org.openshift.evg.workshopper.controller;
 
 import org.openshift.evg.workshopper.config.Configuration;
 import org.openshift.evg.workshopper.modules.Module;
+import org.openshift.evg.workshopper.modules.Modules;
 import org.openshift.evg.workshopper.modules.ModulesProvider;
 import org.openshift.evg.workshopper.modules.content.ModuleContentProvider;
 import org.openshift.evg.workshopper.workshops.Workshop;
@@ -16,6 +17,8 @@ import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import static sun.security.krb5.SCDynamicStoreConfig.getConfig;
 
 @Path("/workshops")
 @Produces({ MediaType.APPLICATION_JSON })
@@ -80,6 +83,7 @@ public class WorkshopController {
 
     private HashMap<String, Object> generateEnv(String w, String m, String revision) {
         Workshop workshop = this.workshops.getWorkshops().get(w);
+        Modules mod = this.modules.getModules().get(workshop.getContent().getUrl());
         Module module = this.modules.getModules().get(workshop.getContent().getUrl()).get(m);
         if (revision == null) {
             if(workshop.getModules() != null && workshop.getModules().getRevisions() != null) {
@@ -96,8 +100,8 @@ public class WorkshopController {
         HashMap<String, Object> env = new HashMap<>();
         result.put("env", env);
         // system defaults has lowest priority
-        if(this.config.getConfig().getVars() != null) {
-            env.putAll(this.config.getConfig().getVars());
+        if(mod.getConfig().getVars() != null) {
+            env.putAll(mod.getConfig().getVars());
         }
         // Module defaults
         if(module.getVars() != null) {
@@ -119,8 +123,8 @@ public class WorkshopController {
         });
         // Expose list of modules in templates
         HashMap<String, Boolean> modules = new HashMap<>();
-        workshop.getModules().getActivate().forEach(mod -> {
-            modules.put(mod, true);
+        workshop.getModules().getActivate().forEach(mname -> {
+            modules.put(mname, true);
         });
         env.put("modules", modules);
         return result;

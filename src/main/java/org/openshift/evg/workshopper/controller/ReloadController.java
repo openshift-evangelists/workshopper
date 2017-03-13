@@ -23,7 +23,6 @@ public class ReloadController {
 
     @GET
     public Object reload() throws IOException {
-        this.config.reload();
         this.modules.reload();
         this.workshops.reload();
         return true;

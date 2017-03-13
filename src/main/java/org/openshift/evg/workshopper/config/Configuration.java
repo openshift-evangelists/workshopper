@@ -3,11 +3,9 @@ package org.openshift.evg.workshopper.config;
 import org.openshift.evg.workshopper.GenericProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.yaml.snakeyaml.Yaml;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,21 +13,15 @@ import java.util.Map;
 public class Configuration extends GenericProvider {
 	private static final Logger LOG = LoggerFactory.getLogger(Configuration.class);
 
-    private final Yaml yaml = new Yaml();
     private String workshopsUrl;
     private String workshopsListUrl;
     private String contentUrl;
-    private ModuleConfiguration config;
     private String defaultWorkshop;
 
     @PostConstruct
     public void initialize() {
         if(System.getenv().containsKey("CONTENT_URL_PREFIX")) {
             this.contentUrl = System.getenv().get("CONTENT_URL_PREFIX");
-        } else {
-            this.contentUrl = "https://raw.githubusercontent.com/"
-                    + System.getenv().getOrDefault("GITHUB_REPOSITORY", "osevg/workshopper-content")
-                    + "/" + System.getenv().getOrDefault("GITHUB_REF", "master");
         }
 
         this.workshopsUrl = System.getenv().getOrDefault("WORKSHOPS_URLS",
@@ -37,22 +29,9 @@ public class Configuration extends GenericProvider {
         this.workshopsListUrl = System.getenv().get("WORKSHOPS_LIST_URL");
         this.defaultWorkshop = System.getenv().get("DEFAULT_LAB");
 
-        LOG.info("Loading module contents from: {}", this.contentUrl);
-        LOG.info("Loading workshps from: {}", this.workshopsUrl);
-        LOG.info("Loading workshps list from: {}", this.workshopsListUrl);
+        LOG.info("Loading workshops from: {}", this.workshopsUrl);
+        LOG.info("Loading workshops list from: {}", this.workshopsListUrl);
         LOG.info("Default workshop is: {}", this.defaultWorkshop);
-
-        try {
-            reload();
-        } catch (IOException e) {
-            LoggerFactory.getLogger(getClass()).error("Problem loading configuration", e);
-        }
-    }
-
-    public void reload() throws IOException {
-        String url = this.getContentUrl() + "/_config.yml";
-        LOG.info("Loading configuration from {}", url);
-        this.config = this.yaml.loadAs(getStream(url), ModuleConfiguration.class);
     }
 
     public String getContentUrl() {
@@ -73,10 +52,6 @@ public class Configuration extends GenericProvider {
 
     public void setDefaultWorkshop(String defaultWorkshop) {
         this.defaultWorkshop = defaultWorkshop;
-    }
-
-    public ModuleConfiguration getConfig() {
-        return config;
     }
 
     public Map<String, Object> export() {
