@@ -10,6 +10,10 @@ div.listingblock.copypaste div.content pre.highlight {
   border: 1px solid #FF0000
 }
 
+div.admonitionblock div.listingblock {
+    width: 650px;
+}
+
 .main {
     margin: 75px;
 }
