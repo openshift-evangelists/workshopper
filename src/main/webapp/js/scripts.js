@@ -58,7 +58,7 @@ var doRouting = function() {
                 modules: modules
             };
 
-            if (modules[module] !== null && modules[module].requires != null && modules[module].requires.length > 0) {
+            if (modules[module] !== null && modules[module].requires !== null && modules[module].requires.length > 0) {
                 prereqs.addClass("module-prerequisites").html("These modules are required before starting with the current module:");
                 var list = $("<ul/>")
                 prereqs.append(list);
@@ -75,6 +75,15 @@ var doRouting = function() {
                         'imagesdir=/api/workshops/' + workshop + '/content/assets/images',
                         'source-highlighter=highlightjs'
                     ];
+
+                    var url = new URI(document.URL).query(true);
+
+                    for(var name in env.env) {
+                        if(url[name] !== null) {
+                            env.env[name] = url[name];
+                        }
+                    }
+
                     data.content = asciidoctor.convert(tmpl.render(env.env), {attributes: options});
                     data.workshop = env.workshop;
 

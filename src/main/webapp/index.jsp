@@ -17,6 +17,7 @@
     <script type="application/javascript" src="/js/vue.js"></script>
     <script type="application/javascript" src="/js/asciidoctor.js"></script>
     <script type="application/javascript" src="/js/js.cookie.js"></script>
+    <script type="application/javascript" src="/js/uri.js"></script>
     <%--<script type="application/javascript" src="/js/highlight.js"></script>--%>
     <script type="application/javascript" src="/js/scripts.js"></script>
 </head>
