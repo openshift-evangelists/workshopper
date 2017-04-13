@@ -87,7 +87,7 @@ var doRouting = function() {
                     var url = new URI(document.URL).query(true);
 
                     for(var name in env.env) {
-                        if(url[name] !== null) {
+                        if(url[name] != null) {
                             env.env[name] = url[name];
                         }
                     }
