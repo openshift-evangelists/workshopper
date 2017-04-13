@@ -6,6 +6,7 @@ var asciidoctor = Asciidoctor();
 
 var config;
 var content;
+var workshops = {};
 
 var flush = function() {
     content.html('<div style="text-align: center;font-size: 20px;"><i class="fa fa-spinner fa-pulse fa-fw"></i> &nbsp; Loading</div>');
@@ -14,7 +15,7 @@ var flush = function() {
 var doRouting = function() {
     var route = location.hash;
 
-    if(route == "") {
+    if(route === "") {
         route = location.hash = '/';
         return;
     }
@@ -22,22 +23,29 @@ var doRouting = function() {
     flush();
 
     var match;
+
     if(match = rootPattern.exec(route)) {
-        if(config['defaultWorkshop'] != null) {
+        if(config['defaultWorkshop'] !== null) {
             location.hash = '/workshop/' + config['defaultWorkshop'];
             return;
         }
-        $.get("/api/workshops", function (data) {
-            $.get('/workshops.html', function(template) {
-                content.html(template);
-                new Vue({
-                    el: '#workshops',
-                    data: {
-                        workshops: data
-                    }
-                })
-            });
+
+        if (Object.keys(workshops).length === 1) {
+            var ws = workshops[Object.keys(workshops)[0]];
+            location.hash = '/workshop/' + ws.id;
+            return;
+        }
+
+        $.get('/workshops.html', function(template) {
+            content.html(template);
+            new Vue({
+                el: '#workshops',
+                data: {
+                    workshops: data
+                }
+            })
         });
+        $('#workshopName').html('Workshopper');
     }
 
     if(match = workshopPattern.exec(route)) {
@@ -60,7 +68,7 @@ var doRouting = function() {
 
             if (modules[module] !== null && modules[module].requires !== null && modules[module].requires.length > 0) {
                 prereqs.addClass("module-prerequisites").html("These modules are required before starting with the current module:");
-                var list = $("<ul/>")
+                var list = $("<ul/>");
                 prereqs.append(list);
                 $.each(modules[module].requires, function(i, prereqModule) {
                     list.append("<li><a href='" + "#/workshop/" + workshop + "/module/" + prereqModule + "'>" + modules[prereqModule].name + "</a></li>");
@@ -90,8 +98,7 @@ var doRouting = function() {
                     data.doneModules = loadDoneModules();
 
                     for(var i = 0; i < env.workshop.sortedModules.length; i++) {
-                        var name = env.workshop.sortedModules[i];
-                        if(name == module) {
+                        if(env.workshop.sortedModules[i] === module) {
                             data.prevModule = env.workshop.sortedModules[i - 1];
                             data.nextModule = env.workshop.sortedModules[i + 1];
                         }
@@ -109,6 +116,11 @@ var doRouting = function() {
                         $(".mark-as-done").click(function(){
                             doneModule(data.doneModules, module);
                         });
+
+                        if (Object.keys(workshops).length === 1) {
+                            $('#breadcrumbs').css('display', 'none');
+                        }
+                        $('#workshopName').html(data.workshop.name);
                     });
                 });
             });
@@ -120,7 +132,10 @@ $(function(){
     content =  $("#content");
     $.get('/api/config', function(data){
         config = data;
-        doRouting();
+        $.get("/api/workshops", function (data) {
+            workshops = data;
+            doRouting();
+        });
     });
 });
 
@@ -131,7 +146,7 @@ $(window).on('hashchange', function() {
 var loadDoneModules = function() {
     var doneModules = Cookies.get("done-modules");
 
-    if(typeof doneModules != 'undefined') {
+    if(typeof doneModules !== 'undefined') {
         doneModules = doneModules.split(';');
     } else {
         doneModules = [];
@@ -141,7 +156,7 @@ var loadDoneModules = function() {
 };
 
 var doneModule = function(doneModules, module) {
-    if(doneModules.indexOf(module) == -1) {
+    if(doneModules.indexOf(module) === -1) {
         doneModules.push(module);
     }
     Cookies.set("done-modules", doneModules.join(';'));

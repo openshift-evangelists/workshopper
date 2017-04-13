@@ -28,16 +28,7 @@
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarContent">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="#">Workshopper</a>
-        <div class="collapse navbar-collapse" id="navbarContent">
-            <ul class="navbar-nav mr-auto">
-            </ul>
-            <span class="navbar-text">
-                <a href="https://github.com/osevg/workshopper" target="_blank">
-                    Source code @ Github
-                </a>
-            </span>
-        </div>
+        <a class="navbar-brand" href="#" id="workshopName">Workshopper</a>
     </div>
 </nav>
 
