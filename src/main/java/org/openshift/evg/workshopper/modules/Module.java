@@ -1,5 +1,7 @@
 package org.openshift.evg.workshopper.modules;
 
+import org.openshift.evg.workshopper.modules.content.ModuleVariable;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;

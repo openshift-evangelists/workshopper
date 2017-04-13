@@ -101,11 +101,17 @@ public class WorkshopController {
         result.put("env", env);
         // system defaults has lowest priority
         if(mod.getConfig().getVars() != null) {
-            env.putAll(mod.getConfig().getVars());
+            mod.getConfig().getVars().forEach(var -> {
+                env.put(var.getName(), var.getValue());
+            });
         }
         // Module defaults
         if(module.getVars() != null) {
-            env.putAll(module.getVars());
+            module.getVars().forEach((name, value) -> {
+                if(value != null) {
+                    env.put(name, value);
+                }
+            });
         }
         // Revision overrides module defaults
         if(revision != null && module.getRevisions() != null && module.getRevisions().get(revision) != null) {

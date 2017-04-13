@@ -1,16 +1,18 @@
 package org.openshift.evg.workshopper.modules;
 
-import java.util.Map;
+import org.openshift.evg.workshopper.modules.content.ModuleVariable;
+
+import java.util.List;
 
 public class ModuleConfiguration {
 
-    private Map<String, Object> vars;
+    private List<ModuleVariable> vars;
 
-    public Map<String, Object> getVars() {
+    public List<ModuleVariable> getVars() {
         return vars;
     }
 
-    public void setVars(Map<String, Object> vars) {
+    public void setVars(List<ModuleVariable> vars) {
         this.vars = vars;
     }
 }

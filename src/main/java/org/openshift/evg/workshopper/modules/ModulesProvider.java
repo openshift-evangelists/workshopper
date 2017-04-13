@@ -1,6 +1,7 @@
 package org.openshift.evg.workshopper.modules;
 
 import org.openshift.evg.workshopper.GenericProvider;
+import org.openshift.evg.workshopper.modules.content.ModuleVariable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.TypeDescription;
@@ -28,6 +29,10 @@ public class ModulesProvider extends GenericProvider {
 
         description = new TypeDescription(Module.class);
         description.putMapPropertyType("revisions", String.class, ModuleRevision.class);
+        constructor.addTypeDescription(description);
+
+        description = new TypeDescription(ModuleConfiguration.class);
+        description.putListPropertyType("vars", ModuleVariable.class);
         constructor.addTypeDescription(description);
 
         yaml = new Yaml(constructor);
