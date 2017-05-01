@@ -95,6 +95,9 @@ var doRouting = function() {
                     data.content = asciidoctor.convert(tmpl.render(env.env), {attributes: options});
                     data.workshop = env.workshop;
 
+                    // update page title
+                    $('title').html(data.workshop.name);
+
                     data.doneModules = loadDoneModules();
 
                     for(var i = 0; i < env.workshop.sortedModules.length; i++) {
