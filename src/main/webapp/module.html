@@ -18,6 +18,7 @@
         <div class="col-sm-9">
             <div class="card">
                 <div class="card-block" style="padding: 3rem;">
+                    <div class="module-id badge badge-default">{{ currentModule }}</div>
                     <p class="card-text" v-html="content"></p>
                     <a v-bind:href="'#/workshop/' + workshop.id + '/module/' + prevModule" v-if="prevModule != null" class="btn btn-primary"> Go to previous module</a>
                     <a v-bind:href="'#/workshop/' + workshop.id + '/module/' + nextModule" v-if="nextModule != null" class="btn btn-primary mark-as-done">Go to next module</a>

@@ -101,6 +101,7 @@ var doRouting = function() {
                         if(env.workshop.sortedModules[i] === module) {
                             data.prevModule = env.workshop.sortedModules[i - 1];
                             data.nextModule = env.workshop.sortedModules[i + 1];
+                            data.currentModule = i + 1;
                         }
                     }
 
