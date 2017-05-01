@@ -10,8 +10,8 @@
         <div class="col-sm-3">
             <ul class="list-group">
                 <li class="list-group-item" v-for="(mod, index) in workshop.sortedModules">
-                    <a v-bind:href="'#/workshop/' + workshop.id + '/module/' + mod" v-if="module != mod" class="mark-as-done" v-bind:class="{doneModule: doneModules.indexOf(mod) > -1}">{{ modules[mod].name }}</a>
-                    <span v-if="module == mod">{{ modules[module].name }}</span>
+                    <a v-bind:href="'#/workshop/' + workshop.id + '/module/' + mod" v-if="module != mod" class="mark-as-done" v-bind:class="{doneModule: doneModules.indexOf(mod) > -1}">{{ index + 1 }}. {{ modules[mod].name }}</a>
+                    <span v-if="module == mod">{{ index + 1 }}. {{ modules[module].name }}</span>
                 </li>
             </ul>
         </div>
