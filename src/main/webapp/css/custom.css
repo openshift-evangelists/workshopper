@@ -3,7 +3,7 @@ body {
 }
 
 img {
-    width: 100%;
+    max-width:100% !important;
 }
 
 div.listingblock.copypaste div.content pre.highlight {
