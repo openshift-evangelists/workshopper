@@ -15,7 +15,7 @@ var flush = function() {
 var doRouting = function() {
     var route = location.hash;
 
-    if(route === "") {
+    if (route === "") {
         route = location.hash = '/';
         return;
     }
@@ -24,8 +24,8 @@ var doRouting = function() {
 
     var match;
 
-    if(match = rootPattern.exec(route)) {
-        if(config['defaultWorkshop'] != null) {
+    if (match = rootPattern.exec(route)) {
+        if (config['defaultWorkshop'] != null) {
             location.hash = '/workshop/' + config['defaultWorkshop'];
             return;
         }
@@ -41,26 +41,26 @@ var doRouting = function() {
             new Vue({
                 el: '#workshops',
                 data: {
-                    workshops: data
+                    workshops: workshops
                 }
             })
         });
         $('#workshopName').html('Workshopper');
     }
 
-    if(match = workshopPattern.exec(route)) {
+    if (match = workshopPattern.exec(route)) {
         var workshop = match[1];
-        $.get("/api/workshops/" + workshop, function (data) {
+        $.get("/api/workshops/" + workshop, function(data) {
             location.hash = '/workshop/' + workshop + "/module/" + data.sortedModules[0];
         });
     }
 
-    if(match = modulePattern.exec(route)) {
+    if (match = modulePattern.exec(route)) {
         var workshop = match[1];
         var module = match[2];
         var prereqs = $("<div/>");
 
-        $.get("/api/workshops/" + workshop + "/modules", function(modules){
+        $.get("/api/workshops/" + workshop + "/modules", function(modules) {
             var data = {
                 module: module,
                 modules: modules
@@ -75,7 +75,7 @@ var doRouting = function() {
                 });
             }
 
-            $.get("/api/workshops/" + workshop + "/env/" + module, function(env){
+            $.get("/api/workshops/" + workshop + "/env/" + module, function(env) {
                 $.get("/api/workshops/" + workshop + "/content/module/" + module, function(template) {
                     var tmpl = Liquid.parse(template);
                     var options = [
@@ -86,13 +86,13 @@ var doRouting = function() {
 
                     var url = new URI(document.URL).query(true);
 
-                    for(var name in env.env) {
-                        if(url[name] != null) {
+                    for (var name in env.env) {
+                        if (url[name] != null) {
                             env.env[name] = url[name];
                         }
                     }
 
-                    data.content = asciidoctor.convert(tmpl.render(env.env), {attributes: options});
+                    data.content = asciidoctor.convert(tmpl.render(env.env), { attributes: options });
                     data.workshop = env.workshop;
 
                     // update page title
@@ -100,8 +100,8 @@ var doRouting = function() {
 
                     data.doneModules = loadDoneModules();
 
-                    for(var i = 0; i < env.workshop.sortedModules.length; i++) {
-                        if(env.workshop.sortedModules[i] === module) {
+                    for (var i = 0; i < env.workshop.sortedModules.length; i++) {
+                        if (env.workshop.sortedModules[i] === module) {
                             data.prevModule = env.workshop.sortedModules[i - 1];
                             data.nextModule = env.workshop.sortedModules[i + 1];
                             data.currentModule = i + 1;
@@ -117,7 +117,7 @@ var doRouting = function() {
                         // $('pre code').each(function(i, block) {
                         //     hljs.highlightBlock(block);
                         // });
-                        $(".mark-as-done").click(function(){
+                        $(".mark-as-done").click(function() {
                             doneModule(data.doneModules, module);
                         });
 
@@ -132,11 +132,11 @@ var doRouting = function() {
     }
 };
 
-$(function(){
-    content =  $("#content");
-    $.get('/api/config', function(data){
+$(function() {
+    content = $("#content");
+    $.get('/api/config', function(data) {
         config = data;
-        $.get("/api/workshops", function (data) {
+        $.get("/api/workshops", function(data) {
             workshops = data;
             doRouting();
         });
@@ -150,7 +150,7 @@ $(window).on('hashchange', function() {
 var loadDoneModules = function() {
     var doneModules = Cookies.get("done-modules");
 
-    if(typeof doneModules !== 'undefined') {
+    if (typeof doneModules !== 'undefined') {
         doneModules = doneModules.split(';');
     } else {
         doneModules = [];
@@ -160,7 +160,7 @@ var loadDoneModules = function() {
 };
 
 var doneModule = function(doneModules, module) {
-    if(doneModules.indexOf(module) === -1) {
+    if (doneModules.indexOf(module) === -1) {
         doneModules.push(module);
     }
     Cookies.set("done-modules", doneModules.join(';'));
