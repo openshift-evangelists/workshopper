@@ -7,12 +7,19 @@ Builds your workshops and enjoys it.
 * [Centent for OpenShift workshops](https://github.com/osevg/workshopper-content)
 * [Collection of workshop definitions](https://github.com/osevg/workshopper-workshops)
  
-## Deployment
+## Deploy from Source
 
 You can deploy wherever you want, but we test specifically for OpenShift
  
 ```
 oc new-app wildfly~https://github.com/osevg/workshopper.git -e <YOUR CONFIGURATION>
+```
+
+## Deploy Docker Image
+
+You can also deploy the `workshopper` docker image available on Docker Hub
+```
+oc new-app --docker-image=osevg/workshopper -e <YOUR CONFIGURATION>
 ```
 
 ## Configuration using env variables
