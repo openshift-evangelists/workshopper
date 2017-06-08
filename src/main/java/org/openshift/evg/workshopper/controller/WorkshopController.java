@@ -67,6 +67,21 @@ public class WorkshopController {
     }
 
     @GET
+    @Path("{workshop}/content/all")
+    @Produces({ "text/asciidoc" })
+    public String content(@PathParam("workshop") String w) throws IOException {
+        Workshop workshop = workshops.getWorkshops().get(w);
+        return workshop.getSortedModules().stream().reduce("", (data, module) -> {
+            try {
+                return data + new String(moduleContent.loadModule(workshop, module));
+            } catch (IOException e) {
+                return data;
+            }
+        });
+    }
+
+
+    @GET
     @Path("{workshop}/content/module/{module}")
     @Produces({ "text/asciidoc" })
     public byte[] content(@PathParam("workshop") String w, @PathParam("module") String module) throws IOException {

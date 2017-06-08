@@ -1,5 +1,6 @@
 var rootPattern = new RegExp(/^#[\/]?$/);
 var workshopPattern = new RegExp(/^#\/workshop\/([^\/]+)[\/]?$/);
+var allModulesPattern = new RegExp(/^#\/workshop\/([^\/]+)\/all[\/]?$/);
 var modulePattern = new RegExp(/^#\/workshop\/([^\/]+)\/module\/([^\/]+)[\/]?$/);
 
 var asciidoctor = Asciidoctor();
@@ -54,6 +55,61 @@ var doRouting = function() {
             location.hash = '/workshop/' + workshop + "/module/" + data.sortedModules[0];
         });
     }
+
+    if(match = allModulesPattern.exec(route)) {
+        var workshop = match[1];
+
+        var loadModule = function(modules, i, data) {
+            var mod = i;
+            if(modules.hasOwnProperty(mod)) {
+                var module = modules[mod];
+                $.get("/api/workshops/" + workshop + "/env/" + module, function(env){
+                    data.workshop = env.workshop;
+                    data.modules[module] = env.module;
+                    $.get("/api/workshops/" + workshop + "/content/module/" + module, function(template) {
+                        var tmpl = Liquid.parse(template);
+                        var options = [
+                            'icons=font',
+                            'imagesdir=/api/workshops/' + workshop + '/content/assets/images',
+                            'source-highlighter=highlightjs'
+                        ];
+
+                        var url = new URI(document.URL).query(true);
+
+                        for(var name in env.env) {
+                            if(url[name] != null) {
+                                env.env[name] = url[name];
+                            }
+                        }
+
+                        data.content += asciidoctor.convert(tmpl.render(env.env), {attributes: options});
+                        console.log(data);
+                        loadModule(modules, i + 1, data);
+                    });
+                });
+            } else {
+                console.log(data);
+                $.get('/all.html', function(template) {
+                    content.html(template);
+                    new Vue({
+                        el: '#module',
+                        data: data
+                    });
+                    //$('#workshopName').html(data.workshop.name);
+                });
+            }
+        };
+
+        $.get("/api/workshops/" + workshop, function (data) {
+            var modules = data.sortedModules;
+            loadModule(jQuery.extend(true, {}, modules), 0, {
+                modules: {},
+                content: ""
+            });
+
+        });
+    }
+
 
     if(match = modulePattern.exec(route)) {
         var workshop = match[1];

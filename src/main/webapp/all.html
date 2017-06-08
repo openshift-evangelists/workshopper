@@ -1,0 +1,33 @@
+<div id="module">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-block" style="padding: 3rem;">
+                    <h1 id="print-title" v-html="workshop.name"></h1>
+                    <p class="card-text" v-html="content"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style type="text/css">
+    #print-title {
+        display: none;
+    }
+    @media print {
+        #print-title {
+            display: block;
+            margin-bottom: 20px;
+        }
+        nav.navbar {
+            display: none;
+        }
+
+        div.sect1 {
+            page-break-after: always;
+        }
+        .card {
+            border: 0;
+        }
+    }
+</style>
