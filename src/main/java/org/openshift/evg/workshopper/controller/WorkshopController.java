@@ -5,6 +5,8 @@ import org.openshift.evg.workshopper.modules.Module;
 import org.openshift.evg.workshopper.modules.Modules;
 import org.openshift.evg.workshopper.modules.ModulesProvider;
 import org.openshift.evg.workshopper.modules.content.ModuleContentProvider;
+import org.openshift.evg.workshopper.ruby.RubyRuntime;
+import org.openshift.evg.workshopper.ruby.Wrapper;
 import org.openshift.evg.workshopper.workshops.Workshop;
 import org.openshift.evg.workshopper.workshops.WorkshopProvider;
 
@@ -13,12 +15,13 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.UriInfo;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import static sun.security.krb5.SCDynamicStoreConfig.getConfig;
 
 @Path("/workshops")
 @Produces({ MediaType.APPLICATION_JSON })
@@ -36,6 +39,9 @@ public class WorkshopController {
     @Inject
     private Configuration config;
 
+    @Inject
+    private RubyRuntime ruby;
+
     @GET
     public Map<String, Workshop> getAllWorkshops() {
         return this.workshops.getWorkshops().get();
@@ -52,6 +58,29 @@ public class WorkshopController {
     public Map<String, Module> getWorkshopModules(@PathParam("workshop") String w) {
         Workshop workshop = workshops.getWorkshops().get(w);
         return this.modules.getModules().get(workshop.getContent().getUrl()).get();
+    }
+
+    @GET
+    @Path("{workshop}/render/{module}")
+    @Produces({ "text/html" })
+    public String renderModule(@PathParam("workshop") String w, @PathParam("module") String m, @Context UriInfo ui) {
+        Workshop workshop = workshops.getWorkshops().get(w);
+        Wrapper wrapper = this.ruby.wrapper();
+        wrapper.setup(workshop);
+        HashMap<String, Object> env = generateEnv(w, m, null);
+        env.keySet().forEach(key -> {
+            wrapper.put(key, env.get(key));
+        });
+        MultivaluedMap<String, String> q = ui.getQueryParameters();
+        q.keySet().forEach(key -> {
+            wrapper.put(key, q.getFirst(key));
+        });
+        try {
+            return wrapper.render(new String(moduleContent.loadModule(workshop, m)));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @GET

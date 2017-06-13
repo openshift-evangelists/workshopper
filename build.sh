@@ -1,5 +1,5 @@
 #!/bin/bash
 
-mvn clean package
+./rubygems.sh
 
-docker build -t mjelen/workshopper .
+mvn clean package

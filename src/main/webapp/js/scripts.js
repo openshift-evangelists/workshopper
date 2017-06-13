@@ -131,24 +131,11 @@ var doRouting = function() {
                 });
             }
 
+            var url = new URI(document.URL);
+
             $.get("/api/workshops/" + workshop + "/env/" + module, function(env) {
-                $.get("/api/workshops/" + workshop + "/content/module/" + module, function(template) {
-                    var tmpl = Liquid.parse(template);
-                    var options = [
-                        'icons=font',
-                        'imagesdir=/api/workshops/' + workshop + '/content/assets/images',
-                        'source-highlighter=highlightjs'
-                    ];
-
-                    var url = new URI(document.URL).query(true);
-
-                    for (var name in env.env) {
-                        if (url[name] != null) {
-                            env.env[name] = url[name];
-                        }
-                    }
-
-                    data.content = asciidoctor.convert(tmpl.render(env.env), { attributes: options });
+                $.get("/api/workshops/" + workshop + "/render/" + module + "?" + url.query(), function(adoc) {
+                    data.content = adoc;
                     data.workshop = env.workshop;
 
                     // update page title

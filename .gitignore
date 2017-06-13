@@ -7,3 +7,7 @@ tmp
 .project
 .settings/
 bin/
+src/main/resources/asciidoctor
+src/main/resources/asciidoctor.rb
+src/main/resources/liquid
+src/main/resources/liquid.rb
