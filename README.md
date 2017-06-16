@@ -4,15 +4,15 @@ Builds your workshops and enjoys it.
 
 ## Other repositories
 
-* [Centent for OpenShift workshops](https://github.com/osevg/workshopper-content)
+* [Content for OpenShift workshops](https://github.com/osevg/workshopper-content)
 * [Collection of workshop definitions](https://github.com/osevg/workshopper-workshops)
- 
+
 ## Deployment
 
 You can deploy wherever you want, but we test specifically for OpenShift
- 
+
 ```
-oc new-app wildfly~https://github.com/osevg/workshopper.git -e <YOUR CONFIGURATION>
+oc new-app osevg/workshopper -e <YOUR CONFIGURATION>
 ```
 
 ## Configuration using env variables
@@ -29,14 +29,14 @@ If not specified, this variable is constructed from segments as described below.
 
 ### GITHUB_REPOSITORY & GITHUB_REF (optional)
 
-If the $CONTENT_URL_PREFIX variable is not defined, constructs the $CONTENT_URL_PREFIX variable for Github repository 
-as 
+If the $CONTENT_URL_PREFIX variable is not defined, constructs the $CONTENT_URL_PREFIX variable for Github repository
+as
 
 ```
 CONTENT_URL_PREFIX = https://raw.githubusercontent.com/$GITHUB_REPOSITORY/$GITHUB_REF
 ```
 
-If the two variables are not defined then are defaulted to `osevg/workshopper-content` and `master` pointing to the 
+If the two variables are not defined then are defaulted to `osevg/workshopper-content` and `master` pointing to the
 latest content provided by the authors.
 
 ### WORKSHOPS_LIST_URL, WORKSHOPS_URLS (required)
@@ -44,15 +44,15 @@ latest content provided by the authors.
 The system needs definition what the workshop should look like. It can work with single or multiple workshops in single
 one deployment.
 
-You need to choose from 
-  
+You need to choose from
+
 * $WORKSHOPS_LIST_URL for workshops (defines single URL for list file)
 
 or
 
 * $WORKSHOPS_URLS for workshops (direct specification of workshop URLs using comma separated list)
 
-In case niether of these variables is specified, the $WORKSHOPS_URLS defaults to
+In case neither of these variables is specified, the $WORKSHOPS_URLS defaults to
 
 ```
 https://raw.githubusercontent.com/osevg/workshopper-workshops/master/default_workshop.yml
@@ -62,22 +62,22 @@ to render sample workshop with all modules.
 
 ### DEFAULT_LAB (optional)
 
-If the system has multiple workshops using the WORKSHOPS_LIST_URL or WORKSHOPS_URLS the system can automatically 
+If the system has multiple workshops using the WORKSHOPS_LIST_URL or WORKSHOPS_URLS the system can automatically
 redirect to specific workshop specified using this variable.
 
 ## Files and file formats
 
 ### $WORKSHOPS_LIST_URL
 
-$WORKSHOPS_LIST_URL points to yaml file that contains list of URLs contain workshop definition as described in 
+$WORKSHOPS_LIST_URL points to yaml file that contains list of URLs contain workshop definition as described in
 $WORKSHOPS_URLS section.
 
 ### $WORKSHOPS_URLS
 
 Comma separated list of urls
- 
+
  ```
- WORKSHOPS_URLS = "<URL1>,<URL2>,<URL3>" 
+ WORKSHOPS_URLS = "<URL1>,<URL2>,<URL3>"
  ```
 
 The urls point to yaml files describing specific workshop. Workshop pull together several (or all) content modules
@@ -88,7 +88,7 @@ The main sections are
 * `id` - id to use to identify workshop in multi-workshop deployments (SHA-256 of it's URL unless specified)
 * `name` - display name of the workshop
 * `logo` - logo to display on the workshop page
-* `vars` - defines variable values to use in modules 
+* `vars` - defines variable values to use in modules
 * `revision` - activate this revision for all modules unless specified for the module
 * `modules` - configure modules in this workshop
 
@@ -121,14 +121,14 @@ modules:
     module1: revisionxy
 ```
 
-Let's assume that the module definition has 2 modules (`module1` and `module2`) with `module2` having dependency on 
-`module1`. This workshop activates `module2` and as it has dependency on `module1`, both are going to be included in 
+Let's assume that the module definition has 2 modules (`module1` and `module2`) with `module2` having dependency on
+`module1`. This workshop activates `module2` and as it has dependency on `module1`, both are going to be included in
 the workshop. `module1` is going to have `revisionxy` while `module2` will have `revision1`.  
 
 ### _config.yml
 
-`_config.yml` contains basic configuration fo the system. Currently these is only one section 
-allowed in this file called `vars` that defines most generic fallback values for variables used in the modules. 
+`_config.yml` contains basic configuration fo the system. Currently these is only one section
+allowed in this file called `vars` that defines most generic fallback values for variables used in the modules.
 
 ```yaml
 vars:
@@ -137,7 +137,7 @@ vars:
 
 ### _modules.yml
 
-`_modules.yml` defines modules available in the content repository. The file has one main `modules` section that 
+`_modules.yml` defines modules available in the content repository. The file has one main `modules` section that
 contains the key-value pair, where the key is module id and value is module definition.
 
 ```yaml
@@ -167,9 +167,9 @@ modules:
       - module1
 ```
 
-Revisions allow choosing between different content versions either by changing variable values or by choosing 
+Revisions allow choosing between different content versions either by changing variable values or by choosing
 completely different content.
-  
+
 ```yaml
 modules:
   module1:
@@ -188,7 +188,7 @@ modules:
           VARIABLE2: value22
 ```
 
-If no revision is chosen, then the value of `$VARIABLE2` is "value2", However when revisoin `revision_name` is active, 
+If no revision is chosen, then the value of `$VARIABLE2` is "value2", However when revisoin `revision_name` is active,
 variable $VARIABLE2 value is "value22".
 
 ### Content files
@@ -217,7 +217,7 @@ This modules definition would have two asciidoc files
 ## Module variable precedence
 
 Variable for substitution in modules can be defined in these places
- 
+
 * _config.yml
 * _modules.yml
 * $WORKSHOPS_LIST_URL / $WORKSHOPS_URLS
