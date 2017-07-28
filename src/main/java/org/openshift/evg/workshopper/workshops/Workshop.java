@@ -119,6 +119,12 @@ public class Workshop {
             repeat = false;
             for(String id : target) {
                 Module module = modules.get(id);
+
+                if (module == null) {
+                    LOG.error("Module {} does not exist", id);
+                    throw new RuntimeException("No module found with name " + id);
+                }
+
                 if(module.getRequires() != null) for(String req : module.getRequires()) {
                     int reqpos = target.indexOf(req);
                     int modpos = target.indexOf(id);
