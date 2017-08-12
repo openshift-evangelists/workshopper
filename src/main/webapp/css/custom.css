@@ -116,11 +116,12 @@ p a > code:hover { color: #561309; }
 .admonitionblock td.content > .title, .audioblock > .title, .exampleblock > .title, .imageblock > .title, .listingblock > .title, .literalblock > .title, .stemblock > .title, .openblock > .title, .paragraph > .title, .quoteblock > .title, table.tableblock > .title, .verseblock > .title, .videoblock > .title, .dlist > .title, .olist > .title, .ulist > .title, .qlist > .title, .hdlist > .title { text-rendering: optimizeLegibility; text-align: left; font-family: "Noto Serif", "DejaVu Serif", "Serif", serif; font-weight: normal; font-style: italic; }
 table.tableblock > caption.title { white-space: nowrap; overflow: visible; max-width: 0; }
 table.tableblock #preamble > .sectionbody > .paragraph:first-of-type p { font-size: inherit; }
-.admonitionblock > table { border: 0; background: none; width: 100%; }
+
+.admonitionblock > table { border: 0px solid #CFCDCD; border-width: 1px 0; background-color: #f7f7f7; width: 100%; font-size: 1em;}
 .admonitionblock > table td.icon { text-align: center; width: 80px; }
 .admonitionblock > table td.icon img { max-width: none; }
 .admonitionblock > table td.icon .title { font-weight: 300; text-transform: uppercase; }
-.admonitionblock > table td.content { padding-left: 0; padding-right: 1.25em; color: #6e6e6e; }
+.admonitionblock > table td.content { padding-left: 0; padding-right: 1.25em; color: #484848; }
 .admonitionblock > table td.content > :last-child > :last-child { margin-bottom: 0; }
 .exampleblock > .content { border-style: solid; border-width: 1px; border-color: #e6e6e6; margin-bottom: 1.25em; padding: 1.25em; background: white; -webkit-border-radius: 4px; border-radius: 4px; }
 .exampleblock > .content > :first-child { margin-top: 0; }
