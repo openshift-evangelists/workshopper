@@ -2,11 +2,9 @@ FROM centos:7
 
 RUN curl -o /etc/yum.repos.d/bintray-mjelen-centos.repo https://bintray.com/mjelen/centos/rpm
 
-RUN yum install -y ruby libyaml \
+RUN yum install -y ruby libyaml gcc make \
     && yum clean all -y \
     && gem install bundler
-
-RUN yum install -y gcc make
 
 WORKDIR /root
 
