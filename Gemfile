@@ -10,3 +10,5 @@ gem 'faraday'
 gem 'excon'
 
 gem 'activesupport'
+
+gem 'rake'
