@@ -1,9 +1,23 @@
-FROM jboss/wildfly
+FROM centos:7
 
-ADD target/ROOT.war /opt/jboss/wildfly/standalone/deployments/
+RUN curl -o /etc/yum.repos.d/bintray-mjelen-centos.repo https://bintray.com/mjelen/centos/rpm
 
-USER root
+RUN yum install -y ruby libyaml \
+    && yum clean all -y \
+    && gem install bundler
 
-RUN chmod 777 -R /opt
+RUN yum install -y gcc make
 
-USER jboss
+WORKDIR /root
+
+COPY Gemfile Gemfile.lock ./
+
+RUN bundle install
+
+COPY lib ./lib
+COPY public ./public
+COPY config.ru ./
+
+RUN ls -la
+
+CMD bundle exec puma -p 8080

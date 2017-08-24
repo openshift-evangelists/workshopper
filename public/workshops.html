@@ -1,0 +1,17 @@
+<div id="workshops" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+    <div class="row">
+        <div class="col-sm-12">
+            <nav class="breadcrumb">
+                <span class="breadcrumb-item active">Available workshops</span>
+            </nav>
+        </div>
+        <div class="col-sm-4" v-for="(workshop, index) in workshops">
+            <div class="card">
+                <div class="card-block">
+                    <h4 class="card-title">{{ workshop.name }}</h4>
+                    <a v-bind:href="'#/workshop/' + workshop.id" class="btn btn-primary">Open workshop</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
