@@ -17,8 +17,8 @@ module Workshopper
       @data['name'] ||= ''
       @data['content'] ||= {}
       @data['content']['url'] ||= ENV['CONTENT_URL_PREFIX']
-      @data['content']['templates'] = 'liquid'
-      @data['content']['renderer'] = 'asciidoc'
+      @data['content']['templates'] ||= 'liquid'
+      @data['content']['renderer'] ||= 'asciidoc'
       @data['vars'] ||= {}
       @data['modules'] ||= {}
       @data['modules']['activate'] ||= []

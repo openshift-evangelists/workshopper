@@ -4,6 +4,7 @@ gem 'sinatra'
 gem 'puma'
 
 gem 'asciidoctor'
+gem 'kramdown'
 gem 'liquid'
 
 gem 'faraday'
