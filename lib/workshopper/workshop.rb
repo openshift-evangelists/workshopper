@@ -17,8 +17,6 @@ module Workshopper
       @data['name'] ||= ''
       @data['content'] ||= {}
       @data['content']['url'] ||= ENV['CONTENT_URL_PREFIX']
-      @data['content']['templates'] ||= 'liquid'
-      @data['content']['renderer'] ||= 'asciidoc'
       @data['vars'] ||= {}
       @data['modules'] ||= {}
       @data['modules']['activate'] ||= []
@@ -33,6 +31,9 @@ module Workshopper
 
       @modules_data['config'] ||= {}
       @modules_data['config']['vars'] ||= {}
+
+      @data['content']['templates'] ||= (@modules_data['config']['templates'] || 'liquid')
+      @data['content']['renderer'] ||= (@modules_data['config']['renderer'] || 'asciidoc')
 
       @vars = Vars.new(nil, @modules_data['config']['vars'].inject({}) do |vars, var|
         vars[var['name']] = var['value']
