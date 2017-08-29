@@ -6,7 +6,7 @@ module Workshopper
 
         def get(path)
           path = path.sub('file://', '')
-          ::File.read(path)
+          ::File.open(path, 'r:UTF-8', &:read)
         end
 
       end

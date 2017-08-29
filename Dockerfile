@@ -16,4 +16,6 @@ COPY lib ./lib
 COPY public ./public
 COPY config.ru ./
 
+ENV LC_ALL en_US.UTF-8
+
 CMD bundle exec puma -p 8080
