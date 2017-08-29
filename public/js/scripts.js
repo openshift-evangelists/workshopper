@@ -66,11 +66,6 @@ var EvMan = function () {
             });
 
         });
-        // if (config['defaultWorkshop'] != null) {
-        //     location.hash = '/workshop/' + config['defaultWorkshop'];
-        //     return;
-        // }
-        //
     };
 
     self.workshop = function(match) {
@@ -103,6 +98,8 @@ var EvMan = function () {
                         data.content = tmp;
 
                         data.doneModules = self.loadDoneModules();
+
+                        window.name = data.workshop['name'];
 
                         for (var i = 0; i < data.workshop.modules.length; i++) {
                             if (data.workshop.modules[i] === module) {
