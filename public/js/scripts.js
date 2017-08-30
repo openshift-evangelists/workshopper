@@ -36,7 +36,7 @@ var Router = function () {
 var EvMan = function () {
     var self = this;
 
-    self.content = $("#content");
+    self.content = $("#contentbox");
 
     self.router = new Router();
 
