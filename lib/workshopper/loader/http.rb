@@ -21,7 +21,7 @@ module Workshopper
       end
 
       def get(path)
-        @client.get(::File.join(@uri.path, path)).body
+        @client.get(::File.join(@uri.path, path)).body.force_encoding('UTF-8')
       end
 
     end
