@@ -7,15 +7,25 @@ module Workshopper
     enable :static
     set :root, File.dirname(__FILE__)
     set :public_folder, 'public'
+    set :deployment, ::Workshopper::Deployment.new
 
     helpers do
       def deployment
-        @deployment ||= Workshopper::Deployment.new
+        settings.deployment
       end
     end
 
     get '/' do
       redirect('/index.html')
+    end
+
+    get '/reload' do
+      Webapp.set :deployment, ::Workshopper::Deployment.new
+      Dir['cache/*.cache'].each do |file|
+        File.delete(file)
+      end
+      content_type :json
+      {}.to_json
     end
 
     get '/api/config' do
@@ -54,12 +64,12 @@ module Workshopper
 
     get '/api/workshops/:name/content/module/:module' do
       content_type :html
-      params
       deployment.workshops[params[:name]].modules[params[:module]].render
     end
 
     get '/api/workshops/:name/content/assets/*' do
       file = params[:splat].first
+      content_type(Rack::Mime.mime_type(::File.extname(file)))
       deployment.workshops[params[:name]].asset(file)
     end
 

@@ -16,8 +16,13 @@ module Workshopper
       @data['id'] ||= Digest::SHA256.hexdigest(@url)
       @data['name'] ||= ''
       @data['content'] ||= {}
-      @data['content']['url'] = ENV['CONTENT_URL_PREFIX'] if ENV['CONTENT_URL_PREFIX']
-      @data['content']['url'] ||= ENV['CONTENT_URL_PREFIX']
+
+      if ENV['CONTENT_URL_PREFIX']
+        @data['content']['url'] = ENV['CONTENT_URL_PREFIX']
+      else
+        @data['content']['url'] ||= ENV['CONTENT_URL_PREFIX']
+      end
+
       @data['vars'] ||= {}
       @data['modules'] ||= {}
       @data['modules']['activate'] ||= []
@@ -42,6 +47,12 @@ module Workshopper
       end)
 
       @vars = Vars.new(@vars, @data['vars'])
+      @vars['WORKSHOP_NAME'] = @data['id']
+      @vars['modules'] = {}
+
+      @modules_data['modules'].each do |key, value|
+        @vars['modules'][key] = value['name']
+      end
 
       resolve
     end
