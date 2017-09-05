@@ -6,7 +6,7 @@ module Workshopper
 
     def initialize(id, data, vars, loader, renderer)
       @id = id
-      @data = data
+      @data = data || {}
       @loader = loader
       @renderer = renderer
 

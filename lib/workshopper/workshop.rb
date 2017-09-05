@@ -16,6 +16,7 @@ module Workshopper
       @data['id'] ||= Digest::SHA256.hexdigest(@url)
       @data['name'] ||= ''
       @data['content'] ||= {}
+      @data['content']['url'] = ENV['CONTENT_URL_PREFIX'] if ENV['CONTENT_URL_PREFIX']
       @data['content']['url'] ||= ENV['CONTENT_URL_PREFIX']
       @data['vars'] ||= {}
       @data['modules'] ||= {}
@@ -52,7 +53,7 @@ module Workshopper
 
       @modules = @data['modules']['activate'].inject([]) do |modules, name|
         modules << name
-        if @modules_data['modules'][name]['requires']
+        if @modules_data['modules'][name] && @modules_data['modules'][name]['requires']
           @modules_data['modules'][name]['requires'].map do |req|
             modules << req unless modules.include?(req)
           end

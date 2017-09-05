@@ -7,7 +7,7 @@
                 <span class="breadcrumb-item active">{{ modules[module].name }}</span>
             </nav>
         </div>
-        <div class="col-sm-2">
+        <div class="col-md-3">
             <ul class="list-group">
                 <li class="list-group-item" v-for="(mod, index) in workshop.modules">
                     <a v-bind:href="'#/workshop/' + workshop.id + '/module/' + mod" v-if="module != mod" class="mark-as-done" v-bind:class="{doneModule: doneModules.indexOf(mod) > -1}">{{ index + 1 }}. {{ modules[mod].name }}</a>
@@ -15,7 +15,7 @@
                 </li>
             </ul>
         </div>
-        <div class="col-sm-10">
+        <div class="col-md-9">
             <div class="card">
                 <div class="card-block" style="padding: 3rem;">
                     <div class="module-id badge badge-default">{{ currentModule }}</div>

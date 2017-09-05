@@ -18,4 +18,6 @@ COPY config.ru ./
 
 ENV LC_ALL en_US.UTF-8
 
+EXPOSE 8080
+
 CMD bundle exec puma -p 8080
