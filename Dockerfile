@@ -6,11 +6,12 @@ RUN yum install -y ruby gcc \
     && yum clean all -y \
     && gem install bundler
 
-RUN useradd -m workshopper && mkdir /workshopper && chown workshopper:workshopper /workshopper
+RUN useradd -m workshopper && mkdir /workshopper \
+    && chown workshopper:workshopper /workshopper && chmod 777 /workshopper
 
 USER workshopper
-
 WORKDIR /workshopper
+ENV HOME /workshopper
 
 RUN mkdir -p cache && chmod 777 cache
 
