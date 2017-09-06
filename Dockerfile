@@ -6,13 +6,13 @@ RUN yum install -y ruby gcc \
     && yum clean all -y \
     && gem install bundler
 
-RUN useradd -m workshopper
+RUN useradd -m workshopper && mkdir /workshopper && chown workshopper:workshopper /workshopper
 
 USER workshopper
 
-WORKDIR /home/workshopper
+WORKDIR /workshopper
 
-RUN mkdir -p cache
+RUN mkdir -p cache && chmod 777 cache
 
 COPY Gemfile Gemfile.lock ./
 
