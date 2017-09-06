@@ -17,7 +17,7 @@ RUN mkdir -p cache && chmod 777 cache
 
 COPY Gemfile Gemfile.lock ./
 
-RUN bundle install --deployment
+RUN bundle install --deployment && chmod 777 .bundle
 
 COPY . ./
 
