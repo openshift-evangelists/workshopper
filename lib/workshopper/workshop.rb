@@ -50,11 +50,11 @@ module Workshopper
       @vars['WORKSHOP_NAME'] = @data['id']
       @vars['modules'] = {}
 
-      @modules_data['modules'].each do |key, value|
-        @vars['modules'][key] = value['name']
-      end
-
       resolve
+
+      @modules.keys.each do |key|
+        @vars['modules'][key] = true
+      end
     end
 
     def resolve
