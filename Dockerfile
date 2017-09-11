@@ -24,4 +24,6 @@ COPY . ./
 ENV LC_ALL en_US.UTF-8
 ENV ENABLE_CONTENT_CACHE true
 
+EXPOSE 8080
+
 CMD bundle exec puma -p 8080

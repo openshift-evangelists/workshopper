@@ -23,7 +23,18 @@ module Workshopper
     def render(env={})
       id = @id.gsub('_', '/')
       content = @loader.get("#{id}.#{@renderer.extension}")
-      env = Vars.new(Vars.new(@vars, env), ENV.to_hash).merge
+      parent = Vars.new(@vars, env)
+      keys = parent.keys
+
+      sysenv = ENV.to_hash
+      sysenv = sysenv.keys.inject({}) do |vars, var|
+        if keys.include?(var)
+          vars[var] = sysenv[var]
+        end
+        vars
+      end
+      env = Vars.new(parent, sysenv).merge
+
       @renderer.render(content, env)
     end
 

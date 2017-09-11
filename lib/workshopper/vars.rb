@@ -16,6 +16,10 @@ module Workshopper
       @data[name] = value
     end
 
+    def keys
+      (@parent.nil? ? [] : @parent.keys + @data.keys).uniq
+    end
+
     def merge
       base = @parent ? @parent.merge : {}
       base.merge(@data || {})
