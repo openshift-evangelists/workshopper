@@ -17,7 +17,7 @@ module Workshopper
     end
 
     def keys
-      (@parent.nil? ? [] : @parent.keys + @data.keys).uniq
+      ((@parent ? @parent.keys : []) + @data.keys).uniq
     end
 
     def merge
@@ -27,6 +27,15 @@ module Workshopper
 
     def to_json
       merge.to_json
+    end
+
+    def to_s(indent=0)
+      out = ''
+      @data.keys.each do |key|
+        out << (' ' * indent) + "#{key} = #{@data[key]}\n"
+      end
+      out << @parent.to_s(indent + 2) if @parent
+      out
     end
 
   end
