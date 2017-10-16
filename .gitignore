@@ -1,10 +1,7 @@
 .idea
+target/
+tmp/
 *.iml
-target
-tmp
-
-.classpath
-.project
-.settings/
-bin/
-.vscode/
+.vscode
+*.log
+cache

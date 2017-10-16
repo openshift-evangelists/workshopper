@@ -1,0 +1,12 @@
+.travis.yml
+.gitignore
+.dockerignore
+.idea
+*.iml
+
+cache
+
+Dockerfile
+Makefile
+Rakefile
+README.md
