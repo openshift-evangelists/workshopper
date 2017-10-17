@@ -1,4 +1,4 @@
 build:
-	docker build -t osevg/workshopper:ruby .
+	docker build -t osevg/workshopper:latest .
 release: build
-	docker push osevg/workshopper:ruby
+	docker push osevg/workshopper:latest
