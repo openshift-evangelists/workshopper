@@ -1,5 +1,5 @@
-$LOAD_PATH << File.expand_path('../lib', __FILE__)
+# This file is used by Rack-based servers to start the application.
 
-require 'workshopper'
+require_relative 'config/environment'
 
-run Workshopper::Webapp
+run Rails.application

@@ -1,0 +1,62 @@
+body {
+    overflow: scroll;
+    font-size: 14px;
+}
+
+img {
+    max-width: 100% !important;
+}
+
+div.listingblock.copypaste div.content pre.highlight {
+    border: 1px solid #FF0000;
+    cursor: pointer;
+}
+
+div.admonitionblock div.listingblock {
+    width: 650px;
+}
+
+.card.doneModule {
+    background-color: #b0bec5;
+}
+
+a.doneModule {
+    color: #b0bec5;
+}
+
+.module-id {
+    float: right;
+    font-size: 2.5rem;
+}
+
+pre > code.hljs {
+    border: 0px;
+    background-color: #F0F3F5;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    padding: 1.5em 2.5em;
+    word-wrap: break-word;
+}
+
+blockquote {
+    border: 0px solid #CFCDCD;
+    border-width: 1px 0;
+    background-color: #f7f7f7;
+    width: 100%;
+    font-size: 1em;
+    border-left: 0px solid #487c58 !important;
+}
+
+img {
+    margin: auto;
+    display: block;
+}
+
+#labs-menu {
+    padding-top: 75px;
+}
+
+#lab-content {
+    margin-top: 75px;
+}
+

@@ -1,126 +1,47 @@
 require 'yaml'
-require 'digest'
-require 'active_support/core_ext/string/inflections'
+require 'digest/sha2'
+
+require 'workshopper/content'
+require 'workshopper/loader'
 
 module Workshopper
+
   class Workshop
 
     def initialize(url)
       @url = url
-      @data = YAML.load(Loader.get(@url))
-      normalize
-      setup
+      @data = Workshopper::Loader.get(@url)
+      @data = YAML.load(@data)
+
+      @id = @data['id']
+
+      @content = Content.new(prefix)
     end
 
-    def normalize
-      @data['id'] ||= Digest::SHA256.hexdigest(@url)
-      @data['name'] ||= ''
-      @data['content'] ||= {}
-
-      if ENV['CONTENT_URL_PREFIX']
-        @data['content']['url'] = ENV['CONTENT_URL_PREFIX']
-      else
-        @data['content']['url'] ||= ENV['CONTENT_URL_PREFIX']
-      end
-
-      @data['vars'] ||= {}
-      @data['modules'] ||= {}
-      @data['modules']['activate'] ||= []
-
-      @renderer = nil
-    end
-
-    def setup
-      @loader = Loader.new(@data['content']['url'])
-
-      @modules_data = YAML.load(@loader.get('_modules.yml'))
-
-      @modules_data['config'] ||= {}
-      @modules_data['config']['vars'] ||= {}
-
-      @data['content']['templates'] ||= (@modules_data['config']['templates'] || 'liquid')
-      @data['content']['renderer'] ||= (@modules_data['config']['renderer'] || 'asciidoc')
-
-      @vars = Vars.new(nil, @modules_data['config']['vars'].inject({}) do |vars, var|
-        vars[var['name']] = var['value']
-        vars
-      end)
-
-      @vars = Vars.new(@vars, @data['vars'])
-      @vars['WORKSHOP_NAME'] = @data['id']
-      @vars['modules'] = {}
-
-      resolve
-
-      @modules.keys.each do |key|
-        @vars['modules'][key] = true
-      end
-    end
-
-    def resolve
-      if @data['modules']['activate'].empty?
-        @data['modules']['activate'] = @modules_data['modules'].keys
-      end
-
-      @modules = @data['modules']['activate'].inject([]) do |modules, name|
-        modules << name
-        if @modules_data['modules'][name] && @modules_data['modules'][name]['requires']
-          @modules_data['modules'][name]['requires'].map do |req|
-            modules << req unless modules.include?(req)
-          end
-        end
-        modules
-      end
-
-      (0..@modules.length-1).each do |index|
-        name = @modules[index]
-        @modules_data['modules'][name]['requires'].each do |req|
-          rindex = @modules.index(req)
-          if rindex > index
-            @modules[index], @modules[rindex] = @modules[rindex], @modules[index]
-          end
-        end if @modules_data['modules'][name] && @modules_data['modules'][name]['requires']
-      end
-
-      @modules = @modules.map do |name|
-        Module.new(name, @modules_data['modules'][name], @vars, @loader, renderer)
-      end
-
-      @modules = @modules.inject({}) do |mods, mod|
-        mods[mod.id] = mod
-        mods
-      end
-
-    end
-
-    def renderer
-      return @renderer if @renderer
-      templates = "Workshopper::Templates::#{@data['content']['templates'].classify}".constantize.new
-      @renderer = "Workshopper::Renderer::#{@data['content']['renderer'].classify}".constantize.new(id, templates)
-    end
-
-    def asset(path)
-      @loader.get(path)
+    def prefix
+      @data['content']['url']
     end
 
     def id
-      @data['id']
+      @id ||= Digest::SHA256.hexdigest(@url)
     end
 
     def name
       @data['name']
     end
 
-    def modules
-      @modules
+    def active_labs
+      @data['modules']['activate']
     end
 
-    def to_json
-      {
-          id: @data['id'],
-          name: @data['name']
-      }.to_json
+    def lab(name)
+      @content.lab(name)
+    end
+
+    def issues
+      @content.issues
     end
 
   end
+
 end
