@@ -7,6 +7,10 @@ img {
     max-width: 100% !important;
 }
 
+.listingblock:hover code[data-lang]::before {
+    display:none
+}
+
 div.listingblock.copypaste div.content pre.highlight {
     cursor: pointer;
 }
