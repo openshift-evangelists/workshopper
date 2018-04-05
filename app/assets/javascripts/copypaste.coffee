@@ -1,6 +1,7 @@
 copypastecode = ->
+  alert('copypaste')
   clipboard = new ClipboardJS('.copypaste', {
     target: (trigger) -> trigger
   })
 
-$(copypastecode)
+document.addEventListener("turbolinks:load", copypastecode)
