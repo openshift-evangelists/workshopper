@@ -30,8 +30,8 @@
         <a href="/workshop/<%= @workshop.id %>/complete" class="list-group-item list-group-item-action list-group-item-warning">
           <i class="fa fa-print"></i> All labs in one page
         </a>
-        <% if @workshop.issues %>
-          <a href="<%= @workshop.issues %>" class="list-group-item list-group-item-action list-group-item-danger">
+        <% if ENV['ISSUES_URL'] || @workshop.issues %>
+          <a href="<%= ENV['ISSUES_URL'] || @workshop.issues %>" class="list-group-item list-group-item-action list-group-item-danger">
             <i class="fa fa-bug"></i> Report issue
           </a>
         <% end %>
