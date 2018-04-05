@@ -58,12 +58,11 @@ module Workshopper
     end
 
     def render(workshop, session)
-      ext = 'adoc'
-      @data ||= Workshopper::Loader.get(File.join(@content.prefix, "#{id}.#{ext}"))
+      @data ||= Workshopper::Loader.get(File.join(@content.prefix, "#{id}.#{@content.ext}"))
       template = ::Liquid::Template.parse(@data)
       template = template.render(env(session))
 
-      Workshopper::Renderer.get(ext).render(workshop, template)
+      Workshopper::Renderer.get(@content.ext).render(workshop, template)
     end
 
     class ModulePath < ::Liquid::Tag

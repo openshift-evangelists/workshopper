@@ -11,7 +11,9 @@ module Workshopper
       @prefix = prefix
       @data = Workshopper::Loader.get(File.join(@prefix, '_modules.yml'))
       @data = YAML.load(@data)
-      @data['config'] ||= {}
+      @data['config'] = {
+        'renderer' => 'adoc'
+      }.merge(@data['config'] || {})
       @labs = {}
     end
 
@@ -21,6 +23,15 @@ module Workshopper
 
     def prefix
       @prefix
+    end
+
+    def ext
+      case @data['config']['renderer']
+      when 'markdown'
+        'md'
+      else
+        'adoc'
+      end
     end
 
     def labs
