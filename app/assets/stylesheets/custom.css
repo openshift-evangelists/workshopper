@@ -16,7 +16,7 @@ div.listingblock.copypaste div.content pre.highlight {
 }
 
 div.listingblock.copypaste div.content pre.highlight:hover code {
-    background-image: url(/assets/icon-clippy.png);
+    background-image: image-url("icon-clippy.png");
     background-position: right 16px top 16px;
     background-repeat: no-repeat;
 }
