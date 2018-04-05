@@ -1,4 +1,5 @@
 require 'workshopper/workshop'
+
 module Workshopper
 
   class Cache

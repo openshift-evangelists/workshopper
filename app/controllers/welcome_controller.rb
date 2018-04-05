@@ -1,3 +1,5 @@
+require 'workshopper'
+
 class WelcomeController < ApplicationController
 
   def index
@@ -37,7 +39,6 @@ class WelcomeController < ApplicationController
     @workshop = Workshopper::Cache.workshops[params[:workshop]]
     path = File.join(@workshop.prefix, params[:path])
     path += ".#{params[:ext]}"
-    #return render plain: path
     send_data(Workshopper::Loader.get(path))
   end
 

@@ -11,6 +11,7 @@ module Workshopper
       @prefix = prefix
       @data = Workshopper::Loader.get(File.join(@prefix, '_modules.yml'))
       @data = YAML.load(@data)
+      @data['config'] ||= {}
       @labs = {}
     end
 
@@ -31,10 +32,7 @@ module Workshopper
     end
 
     def env
-      @data['config']['vars'].inject({}) do |all, var|
-        all[var['name']] = var['value']
-        all
-      end
+      @env ||= @data['config']['vars'] || {}
     end
 
   end

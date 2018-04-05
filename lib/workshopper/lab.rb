@@ -35,9 +35,12 @@ module Workshopper
       @lab['vars'].each_pair do |key, value|
         env[key] = value if value && value != ''
       end if @lab['vars']
+
+      ENV.each_pair do |name, value|
+        env[name] = value
+      end
+
       env.each_key do |key|
-        env[key] = ENV[key] if ENV[key]
-      end.each_key do |key|
         env[key] = session[key] if session[key]
       end
 
