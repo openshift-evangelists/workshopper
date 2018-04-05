@@ -8,8 +8,13 @@ img {
 }
 
 div.listingblock.copypaste div.content pre.highlight {
-    border: 1px solid #FF0000;
     cursor: pointer;
+}
+
+div.listingblock.copypaste div.content pre.highlight:hover code {
+    background-image: url(/assets/icon-clippy.png);
+    background-position: right 16px top 20px;
+    background-repeat: no-repeat;
 }
 
 div.admonitionblock div.listingblock {
