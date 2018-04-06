@@ -18,5 +18,4 @@
 //= require clipboard
 //= require copypaste
 //= require chartjs
-//= require highlight
 //= require_tree .

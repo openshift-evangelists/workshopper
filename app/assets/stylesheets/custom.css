@@ -38,14 +38,14 @@ a.doneModule {
     font-size: 2.5rem;
 }
 
-pre > code.hljs {
-    border: 0px;
-    background-color: #F0F3F5;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    padding: 1.5em 2.5em;
-    word-wrap: break-word;
-}
+/*pre > code.hljs {*/
+    /*border: 0px;*/
+    /*background-color: #F0F3F5;*/
+    /*-webkit-border-radius: 5px;*/
+    /*border-radius: 5px;*/
+    /*padding: 1.5em 2.5em;*/
+    /*word-wrap: break-word;*/
+/*}*/
 
 blockquote {
     border: 0px solid #CFCDCD;

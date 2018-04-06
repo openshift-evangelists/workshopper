@@ -12,7 +12,9 @@ gem 'jbuilder', '~> 2.5'
 gem 'redis', '~> 4.0'
 gem 'bcrypt', '~> 3.1.7'
 gem 'asciidoctor'
-gem 'kramdown'
+gem 'asciidoctor-rouge'
+gem 'redcarpet'
+gem 'rouge', '~> 2.2'
 gem 'liquid'
 gem 'faraday'
 gem 'excon'
@@ -22,7 +24,6 @@ gem 'bootstrap', '~> 4.0.0'
 gem 'jquery-rails'
 
 source 'https://rails-assets.org' do
-  gem 'rails-assets-highlight'
   gem 'rails-assets-chartjs'
 end
 
