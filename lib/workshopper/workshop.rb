@@ -12,6 +12,7 @@ module Workshopper
       @url = url
       @data = Workshopper::Loader.get(@url)
       @data = YAML.load(@data)
+      @data['content'] ||= {}
 
       @id = @data['id']
 
