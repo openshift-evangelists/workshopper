@@ -20,7 +20,7 @@ module Workshopper
     end
 
     def prefix
-      @data['content']['url']
+      ENV['CONTENT_URL_PREFIX'] || @data['content']['url']
     end
 
     def id
