@@ -30,10 +30,15 @@ module Workshopper
       @lab['duration']
     end
 
-    def env(session)
-      env = @content.env.dup
-      @lab['vars'].each_pair do |key, value|
-        env[key] = value if value && value != ''
+    def env(workshop, session)
+      env = {
+        'WORKSHOP_NAME' => workshop
+      }
+
+      @content.env.keys.each do |item|
+        next unless item
+        next unless @content.env[item]
+        env[item] = @content.env[item]['value']
       end if @lab['vars']
 
       ENV.each_pair do |name, value|
@@ -60,7 +65,7 @@ module Workshopper
     def render(workshop, session)
       @data ||= Workshopper::Loader.get(File.join(@content.prefix, "#{id}.#{@content.ext}"))
       template = ::Liquid::Template.parse(@data)
-      template = template.render(env(session))
+      template = template.render(env(workshop, session))
 
       Workshopper::Renderer.get(@content.ext).render(workshop, template)
     end
@@ -86,7 +91,7 @@ module Workshopper
 
       def render(context)
         ws = context.environments.first['WORKSHOP_NAME']
-        File.join("/api/workshops/#{ws}/content/assets/images", @path)
+        File.join("/workshop/#{ws}/asset/images", @path)
       end
     end
 

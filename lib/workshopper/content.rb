@@ -12,9 +12,14 @@ module Workshopper
       @data = Workshopper::Loader.get(File.join(@prefix, '_modules.yml'))
       @data = YAML.load(@data)
       @data['config'] = {
-        'renderer' => 'adoc'
+        'renderer' => 'adoc',
+        'vars' => {}
       }.merge(@data['config'] || {})
       @labs = {}
+      @env = @data['config']['vars'].inject({}) do |env, item|
+        env[item['name']] = item
+        env
+      end
     end
 
     def lab(name)
@@ -43,7 +48,7 @@ module Workshopper
     end
 
     def env
-      @env ||= @data['config']['vars'] || {}
+      @env
     end
 
   end
