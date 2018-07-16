@@ -26,7 +26,8 @@ module Workshopper
       end
 
       def download(path)
-        @client.get(path).body
+        response = @client.get(path)
+        response.body
       end
 
       def get(path)

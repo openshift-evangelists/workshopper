@@ -35,11 +35,9 @@ module Workshopper
         'WORKSHOP_NAME' => workshop
       }
 
-      @content.env.keys.each do |item|
-        next unless item
-        next unless @content.env[item]
-        env[item] = @content.env[item]['value']
-      end if @lab['vars']
+      @content.env.each_pair do |name, value|
+        env[name] = value
+      end if @content.env
 
       @content.workshop.vars.each_pair do |name, value|
         env[name] = value

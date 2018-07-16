@@ -13,11 +13,11 @@ module Workshopper
       @data = YAML.load(@data)
       @data['config'] = {
         'renderer' => 'adoc',
-        'vars' => {}
+        'vars' => []
       }.merge(@data['config'] || {})
       @labs = {}
       @env = @data['config']['vars'].inject({}) do |env, item|
-        env[item['name']] = item
+        env[item['name']] = item['value']
         env
       end
     end
