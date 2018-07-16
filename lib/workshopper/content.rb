@@ -7,9 +7,9 @@ module Workshopper
 
   class Content
 
-    def initialize(prefix)
-      @prefix = prefix
-      @data = Workshopper::Loader.get(File.join(@prefix, '_modules.yml'))
+    def initialize(workshop)
+      @workshop = workshop
+      @data = Workshopper::Loader.get(File.join(prefix, '_modules.yml'))
       @data = YAML.load(@data)
       @data['config'] = {
         'renderer' => 'adoc',
@@ -22,12 +22,16 @@ module Workshopper
       end
     end
 
+    def workshop
+      @workshop
+    end
+
     def lab(name)
       @labs[name] ||= Workshopper::Lab.new(self, name)
     end
 
     def prefix
-      @prefix
+      @workshop.prefix
     end
 
     def ext

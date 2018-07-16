@@ -41,15 +41,19 @@ module Workshopper
         env[item] = @content.env[item]['value']
       end if @lab['vars']
 
-      ENV.each_pair do |name, value|
+      @content.workshop.vars.each_pair do |name, value|
         env[name] = value
+      end if @content.workshop.vars
+
+      env.each_key do |key|
+        env[key] = ENV[key] if ENV[key]
       end
 
       env.each_key do |key|
         env[key] = session[key] if session[key]
       end
 
-      if env['DYNAMIC_USER_NAME'] || true
+      if env['DYNAMIC_USER_NAME']
         @user_id ||= 0
         if env['NUM_USERS'] && env['NUM_USERS'] > 0 && @user_id >= Integer(env['NUM_USERS'])
           raise Exception.new('Not enough users in workshop environment')

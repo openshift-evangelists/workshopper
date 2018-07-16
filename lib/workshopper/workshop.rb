@@ -16,7 +16,7 @@ module Workshopper
 
       @id = @data['id']
 
-      @content = Content.new(prefix)
+      @content = Content.new(self)
     end
 
     def prefix
@@ -29,6 +29,10 @@ module Workshopper
 
     def name
       @data['name']
+    end
+
+    def vars
+      @data['vars']
     end
 
     def active_labs
