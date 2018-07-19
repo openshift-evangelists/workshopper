@@ -10,7 +10,7 @@
 <main class="container-fluid">
   <div class="row">
     <div class="col-md-3">
-      <ul class="list-group sticky-top" id="labs-menu">
+      <ul class="list-group" id="labs-menu">
         <% i = 0 %>
         <% @workshop.active_labs.each do |id| %>
           <% if params[:lab] == id %>
