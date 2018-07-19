@@ -13,10 +13,10 @@ module Workshopper
           syntax_highlighter: 'coderay',
           syntax_highlighter_opts: {
             css: 'class',
-            line_numbers: nil,
+            line_numbers: nil
           }
         }
-        Kramdown::Document.new(content, opts).to_html
+        Kramdown::Document.new(content.force_encoding('UTF-8'), opts).to_html
       end
 
     end
