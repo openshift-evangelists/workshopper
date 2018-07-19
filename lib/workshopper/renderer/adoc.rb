@@ -8,7 +8,7 @@ module Workshopper
         content = Asciidoctor::Document.new(content, attributes: {
             'icons' => 'font',
             'imagesdir' => "/workshop/#{workshop}/asset/images",
-            'source-highlighter' => 'rouge',
+            'source-highlighter' => 'coderay',
         })
         content.convert
       end

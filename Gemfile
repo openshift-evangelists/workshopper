@@ -11,11 +11,12 @@ gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
 gem 'redis', '~> 4.0'
 gem 'bcrypt', '~> 3.1.7'
+
 gem 'asciidoctor'
-gem 'asciidoctor-rouge'
-gem 'redcarpet'
-gem 'rouge', '~> 2.2'
+gem 'kramdown'
+gem 'coderay'
 gem 'liquid'
+
 gem 'faraday'
 gem 'excon'
 
