@@ -6,7 +6,7 @@ LABEL io.openshift.s2i.scripts-url="image:///usr/libexec/s2i" \
 RUN curl -sLf 'https://dl.cloudsmith.io/public/mjelen/mjelen/cfg/install/config.rpm.txt?os=el&dist=7' > /etc/yum.repos.d/mjelen-mjelen.repo && \
     yum makecache -y && \
     yum install --setopt=tsflags=nodocs -y ruby bundler \
-    gcc gcc-c++ libxml2-devel sqlite-devel && \
+    gcc gcc-c++ libxml2-devel sqlite-devel git && \
     yum clean all && \
     rm -rf /var/cache/yum && \
     gem update --system --no-document
