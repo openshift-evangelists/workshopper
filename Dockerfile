@@ -1,29 +1,42 @@
-FROM centos:7
+FROM centos
 
-RUN curl -o /etc/yum.repos.d/bintray-mjelen-centos.repo https://bintray.com/mjelen/centos/rpm
+LABEL io.openshift.s2i.scripts-url="image:///usr/libexec/s2i" \
+      io.s2i.scripts-url="image:///usr/libexec/s2i"
 
-RUN yum install -y ruby gcc \
-    && yum clean all -y \
-    && gem install bundler
+RUN curl -sLf 'https://dl.cloudsmith.io/public/mjelen/mjelen/cfg/install/config.rpm.txt?os=el&dist=7' > /etc/yum.repos.d/mjelen-mjelen.repo && \
+    yum makecache -y && \
+    yum install --setopt=tsflags=nodocs -y ruby bundler \
+    gcc gcc-c++ libxml2-devel sqlite-devel && \
+    yum clean all && \
+    rm -rf /var/cache/yum && \
+    gem update --system --no-document
 
-RUN useradd -m workshopper && mkdir /workshopper \
-    && chown workshopper:workshopper /workshopper && chmod 777 /workshopper
+RUN mkdir -p /usr/libexec/s2i
+
+COPY s2i/assemble s2i/run /usr/libexec/s2i/
+
+RUN chmod 777 /usr/libexec/s2i/{assemble,run}
+
+ENV RAILS_ENV=production
+
+RUN useradd -u 1001 -g 0 -M -d /workshopper workshopper
+
+RUN mkdir -p /workshopper && chown workshopper:root /workshopper && chmod 777 /workshopper
 
 USER workshopper
 WORKDIR /workshopper
-ENV HOME /workshopper
 
-RUN mkdir -p cache && chmod 777 cache
+ADD --chown=workshopper:root Gemfile Gemfile.lock ./
 
-COPY Gemfile Gemfile.lock ./
+RUN bundle install --deployment
 
-RUN bundle install --deployment && chmod 777 .bundle
+ADD --chown=workshopper:root . .
 
-COPY . ./
+RUN bundle exec rake assets:precompile
 
-ENV LC_ALL en_US.UTF-8
-ENV ENABLE_CONTENT_CACHE true
+RUN rm -rf tmp log && mkdir -p tmp log && chmod -R 0777 tmp log
+ENV HOME=/workshopper
 
 EXPOSE 8080
 
-CMD bundle exec puma -p 8080
+CMD ./boot.sh

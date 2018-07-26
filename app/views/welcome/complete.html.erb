@@ -1,0 +1,19 @@
+<script type="application/javascript">
+    if (App.hasOwnProperty('subscription_id')) {
+        App.cable.subscriptions.remove(App.subscription_id);
+    }
+
+    App.subscription_id = App.report_page_view('<%= @workshop.id %>#complete', '<%= session[:guest_id] %>');
+</script>
+
+<main class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <% @workshop.active_labs.each do |name| %>
+        <h2><%= @workshop.lab(name).name %></h2>
+        <%= raw @workshop.lab(name).render(@workshop.id, session) %>
+        <hr>
+      <% end %>
+    </div>
+  </div>
+</main>

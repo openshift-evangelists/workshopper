@@ -1,0 +1,69 @@
+<script type="application/javascript">
+    if (App.hasOwnProperty('subscription_id')) {
+        App.cable.subscriptions.remove(App.subscription_id);
+    }
+
+    App.subscription_id = App.report_page_view('<%= @workshop.id %>#<%= @lab.id %>', '<%= session[:guest_id] %>');
+</script>
+
+<% id = @workshop.active_labs.find_index(params[:lab]) %>
+<main class="container-fluid">
+  <div class="row">
+    <div class="col-md-3">
+      <ul class="list-group" id="labs-menu">
+        <% i = 0 %>
+        <% @workshop.active_labs.each do |id| %>
+          <% if params[:lab] == id %>
+            <li class="list-group-item active">
+              <span><%= i += 1 %>. <%= @workshop.lab(id).name %></span>
+            </li>
+          <% elsif @completed.include?(@workshop.lab(id).id) %>
+            <a href="/workshop/<%= @workshop.id %>/lab/<%= @workshop.lab(id).id %>" class="list-group-item list-group-item-action list-group-item-success">
+              <%= i += 1 %>. <%= @workshop.lab(id).name %>
+            </a>
+          <% else %>
+            <a href="/workshop/<%= @workshop.id %>/lab/<%= @workshop.lab(id).id %>" class="list-group-item list-group-item-action">
+              <%= i += 1 %>. <%= @workshop.lab(id).name %>
+            </a>
+          <% end %>
+        <% end %>
+        <a href="/workshop/<%= @workshop.id %>/complete" class="list-group-item list-group-item-action list-group-item-warning">
+          <i class="fa fa-print"></i> All labs in one page
+        </a>
+        <% if ENV['ISSUES_URL'] || @workshop.issues %>
+          <a href="<%= ENV['ISSUES_URL'] || @workshop.issues %>" class="list-group-item list-group-item-action list-group-item-danger">
+            <i class="fa fa-bug"></i> Report issue
+          </a>
+        <% end %>
+      </ul>
+    </div>
+    <div class="col-md-9">
+      <div class="card" id="lab-content">
+        <div class="card-header">
+          <h6>
+            <span class="pull-left badge badge-pill badge-primary"><%= id + 1 %></span>
+            <span class="pull-left ml-2"><%= @lab.name %></span>
+            <% if @lab.duration %>
+              <span class="pull-right badge badge-pill badge-success ml-2"><%= @lab.duration %></span>
+            <% end %>
+          </h6>
+        </div>
+        <div class="card-body">
+          <%= raw @lab.render(@workshop.id, session) %>
+        </div>
+        <div class="card-footer">
+          <% if id > 0 %>
+            <a href="/workshop/<%= @workshop.id %>/lab/<%= @workshop.lab(@workshop.active_labs[id - 1]).id %>" class="btn btn-primary btn-sm pull-left">
+              <i class="fa fa-arrow-left"></i> <%= @workshop.lab(@workshop.active_labs[id - 1]).name %>
+            </a>
+          <% end %>
+          <% if id < @workshop.active_labs.length - 1 %>
+            <a href="/workshop/<%= @workshop.id %>/lab/<%= @workshop.lab(@workshop.active_labs[id + 1]).id %>" class="btn btn-primary btn-sm pull-right">
+              <%= @workshop.lab(@workshop.active_labs[id + 1]).name %> <i class="fa fa-arrow-right"></i>
+            </a>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

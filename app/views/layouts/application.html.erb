@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>
+    <% if @workshop %>
+      <%= @workshop.name %>
+    <% else %>
+      Workshopper
+    <% end %>
+  </title>
+  <%= csrf_meta_tags %>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+</head>
+
+<body>
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid d-flex justify-content-start">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <% if @workshop %>
+      <a class="navbar-brand mb-0 h1" href="/workshop/<%= @workshop.id %>" id="workshopName"><%= @workshop.name %></a>
+      <% if @lab %>
+        <span class="navbar-text" style="margin-right: 1rem;">|</span>
+        <span class="navbar-text"><%= @lab.name %></span>
+      <% end %>
+    <% else %>
+      <a class="navbar-brand mb-0 h1" href="#" id="workshopName">Workshopper</a>
+    <% end %>
+  </div>
+</nav>
+
+<%= yield %>
+
+</body>
+</html>

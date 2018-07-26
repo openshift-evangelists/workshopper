@@ -1,13 +1,3 @@
-.travis.yml
-.gitignore
-.dockerignore
-.idea
-*.iml
-
-cache
-vendor/bundle
-
-Dockerfile
-Makefile
-Rakefile
-README.md
+Dockefile
+log
+tmp

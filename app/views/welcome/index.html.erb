@@ -1,0 +1,5 @@
+<ul>
+  <% @workshops.each do |workshop| %>
+  <li><a href="/workshop/<%= workshop[:id] %>"><%= workshop[:name] %></a></li>
+  <% end %>
+</ul>
