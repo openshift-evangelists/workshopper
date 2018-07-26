@@ -8,6 +8,7 @@ module Workshopper
 
       def adapter(scheme)
         @adapters ||= {}
+        require "workshopper/loader/#{scheme}"
         @adapters[scheme] ||= "Workshopper::Loader::#{scheme.classify}".constantize
       end
 

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+export CONTENT_URL_PREFIX="file:///workshopper/content"
+
+if [ -z "$WORKSHOPS_URLS" ]; then
+    if [ -z "$WORKSHOP_PATH" ]; then
+      export WORKSHOP_PATH="_workshop.yml"
+    fi
+    export WORKSHOPS_URLS="file:///workshopper/content/$WORKSHOP_PATH"
+fi
+
+./boot.sh

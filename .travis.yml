@@ -1,11 +1,9 @@
-language: ruby
-
 sudo: required
 
 services:
   - docker
 
-after_success:
+script:
   - docker login -u $DOCKER_USER -p $DOCKER_PASS
   - export REPO=osevg/workshopper
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`

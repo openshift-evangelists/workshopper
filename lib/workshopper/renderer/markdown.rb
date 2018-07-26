@@ -1,23 +1,25 @@
+require 'coderay'
 require 'kramdown'
 
 module Workshopper
-  module Renderer
+  class Renderer
     class Markdown
 
-      def initialize(workshop, templates)
-        @workshop = workshop
-        @templates = templates
+      def self.markdown
       end
 
-      def extension
-        'md'
-      end
-
-      def render(content, env)
-        content = @templates.render(content, env)
-        Kramdown::Document.new(content).to_html
+      def render(workshop, content)
+        opts = {
+          syntax_highlighter: 'coderay',
+          syntax_highlighter_opts: {
+            css: 'class',
+            line_numbers: nil
+          }
+        }
+        Kramdown::Document.new(content.force_encoding('UTF-8'), opts).to_html
       end
 
     end
+
   end
 end

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+mkdir -p /workshopper/content
+
+cp -R /tmp/src/* /workshopper/content
