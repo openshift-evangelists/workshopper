@@ -21,6 +21,10 @@ div.listingblock.copypaste div.content pre.highlight:hover code {
     background-repeat: no-repeat;
 }
 
+div.listingblock.copypaste-warning div.content pre.CodeRay.highlight {
+    border: 1px solid #FF0000
+}
+
 div.admonitionblock div.listingblock {
     width: 650px;
 }
