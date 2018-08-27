@@ -1,0 +1,15 @@
+id: "<WORKSHOP_ID>"
+name: "<WORKSHOP_DISPLAY_TITLE>"
+
+content:
+  url: <LAB_CONTENT_URL>
+
+vars:
+  VAR_NAME_1: "<WORKSHOP_VAR_VALUE_1>"
+  VAR_NAME_2: <WORKSHOP_VAR_VALUE_2>
+  
+modules:
+  activate:
+  - <LAB_NAME_1>
+  - <LAB_NAME_2>
+  - <LAB_NAME_3>

@@ -1,0 +1,21 @@
+config:
+  renderer: markdown|asciidoc
+  vars:
+    - name: <NAME_OF_VARIABLE>
+      desc: <DESCRIPTION_OF_VARIABLE>
+      value: <VALUE_OF_VARIABLE>
+    - name: <NAME_OF_VARIABLE_1>
+      desc: <DESCRIPTION_OF_VARIABLE_1>
+      value: <VALUE_OF_VARIABLE_1>
+
+modules:
+  lab1:
+    name: <TITLE_TO_DISPLAY>
+    vars:
+      NAME_OF_VARIABLE: <OVERRIDEN_VALUE>
+  lab2:
+    name: <TITLE_TO_DISPLAY>
+  lab3:
+    name: <TITLE_TO_DISPLAY>
+    requires:
+      - <REFERENCE_LAB>
