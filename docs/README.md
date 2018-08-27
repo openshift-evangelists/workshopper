@@ -1,7 +1,7 @@
 # Documentation for Workshopper
 This is a tool for creating nice Workshops developed by the OpenShift Evangelist team.
 
-![Nice workshop example](./images/workshop-Example.png)
+![Nice workshop example](./images/Workshop-Example.png)
 
 * [Getting started](GettingStarted.md)
 * [Advanced configuration](AdvancedConfiguration.md)
