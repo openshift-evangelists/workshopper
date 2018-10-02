@@ -43,6 +43,10 @@ module Workshopper
         env[name] = value
       end if @content.workshop.vars
 
+      @lab['vars'].each_key do |key|
+        env[key] = @lab['vars'][key] if @lab['vars'][key]
+      end if @lab['vars']
+
       env.each_key do |key|
         env[key] = ENV[key] if ENV[key]
       end
