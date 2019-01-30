@@ -19,7 +19,7 @@ gem 'faraday'
 gem 'excon'
 
 gem 'font-awesome-rails'
-gem 'bootstrap', '~> 4.0.0'
+gem 'bootstrap', '~> 4.0'
 gem 'jquery-rails'
 
 platforms :ruby do 
