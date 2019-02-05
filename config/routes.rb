@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   get '/workshop/:workshop/complete', to: 'welcome#complete'
   get '/workshop/:workshop/asset/*path.:ext', to: 'welcome#asset'
 
+  get '/debug/session', to: 'welcome#dump_sesssion'
+  
   root 'welcome#index'
   
 end

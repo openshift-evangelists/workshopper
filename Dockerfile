@@ -3,13 +3,17 @@ FROM centos
 LABEL io.openshift.s2i.scripts-url="image:///usr/libexec/s2i" \
       io.s2i.scripts-url="image:///usr/libexec/s2i"
 
-RUN curl -sLf 'https://dl.cloudsmith.io/public/mjelen/mjelen/cfg/install/config.rpm.txt?os=el&dist=7' > /etc/yum.repos.d/mjelen-mjelen.repo && \
-    yum makecache -y && \
-    yum install --setopt=tsflags=nodocs -y ruby bundler \
+RUN curl -sL -o /etc/yum.repos.d/centos-essentials.repo https://gist.githubusercontent.com/marekjelen/c08a3c3a548820144f2da01d2bad6279/raw/centos-essentials.repo
+ENV PATH=/opt/essentials/bin:$PATH
+
+RUN yum update -y && \
+    yum install --setopt=tsflags=nodocs -y essentials-ruby bundler \
     gcc gcc-c++ libxml2-devel sqlite-devel git && \
     yum clean all && \
-    rm -rf /var/cache/yum && \
-    gem update --system --no-document
+    rm -rf /var/cache/yum
+    
+RUN gem update --system --no-document && \ 
+    gem update bundler --no-document
 
 RUN mkdir -p /usr/libexec/s2i
 
@@ -27,6 +31,7 @@ USER workshopper
 WORKDIR /workshopper
 
 ADD --chown=workshopper:root Gemfile Gemfile.lock ./
+
 
 RUN bundle install --deployment
 

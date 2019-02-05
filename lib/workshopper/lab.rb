@@ -55,14 +55,14 @@ module Workshopper
         env[key] = session[key] if session[key]
       end
 
-      if env['DYNAMIC_USER_NAME']
+      if ENV['DYNAMIC_USER_NAME']
         @user_id ||= 0
-        if env['NUM_USERS'] && env['NUM_USERS'] > 0 && @user_id >= Integer(env['NUM_USERS'])
+        if ENV['NUM_USERS'] && Integer(ENV['NUM_USERS']) > 0 && @user_id >= Integer(ENV['NUM_USERS'])
           raise Exception.new('Not enough users in workshop environment')
         end
-        env['USER_NAME'] = 'dev%02d'
-        uid = session['user_id'] ||= (@user_id += 1)
-        env['USER_NAME'] = env['USER_NAME'] % uid
+        ENV['USER_NAME'] ||= 'user%d' #'user%02d'
+        uid = (session['user_id'] ||= (@user_id += 1))
+        env['USER_NAME'] = ENV['USER_NAME'] % uid
       end
 
       env

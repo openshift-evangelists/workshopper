@@ -43,7 +43,10 @@ class WelcomeController < ApplicationController
   end
 
   def dashboard
+  end
 
+  def dump_sesssion
+    render json: session
   end
 
 end
