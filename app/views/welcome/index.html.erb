@@ -1,5 +1,5 @@
 <ul>
   <% @workshops.each do |workshop| %>
-  <li><a href="/workshop/<%= workshop[:id] %>"><%= workshop[:name] %></a></li>
+  <li><a href="<%= url_for(controller: 'welcome', action: 'workshop', workshop: workshop[:id]) %>"><%= workshop[:name] %></a></li>
   <% end %>
 </ul>
