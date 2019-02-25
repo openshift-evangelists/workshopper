@@ -18,16 +18,16 @@
               <span><%= i += 1 %>. <%= @workshop.lab(id).name %></span>
             </li>
           <% elsif @completed.include?(@workshop.lab(id).id) %>
-            <a href="/workshop/<%= @workshop.id %>/lab/<%= @workshop.lab(id).id %>" class="list-group-item list-group-item-action list-group-item-success">
+            <a href="<%= url_for(controller: 'welcome', action: 'lab', workshop: @workshop.id, lab: @workshop.lab(id).id) %>" class="list-group-item list-group-item-action list-group-item-success">
               <%= i += 1 %>. <%= @workshop.lab(id).name %>
             </a>
           <% else %>
-            <a href="/workshop/<%= @workshop.id %>/lab/<%= @workshop.lab(id).id %>" class="list-group-item list-group-item-action">
+            <a href="<%= url_for(controller: 'welcome', action: 'lab', workshop: @workshop.id, lab: @workshop.lab(id).id) %>" class="list-group-item list-group-item-action">
               <%= i += 1 %>. <%= @workshop.lab(id).name %>
             </a>
           <% end %>
         <% end %>
-        <a href="/workshop/<%= @workshop.id %>/complete" class="list-group-item list-group-item-action list-group-item-warning">
+        <a href="<%= url_for(controller: 'welcome', action: 'complete', workshop: @workshop.id) %>" class="list-group-item list-group-item-action list-group-item-warning">
           <i class="fa fa-print"></i> All labs in one page
         </a>
         <% if ENV['ISSUES_URL'] || @workshop.issues %>
@@ -53,12 +53,12 @@
         </div>
         <div class="card-footer">
           <% if id > 0 %>
-            <a href="/workshop/<%= @workshop.id %>/lab/<%= @workshop.lab(@workshop.active_labs[id - 1]).id %>" class="btn btn-primary btn-sm pull-left">
+            <a href="<%= url_for(controller: 'welcome', action: 'lab', workshop: @workshop.id, lab: @workshop.lab(@workshop.active_labs[id - 1]).id) %>" class="btn btn-primary btn-sm pull-left">
               <i class="fa fa-arrow-left"></i> <%= @workshop.lab(@workshop.active_labs[id - 1]).name %>
             </a>
           <% end %>
           <% if id < @workshop.active_labs.length - 1 %>
-            <a href="/workshop/<%= @workshop.id %>/lab/<%= @workshop.lab(@workshop.active_labs[id + 1]).id %>" class="btn btn-primary btn-sm pull-right">
+            <a href="<%= url_for(controller: 'welcome', action: 'lab', workshop: @workshop.id, lab: @workshop.lab(@workshop.active_labs[id + 1]).id) %>" class="btn btn-primary btn-sm pull-right">
               <%= @workshop.lab(@workshop.active_labs[id + 1]).name %> <i class="fa fa-arrow-right"></i>
             </a>
           <% end %>

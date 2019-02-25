@@ -20,7 +20,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <% if @workshop %>
-      <a class="navbar-brand mb-0 h1" href="/workshop/<%= @workshop.id %>" id="workshopName"><%= @workshop.name %></a>
+      <a class="navbar-brand mb-0 h1" href="<%= url_for(controller: 'welcome', action: 'workshop', workshop: @workshop.id) %>" id="workshopName"><%= @workshop.name %></a>
       <% if @lab %>
         <span class="navbar-text" style="margin-right: 1rem;">|</span>
         <span class="navbar-text"><%= @lab.name %></span>

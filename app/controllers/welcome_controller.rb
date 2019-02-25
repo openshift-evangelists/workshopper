@@ -5,7 +5,7 @@ class WelcomeController < ApplicationController
   def index
     if Workshopper::Cache.workshops.keys.length == 1
       id = Workshopper::Cache.workshops.keys.first
-      return redirect_to "/workshop/#{id}/"
+      return redirect_to controller: 'welcome', action: 'workshop', workshop: id
     end
 
     @workshops = Workshopper::Cache.workshops.keys.map do |id|
@@ -20,7 +20,7 @@ class WelcomeController < ApplicationController
   def workshop
     @workshop = Workshopper::Cache.workshops[params[:workshop]]
     lab = @workshop.active_labs.first
-    redirect_to "/workshop/#{params[:workshop]}/lab/#{lab}"
+    redirect_to controller: 'welcome', action: 'lab', workshop: params[:workshop], lab: lab
   end
 
   def lab
