@@ -121,8 +121,8 @@ GEM
       mini_portile2 (~> 2.4.0)
     nokogiri (1.10.1-java)
     popper_js (1.14.5)
-    puma (3.12.0)
-    puma (3.12.0-java)
+    puma (3.12.3)
+    puma (3.12.3-java)
     rack (2.0.6)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
@@ -235,7 +235,7 @@ DEPENDENCIES
   liquid
   listen (>= 3.0.5, < 3.2)
   mini_racer
-  puma (~> 3.7)
+  puma (~> 3.12)
   rails (~> 5.2)
   rails-assets-chartjs!
   redis (~> 4.0)
