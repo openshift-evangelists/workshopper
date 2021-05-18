@@ -107,7 +107,9 @@ GEM
     marcel (0.3.3)
       mimemagic (~> 0.3.2)
     method_source (0.9.2)
-    mimemagic (0.3.3)
+    mimemagic (0.3.10)
+      nokogiri (~> 1)
+      rake
     mini_mime (1.0.1)
     mini_portile2 (2.4.0)
     mini_racer (0.2.4)
@@ -121,8 +123,10 @@ GEM
       mini_portile2 (~> 2.4.0)
     nokogiri (1.10.1-java)
     popper_js (1.14.5)
-    puma (3.12.0)
-    puma (3.12.0-java)
+    puma (4.3.8)
+      nio4r (~> 2.0)
+    puma (4.3.8-java)
+      nio4r (~> 2.0)
     rack (2.0.6)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
@@ -235,7 +239,7 @@ DEPENDENCIES
   liquid
   listen (>= 3.0.5, < 3.2)
   mini_racer
-  puma (~> 3.7)
+  puma (~> 4.3)
   rails (~> 5.2)
   rails-assets-chartjs!
   redis (~> 4.0)
