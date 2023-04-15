@@ -11,7 +11,7 @@
     <div class="col-md-12">
       <% @workshop.active_labs.each do |name| %>
         <h2><%= @workshop.lab(name).name %></h2>
-        <%= raw @workshop.lab(name).render(@workshop.id, session) %>
+        <%= raw @workshop.lab(name).render(@workshop.id, session, params) %>
         <hr>
       <% end %>
     </div>
