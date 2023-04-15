@@ -24,27 +24,31 @@ USER root
 # RUN chmod 777 /usr/libexec/s2i/{assemble,run}
 
 ENV RAILS_ENV=production
+ENV HOME=/workshopper
 
 # RUN useradd -u 1001 -g 0 -M -d /workshopper workshopper
 
-RUN mkdir -p /workshopper && chown default:root /workshopper && chmod 777 /workshopper
+RUN mkdir -p /workshopper \
+    && chown default:root /workshopper \
+    && chmod 777 /workshopper
 
 USER default
 WORKDIR /workshopper
 
 ADD --chown=default:root Gemfile Gemfile.lock ./
-# ADD --chown=default:root Gemfile ./
-# RUN bundle lock
-# RUN bundle lock --add-platform x86_64-linux
+#ADD --chown=default:root Gemfile ./
+#RUN bundle lock --add-platform x86_64-linux
+
+ADD --chown=default:root Gemfile ./
+RUN bundle lock --add-platform x86_64-linux
 
 RUN bundle config set --local deployment 'true'
 RUN bundle install
-ADD --chown=workshopper:root . .
+ADD --chown=default:root . .
 
 RUN bundle exec rake assets:precompile
 
 RUN rm -rf tmp log && mkdir -p tmp log && chmod -R 0777 tmp log
-ENV HOME=/workshopper
 
 EXPOSE 8080
 
