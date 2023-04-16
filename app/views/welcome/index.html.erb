@@ -1,5 +1,12 @@
-<ul>
-  <% @workshops.each do |workshop| %>
-  <li><a href="/workshop/<%= workshop[:id] %>"><%= workshop[:name] %></a></li>
-  <% end %>
-</ul>
+<br><br><br>
+<!-- https://stackoverflow.com/questions/26867846/what-is-the-best-way-to-add-some-space-after-bootstrap-navbar -->
+
+<nav class="navbar bg-light">
+
+  <!-- Links -->
+  <ul class="navbar-nav">
+    <% @workshops.each do |workshop| %>
+    <li class="nav-item"><a href="/workshop/<%= workshop[:id] %>"><%= workshop[:name] %></a></li>
+    <% end %>
+  </ul>
+</nav>
