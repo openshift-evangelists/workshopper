@@ -32,9 +32,6 @@ platforms :jruby do
 end
 
 gem 'rails-assets-chartjs', '2.1.1', source: 'https://rails-assets.org'
-# source 'https://rails-assets.org' do
-#   gem 'rails-assets-chartjs'
-# end
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
