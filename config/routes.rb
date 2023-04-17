@@ -9,7 +9,8 @@ Rails.application.routes.draw do
   get '/workshop/:workshop/asset/*path.:ext', to: 'welcome#asset'
 
   get '/debug/session', to: 'welcome#dump_sesssion'
-  
+  get '/debug/params', to: 'welcome#dump_params'
+
   root 'welcome#index'
-  
+
 end

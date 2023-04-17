@@ -1,5 +1,68 @@
-<ul>
-  <% @workshops.each do |workshop| %>
-  <li><a href="/workshop/<%= workshop[:id] %>"><%= workshop[:name] %></a></li>
-  <% end %>
-</ul>
+<br><br><br>
+
+<main class="container-fluid">
+  
+<% @workshops.each_slice(3) do |w1, w2, w3| %>
+<div class="row mb-3">
+    <div class="col-4">
+      <div class="card">
+        <div class="card-header">
+          <h6>
+            <span class="pull-left ml-2"><%= w1[:name] %></span>
+          </h6>
+        </div>
+        <div class="card-body">
+        <%= w1[:description] %>
+        </div>
+        <div class="card-footer">
+            <a href="/workshop/<%= w1[:id] %>" class="btn btn-primary btn-sm pull-right">
+              Acessar <i class="fa fa-arrow-right"></i>  
+            </a>
+        </div>
+      </div>
+    </div>
+
+    <% if w2 %>
+    <div class="col-4">
+      <div class="card">
+        <div class="card-header">
+          <h6>
+            <span class="pull-left ml-2"><%= w2[:name] %></span>
+          </h6>
+        </div>
+        <div class="card-body">
+        <%= w2[:description] %>
+        </div>
+        <div class="card-footer">
+            <a href="/workshop/<%= w2[:id] %>" class="btn btn-primary btn-sm pull-right">
+              Acessar <i class="fa fa-arrow-right"></i>  
+            </a>
+        </div>
+      </div>
+    </div>
+    <% end %>
+
+    <% if w3 %>
+    <div class="col-4">
+      <div class="card">
+        <div class="card-header">
+          <h6>
+            <span class="pull-left ml-2"><%= w3[:name] %></span>
+          </h6>
+        </div>
+        <div class="card-body">
+        <%= w3[:description] %>
+        </div>
+        <div class="card-footer">
+            <a href="/workshop/<%= w3[:id] %>" class="btn btn-primary btn-sm pull-right">
+              Acessar <i class="fa fa-arrow-right"></i>  
+            </a>
+        </div>
+      </div>
+    </div>
+    <% end %>
+
+</div>
+<% end %>
+
+</main>

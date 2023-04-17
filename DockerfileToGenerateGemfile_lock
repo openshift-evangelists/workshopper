@@ -1,0 +1,16 @@
+FROM registry.redhat.io/ubi8/ruby-27:1-95
+
+USER root
+
+ENV RAILS_ENV=production
+ENV HOME=/workshopper
+
+RUN mkdir -p /workshopper \
+    && chown default:root /workshopper \
+    && chmod 777 /workshopper
+
+USER default
+WORKDIR /workshopper
+
+ADD --chown=default:root Gemfile ./
+RUN bundle lock --add-platform x86_64-linux

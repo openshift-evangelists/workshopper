@@ -30,7 +30,7 @@ module Workshopper
       @lab['duration']
     end
 
-    def env(workshop, session)
+    def env(workshop, session, params)
       env = {
         'WORKSHOP_NAME' => workshop
       }
@@ -55,6 +55,21 @@ module Workshopper
         env[key] = session[key] if session[key]
       end
 
+      if params[:userid] && params[:userid].downcase == "reset"
+        session[:userid] = params[:userid] = ''
+      end
+
+      if (session[:userid] && session[:userid].strip != '') || (params[:userid] && params[:userid].strip != '')
+        if (params[:userid] && params[:userid].strip != '') && (!session[:userid] || session[:userid].strip == '')
+          session[:userid] = params[:userid].strip
+        elsif (params[:userid] && params[:userid].strip != '') && (session[:userid] && session[:userid].strip != '')
+          session[:userid] = params[:userid].strip
+        end
+        env['USER_ID'] = session[:userid].strip
+      else
+        env['USER_ID'] = 'PLEASE ENTER USERID AT TOP OF PAGE'
+      end
+
       if ENV['DYNAMIC_USER_NAME']
         @user_id ||= 0
         if ENV['NUM_USERS'] && Integer(ENV['NUM_USERS']) > 0 && @user_id >= Integer(ENV['NUM_USERS'])
@@ -68,10 +83,10 @@ module Workshopper
       env
     end
 
-    def render(workshop, session)
+    def render(workshop, session, params)
       @data ||= Workshopper::Loader.get(File.join(@content.prefix, "#{id}.#{@content.ext}"))
       template = ::Liquid::Template.parse(@data)
-      template = template.render(env(workshop, session))
+      template = template.render(env(workshop, session, params))
 
       Workshopper::Renderer.get(@content.ext).render(workshop, template)
     end

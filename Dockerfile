@@ -1,46 +1,29 @@
-FROM centos
+FROM registry.redhat.io/ubi8/ruby-27:1-95
 
-LABEL io.openshift.s2i.scripts-url="image:///usr/libexec/s2i" \
-      io.s2i.scripts-url="image:///usr/libexec/s2i"
-
-RUN curl -sL -o /etc/yum.repos.d/centos-essentials.repo https://gist.githubusercontent.com/marekjelen/c08a3c3a548820144f2da01d2bad6279/raw/centos-essentials.repo
-ENV PATH=/opt/essentials/bin:$PATH
-
-RUN yum update -y && \
-    yum install --setopt=tsflags=nodocs -y essentials-ruby bundler \
-    gcc gcc-c++ libxml2-devel sqlite-devel git && \
-    yum clean all && \
-    rm -rf /var/cache/yum
-    
-RUN gem update --system --no-document && \ 
-    gem update bundler --no-document
-
-RUN mkdir -p /usr/libexec/s2i
-
-COPY s2i/assemble s2i/run /usr/libexec/s2i/
-
-RUN chmod 777 /usr/libexec/s2i/{assemble,run}
+USER root
 
 ENV RAILS_ENV=production
+ENV HOME=/workshopper
 
-RUN useradd -u 1001 -g 0 -M -d /workshopper workshopper
+RUN mkdir -p /workshopper \
+    && chown default:root /workshopper \
+    && chmod 777 /workshopper
 
-RUN mkdir -p /workshopper && chown workshopper:root /workshopper && chmod 777 /workshopper
+USER default
 
-USER workshopper
 WORKDIR /workshopper
 
-ADD --chown=workshopper:root Gemfile Gemfile.lock ./
+ADD --chown=default:root Gemfile Gemfile.lock ./
 
+RUN bundle lock --add-platform x86_64-linux && \ 
+    bundle config set --local deployment 'true' && \ 
+    bundle install
 
-RUN bundle install --deployment
-
-ADD --chown=workshopper:root . .
+ADD --chown=default:root . .
 
 RUN bundle exec rake assets:precompile
 
 RUN rm -rf tmp log && mkdir -p tmp log && chmod -R 0777 tmp log
-ENV HOME=/workshopper
 
 EXPOSE 8080
 

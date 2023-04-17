@@ -31,6 +31,10 @@ module Workshopper
       @data['name']
     end
 
+    def description
+      @data['description']
+    end
+
     def vars
       @data['vars']
     end

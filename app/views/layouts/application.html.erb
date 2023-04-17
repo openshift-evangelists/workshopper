@@ -13,6 +13,15 @@
   <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
 </head>
 
+<script type="text/javascript">
+function gowithuser() {
+    window.location.search = ('&userid=' + document.getElementById('useridfield').value);
+}
+function recycle() {
+  window.location.search = ('&userid=reset');
+}
+</script>
+
 <body>
 <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid d-flex justify-content-start">
@@ -20,11 +29,25 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <% if @workshop %>
+      <a class="navbar-brand mb-0 h1" href="/" id="workshopName"><i class="fa fa-home">
+      </i></a>
       <a class="navbar-brand mb-0 h1" href="/workshop/<%= @workshop.id %>" id="workshopName"><%= @workshop.name %></a>
       <% if @lab %>
         <span class="navbar-text" style="margin-right: 1rem;">|</span>
         <span class="navbar-text"><%= @lab.name %></span>
       <% end %>
+
+      <% if !session[:userid] || session[:userid].strip == "" %>
+        <span class="navbar-text" style="margin-left: 1rem; margin-right: 1rem;">&nbsp;<i style="color: orange;" class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+        <form action="javascript:void(0);" onsubmit="gowithuser();">
+        <input size="40" id="useridfield" type="text" placeholder = "Enter User ID (e.g. user2)">
+        </form>
+      <% else %>
+        <span class="navbar-text" style="margin-left: 1rem; margin-right: 1rem;">|</span>
+        <span class="navbar-text">User ID: <%= session[:userid] %></span>
+        <span class="navbar-text" style="margin-left: 1rem; margin-right: 1rem;">&nbsp;<i onclick="recycle();" style="color: green;" class="fa fa-recycle" aria-hidden="true"></i></span>
+      <% end %>
+      
     <% else %>
       <a class="navbar-brand mb-0 h1" href="#" id="workshopName">Workshopper</a>
     <% end %>
