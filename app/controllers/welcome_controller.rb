@@ -12,7 +12,8 @@ class WelcomeController < ApplicationController
       w = Workshopper::Cache.workshops[id]
       {
           id: w.id,
-          name: w.name
+          name: w.name,
+          description: w.description
       }
     end
   end

@@ -6,11 +6,13 @@
     App.subscription_id = App.report_page_view('<%= @workshop.id %>#complete', '<%= session[:guest_id] %>');
 </script>
 
+<br><br><br>
+
 <main class="container-fluid">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-12">
       <% @workshop.active_labs.each do |name| %>
-        <h2><%= @workshop.lab(name).name %></h2>
+        <h1><%= @workshop.lab(name).name %></h1>
         <%= raw @workshop.lab(name).render(@workshop.id, session, params) %>
         <hr>
       <% end %>
